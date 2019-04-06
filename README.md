@@ -21,7 +21,6 @@ _will most likely change as I work_
 
   - **Components**
 
-    - create LandingPage component
     - create Navbar component
     - create Footer component
     - create Login component
@@ -33,8 +32,7 @@ _will most likely change as I work_
 
   - **Router**
 
-    - if the user isn't logged in, then the only page they can access is the landing page.
-      - landing page should convince the user to sign up.
+    - if the user isn't logged in, redirect to the 'Login'
     - when the user clicks 'Login' it should load the 'Login' component.
       - when the user is logged in they should be redirected to their 'Dashboard'
     - when the user clicks 'Signup' it should load the 'Signup' component.
@@ -94,3 +92,7 @@ _will most likely change as I work_
       - GET
         - /users/:id - get a single user.
         - protected route. user needs authorization
+
+## Entity-Relationship Diagram
+
+![erd](./orgello-erd.png)

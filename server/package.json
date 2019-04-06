@@ -1,7 +1,9 @@
 {
-  "name": "express",
+  "name": "orgello-server",
   "version": "1.0.0",
   "main": "index.js",
+  "repository": "git@github.com:ben-garcia/orgello.git",
+  "description": "server for orgello",
   "license": "MIT",
   "scripts": {
     "start": "nodemon src/index"
