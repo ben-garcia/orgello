@@ -64,24 +64,23 @@ _will most likely change as I work_
 
     - _users_
 
-      - attributes: username, mail, hashPassword, boardId
+      - attributes: id, username, email, password
       - has many boards
 
     - _boards_
 
-      - attriutes: title, listId(foreign key), cardId(foreign key)
-      - belongs to a user
+      - attriutes: name, background_url, owner_id
       - has many lists
-      - has many cards
 
     - _lists_
 
-      - attributes: title cardId(foreign key),
+      - attributes: name, order, archived, boardId
       - has many cards
+      - belongs to board
 
     - _cards_
-      - attributes: content, listId(foreign key)
-        belongs to lists
+      - attributes: title, archived, list_id
+      - belongs to list
 
   - **Routers**
 
