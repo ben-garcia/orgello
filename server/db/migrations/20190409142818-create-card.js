@@ -14,6 +14,13 @@ module.exports = {
           notEmpty: true,
         },
       },
+      // order: {
+      //   allowNull: false,
+      //   type: Sequelize.INTEGER,
+      //   validates: {
+      //     notEmpty: true,
+      //   },
+      // },
       archived: {
         type: Sequelize.BOOLEAN,
       },

@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         type: DataTypes.STRING,
         validate: {
-          notEmtpy: true,
+          notEmpty: true,
           min: 6,
           max: 30,
         },
@@ -34,7 +34,14 @@ module.exports = (sequelize, DataTypes) => {
     {},
   );
   user.associate = (models) => {
-    user.hasMany(models.board);
+    // user is the source
+    // board is the target
+    user.hasMany(models.board, {
+      // user.boards to get all the users boards
+      // property on the source to refer to target
+      as: 'boards',
+      foreignKey: 'ownerId', // ownerId field in the boards table
+    });
   };
   return user;
 };

@@ -27,11 +27,17 @@ module.exports = (sequelize, DataTypes) => {
     {},
   );
   list.associate = (models) => {
+    // list is the source
+    // board is the target
     list.belongsTo(models.board, {
-      as: 'lists',
-      foreignKey: 'boardId',
+      // property on the source(list) to refer to the target(board)
+      as: 'board', // board.lists
+      foreignKey: 'boardId', // field in the lists table that points to list PK
     });
-    list.hasMany(models.card);
+    list.hasMany(models.card, {
+      as: 'cards',
+      foreignKey: 'listId',
+    });
   };
   return list;
 };

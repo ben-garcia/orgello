@@ -21,9 +21,12 @@ module.exports = (sequelize, DataTypes) => {
     {},
   );
   board.associate = (models) => {
+    // board is the source
+    // user is the target
     board.belongsTo(models.user, {
-      as: 'owner',
-      foreignKey: 'ownerId',
+      // property on the source to refer to the target
+      as: 'owner', // board.owner
+      foreignKey: 'ownerId', // field in boards table that pionts to users PK
     });
   };
   return board;

@@ -9,6 +9,13 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true,
         },
       },
+      // order: {
+      //   allowNull: false,
+      //   type: DataTypes.INTEGER,
+      //   validates: {
+      //     notEmpty: true,
+      //   },
+      // },
       archived: {
         type: DataTypes.BOOLEAN,
       },
@@ -19,8 +26,11 @@ module.exports = (sequelize, DataTypes) => {
     {},
   );
   card.associate = (models) => {
+    // card is the source
+    // list is the target
     card.belongsTo(models.list, {
-      as: 'list',
+      // property on the source to refer to the target
+      as: 'list', // card.list
       foreignKey: 'listId',
     });
   };

@@ -5,8 +5,9 @@ const Joi = require('joi');
 const router = express.Router();
 
 const User = require('../db/models').user;
+const Board = require('../db/models').board;
 
-// every new use MUST meet these requirements.
+// every new user MUST meet these requirements.
 const schema = Joi.object().keys({
   email: Joi.string()
     .trim()
@@ -25,7 +26,14 @@ const schema = Joi.object().keys({
 });
 
 router.get('/', (req, res, next) => {
-  User.findAll()
+  User.findAll({
+    include: [
+      {
+        model: Board,
+        as: 'boards', // user.boards
+      },
+    ],
+  })
     .then((users) => {
       res.json(users);
     })

@@ -21,7 +21,7 @@ module.exports = {
         unique: true,
         type: Sequelize.STRING,
         validate: {
-          notEmtpy: true,
+          notEmpty: true,
           min: 6,
           max: 30,
         },
