@@ -14,15 +14,15 @@ module.exports = {
       background: {
         type: Sequelize.STRING,
       },
-      owner_id: {
+      ownerId: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },

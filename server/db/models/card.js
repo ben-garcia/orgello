@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       archived: {
         type: DataTypes.BOOLEAN,
       },
-      board_id: {
+      listId: {
         type: DataTypes.INTEGER,
       },
     },
@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
   );
   card.associate = (models) => {
     card.belongsTo(models.list, {
-      as: 'cards',
-      foreignKey: 'list_id',
+      as: 'list',
+      foreignKey: 'listId',
     });
   };
   return card;

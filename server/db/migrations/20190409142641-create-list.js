@@ -18,6 +18,10 @@ module.exports = {
       archived: {
         type: Sequelize.BOOLEAN,
       },
+      boardId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

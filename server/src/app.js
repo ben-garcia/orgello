@@ -14,14 +14,14 @@ app.use(express.json()); // parses 'application/json'
 app.use('/users', usersRouter);
 
 // 404 Not Found
-app.use((req, res) => {
+app.use((req, res, next) => {
   res.status(404);
   res.json({ message: '404 Not Found' });
 });
 
 // error handler
-app.use((err, req, res) => {
-  res.json({ error: err.message });
+app.use((err, req, res, next) => {
+  res.json({ message: err.message });
 });
 
 db.sequelize

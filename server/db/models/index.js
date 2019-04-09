@@ -41,8 +41,6 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-console.log('models are: ', db);
-
 db.sequelize = sequelize; // add the connection to the exported object.
 db.Sequelize = Sequelize;
 

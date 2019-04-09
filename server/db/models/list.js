@@ -13,13 +13,17 @@ module.exports = (sequelize, DataTypes) => {
       archived: {
         type: DataTypes.BOOLEAN,
       },
+      boardId: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
     },
     {},
   );
   list.associate = (models) => {
     list.belongsTo(models.board, {
       as: 'lists',
-      foreignKey: 'board_id',
+      foreignKey: 'boardId',
     });
     list.hasMany(models.card);
   };

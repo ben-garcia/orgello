@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
-      owner_id: {
+      ownerId: {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
@@ -19,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
   );
   board.associate = (models) => {
     board.belongsTo(models.user, {
-      as: 'boards',
-      foreignKey: 'owner_id',
+      as: 'owner',
+      foreignKey: 'ownerId',
     });
   };
   return board;

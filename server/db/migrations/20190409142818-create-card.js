@@ -14,15 +14,15 @@ module.exports = {
       archived: {
         type: Sequelize.BOOLEAN,
       },
-      board_id: {
+      listId: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
