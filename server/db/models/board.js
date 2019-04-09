@@ -24,9 +24,16 @@ module.exports = (sequelize, DataTypes) => {
     // board is the source
     // user is the target
     board.belongsTo(models.user, {
-      // property on the source to refer to the target
+      // property on the source(board) to refer to the target(user)
       as: 'owner', // board.owner
       foreignKey: 'ownerId', // field in boards table that pionts to users PK
+    });
+    // board is the source
+    // list is the target
+    board.hasMany(models.list, {
+      // property on the source(board) to refer to the target(list)
+      as: 'lists', // board.lists
+      foreignKey: 'boardId', // field in lists table that points to board PK
     });
   };
   return board;

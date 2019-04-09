@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       order: {
         allowNull: false,
+        unique: true,
         type: DataTypes.INTEGER,
         validates: {
           notEmpty: true,
@@ -18,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       archived: {
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       boardId: {
         allowNull: false,
@@ -34,9 +36,12 @@ module.exports = (sequelize, DataTypes) => {
       as: 'board', // board.lists
       foreignKey: 'boardId', // field in the lists table that points to list PK
     });
+    // list is the source
+    // card is the target
     list.hasMany(models.card, {
-      as: 'cards',
-      foreignKey: 'listId',
+      // property on the source(list) to refer to the target(card)
+      as: 'cards', // list.cards
+      foreignKey: 'listId', // field in the card tabel that ponts to list PK
     });
   };
   return list;

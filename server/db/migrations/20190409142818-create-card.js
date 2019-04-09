@@ -14,15 +14,17 @@ module.exports = {
           notEmpty: true,
         },
       },
-      // order: {
-      //   allowNull: false,
-      //   type: Sequelize.INTEGER,
-      //   validates: {
-      //     notEmpty: true,
-      //   },
-      // },
+      order: {
+        allowNull: false,
+        unique: true,
+        type: Sequelize.INTEGER,
+        validates: {
+          notEmpty: true,
+        },
+      },
       archived: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       listId: {
         allowNull: false,

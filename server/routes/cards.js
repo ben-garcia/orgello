@@ -11,6 +11,9 @@ const schema = Joi.object().keys({
   title: Joi.string()
     .trim()
     .required(),
+  order: Joi.number()
+    .integer()
+    .required(),
   archived: Joi.boolean(),
   listId: Joi.number()
     .integer()
@@ -22,7 +25,7 @@ router.get('/', (req, res, next) => {
     include: [
       {
         model: List,
-        as: 'list', // card.lists
+        as: 'list', // card.list
       },
     ],
   })

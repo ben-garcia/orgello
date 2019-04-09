@@ -15,7 +15,7 @@ module.exports = {
         },
       },
       background: {
-        alloNull: false,
+        allowNull: false,
         type: Sequelize.STRING,
       },
       ownerId: {

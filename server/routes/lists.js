@@ -5,6 +5,7 @@ const router = express.Router();
 
 const Board = require('../db/models').board;
 const List = require('../db/models').list;
+const Card = require('../db/models').card;
 
 // every new list MUST meet these requirements.
 const schema = Joi.object().keys({
@@ -25,7 +26,11 @@ router.get('/', (req, res, next) => {
     include: [
       {
         model: Board,
-        as: 'board', // board.lists
+        as: 'board', // list.board
+      },
+      {
+        model: Card,
+        as: 'cards', // list.cards
       },
     ],
   })
