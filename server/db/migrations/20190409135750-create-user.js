@@ -9,15 +9,31 @@ module.exports = {
       },
       email: {
         allowNull: false,
+        unique: true,
         type: Sequelize.STRING,
+        validate: {
+          notEmpty: true,
+          isEmail: true,
+        },
       },
       username: {
         allowNull: false,
+        unique: true,
         type: Sequelize.STRING,
+        validate: {
+          notEmtpy: true,
+          min: 6,
+          max: 30,
+        },
       },
       password: {
         allowNull: false,
         type: Sequelize.STRING,
+        validate: {
+          notEmpty: true,
+          min: 6,
+          max: 30,
+        },
       },
       createdAt: {
         allowNull: false,

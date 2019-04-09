@@ -50,7 +50,10 @@ router.post('/', (req, res, next) => {
       // insert user into the database.
       User.create(newUser)
         // send to newly created user to the client.
-        .then((user) => res.json(user))
+        .then((user) => {
+          res.status(201); // created
+          res.json(user);
+        })
         // if the user failed to be created.
         .catch((e) => next({ message: e.message }));
     });
