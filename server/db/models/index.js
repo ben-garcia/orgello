@@ -35,11 +35,13 @@ fs.readdirSync(__dirname) // read all files in the current directory
     db[model.name] = model;
   });
 
-// Object.keys(db).forEach(modelName => {
-//   if (db[modelName].associate) {
-//     db[modelName].associate(db);
-//   }
-// });
+Object.keys(db).forEach((modelName) => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
+
+console.log('models are: ', db);
 
 db.sequelize = sequelize; // add the connection to the exported object.
 db.Sequelize = Sequelize;

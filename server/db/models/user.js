@@ -4,21 +4,18 @@ module.exports = (sequelize, DataTypes) => {
     {
       email: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       username: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
     },
     {},
   );
-  user.associate = function(models) {
-    // associations can be defined here
+  user.associate = (models) => {
+    user.hasMany(models.board);
   };
   return user;
 };
