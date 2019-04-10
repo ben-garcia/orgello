@@ -36,13 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       as: 'lists', // board.lists
       foreignKey: 'boardId', // field in list that points to board PK
     });
-    // board is the source
-    // list is the target
-    board.hasMany(models.list, {
-      // property on the source(board) to refer to the target(list)
-      as: 'lists', // board.lists
-      foreignKey: 'boardId', // field in lists table that points to board PK
-    });
   };
   return board;
 };
