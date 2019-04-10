@@ -81,7 +81,7 @@ _will most likely change as I work_
 
       - ~~attributes: title(string), order(integer), archived(boolean), boardId(integer)~~
         - ~~title, order and boardId are required~~
-        - ~~ order has unique contraint~~
+        - ~~order has unique contraint~~
         - ~~archived default value is 'false'~~
       - ~~hasMany cards~~
       - ~~belongsTo board~~
@@ -89,7 +89,7 @@ _will most likely change as I work_
     - ~~_cards_~~
       - ~~attributes: title, order, archived, listId~~
         - ~~title, order, listId are required~~
-          -- ~~order has unique contraint~~
+        - ~~order has unique contraint~~
         - ~~archived default value is 'false'~~
       - ~~belongsTo list~~
 
