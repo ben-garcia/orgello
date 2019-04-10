@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       order: {
         allowNull: false,
-        unique: true,
         type: DataTypes.INTEGER,
         validates: {
           notEmpty: true,
