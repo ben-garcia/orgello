@@ -16,6 +16,7 @@ module.exports = {
       },
       order: {
         allowNull: false,
+        unique: true,
         type: Sequelize.INTEGER,
         validates: {
           notEmpty: true,
