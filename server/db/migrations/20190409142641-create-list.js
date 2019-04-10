@@ -23,6 +23,7 @@ module.exports = {
       },
       archived: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       boardId: {
         allowNull: false,

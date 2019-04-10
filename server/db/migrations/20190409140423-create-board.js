@@ -15,7 +15,8 @@ module.exports = {
         },
       },
       background: {
-        alloNull: false,
+        allowNull: false,
+        defaultValue: '#ffffff',
         type: Sequelize.STRING,
       },
       ownerId: {

@@ -20,12 +20,14 @@ app.use('/lists', listsRouter);
 app.use('/cards', cardsRouter);
 
 // 404 Not Found
+// eslint-disable-next-line
 app.use((req, res, next) => {
   res.status(404);
   res.json({ message: '404 Not Found' });
 });
 
 // error handler
+// eslint-disable-next-line
 app.use((err, req, res, next) => {
   res.json({ message: err.message });
 });

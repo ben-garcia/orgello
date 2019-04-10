@@ -9,17 +9,19 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true,
         },
       },
-      // order: {
-      //   allowNull: false,
-      //   type: DataTypes.INTEGER,
-      //   validates: {
-      //     notEmpty: true,
-      //   },
-      // },
+      order: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        validates: {
+          notEmpty: true,
+        },
+      },
       archived: {
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       listId: {
+        allowNull: false,
         type: DataTypes.INTEGER,
       },
     },

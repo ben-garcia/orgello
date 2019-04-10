@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       archived: {
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
       boardId: {
         allowNull: false,
