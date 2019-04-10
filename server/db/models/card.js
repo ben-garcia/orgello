@@ -11,10 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       order: {
         allowNull: false,
-<<<<<<< HEAD
-        unique: true,
-=======
->>>>>>> models
         type: DataTypes.INTEGER,
         validates: {
           notEmpty: true,

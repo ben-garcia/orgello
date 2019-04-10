@@ -60,37 +60,89 @@ _will most likely change as I work_
 
   - **Models**
 
-    - sequelize adds id(primary key), createdAt, and updatedAt fields
+    > sequelize adds id(primary key), createdAt, and updatedAt fields
 
-    - _users_
+    - ~~_users_~~
 
-      - attributes: id, username, email, password
-      - has many boards
+      - ~~attributes: email(string), username(string), password(string)~~
+        - ~~unique contraints on email and username~~
+        - ~~all are required~~
+      - ~~hasMany boards~~
 
-    - _boards_
+    - ~~_boards_~~
 
-      - attriutes: name, background_url, owner_id
-      - has many lists
+      - ~~attributes: title(string), background(string), ownerId(integer)~~
+        - ~~title and ownerId are required~~
+        - ~~background default value is '#ffffff'~~
+      - ~~hasMany lists~~
+      - ~~belongsTo user~~
 
-    - _lists_
+    - ~~_lists_~~
 
-      - attributes: name, order, archived, boardId
-      - has many cards
-      - belongs to board
+      - ~~attributes: title(string), order(integer), archived(boolean), boardId(integer)~~
+        - ~~title, order and boardId are required~~
+        - ~~archived default value is 'false'~~
+      - ~~hasMany cards~~
+      - ~~belongsTo board~~
 
-    - _cards_
-      - attributes: title, archived, list_id
-      - belongs to list
+    - ~~_cards_~~
+      - ~~attributes: title, order, archived, listId~~
+        - ~~title, order, listId are required~~
+        - ~~archived default value is 'false'~~
+      - ~~belongsTo list~~
 
   - **Routers**
 
-    - /users
+    - _/users_
+
+      - GET
+
+        - /:id
+          - get a single user
+          - protected route. user needs authorization
+
+      - ~~POST~~
+
+        - ~~create a user and add it to the db~~
+        - ~~hash password before storing in db~~
+
+      - DELETE
+        - /:id
+          - remove the user with the id from the db
+
+    - _/boards_
+
 
       - POST
-        - create a user and add it to the db.
-      - GET
-        - /users/:id - get a single user.
-        - protected route. user needs authorization
+
+        - create a board associated with a user
+
+      - PUT
+        - /:id
+          - modify the board
+
+    - _/lists_
+
+      - ~~POST~~
+        - ~~create a list associated with a board~~
+      - PUT
+        - /:id
+          - modify a board with :id in the db
+      - DELETE
+
+        - /:id
+          - archive to list with the :id
+
+    - _/cards_
+
+      - ~~POST~~
+        - ~~create a card associatad with a list~~
+      - PUT
+        - /:id
+          - modify the list with :id
+      - DELETE
+        - /:id
+          - archive the card with :id
 
 ## Entity-Relationship Diagram
 
