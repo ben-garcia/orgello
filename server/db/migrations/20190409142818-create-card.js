@@ -16,7 +16,10 @@ module.exports = {
       },
       order: {
         allowNull: false,
+<<<<<<< HEAD
         unique: true,
+=======
+>>>>>>> models
         type: Sequelize.INTEGER,
         validates: {
           notEmpty: true,

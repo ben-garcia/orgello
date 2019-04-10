@@ -16,6 +16,10 @@ module.exports = {
       },
       background: {
         allowNull: false,
+<<<<<<< HEAD
+=======
+        defaultValue: '#ffffff',
+>>>>>>> models
         type: Sequelize.STRING,
       },
       ownerId: {

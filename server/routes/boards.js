@@ -29,7 +29,11 @@ router.get('/', (req, res, next) => {
       },
       {
         model: List,
+<<<<<<< HEAD
         as: 'lists', // board.lists
+=======
+        as: 'lists',
+>>>>>>> models
       },
     ],
   })
