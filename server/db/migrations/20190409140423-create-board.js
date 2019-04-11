@@ -22,6 +22,15 @@ module.exports = {
       ownerId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        references: {
+          // points to the users table as 'ownerId'
+          model: 'users',
+          key: 'id',
+        },
+        // when the user is deleted then so will all his/her boards
+        onDelete: 'cascade',
+        // any updates will effect the users boards too
+        onUpdate: 'cascade',
       },
       createdAt: {
         allowNull: false,

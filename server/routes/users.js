@@ -1,11 +1,18 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
+const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
 const User = require('../db/models').user;
 const Board = require('../db/models').board;
+
+const {
+  validateParam,
+  isTokenPresent,
+  validateUser,
+} = require('../middlewares/users');
 
 // every new user MUST meet these requirements.
 const schema = Joi.object().keys({
@@ -25,6 +32,7 @@ const schema = Joi.object().keys({
     .required(),
 });
 
+// return all users and their boards
 router.get('/', (req, res, next) => {
   User.findAll({
     include: [
@@ -40,6 +48,32 @@ router.get('/', (req, res, next) => {
     .catch((e) => next({ message: e.message }));
 });
 
+// get a single user with the id that matches req.params.id
+router.get(
+  '/:id',
+  validateParam,
+  isTokenPresent,
+  validateUser,
+  (req, res, next) => {
+    // user req.user.id to query the db
+    User.findOne({
+      attributes: { exclude: ['password'] },
+      where: {
+        id: req.user.id,
+      },
+    })
+      .then((user) => {
+        if (user) {
+          res.json(user);
+        } else {
+          next({ message: 'No user with that id found' });
+        }
+      })
+      .catch((e) => next({ message: e.message }));
+  },
+);
+
+// create a user and save it to the database
 router.post('/', (req, res, next) => {
   const result = Joi.validate(req.body, schema);
 
@@ -59,13 +93,50 @@ router.post('/', (req, res, next) => {
       User.create(newUser)
         // send to newly created user to the client.
         .then((user) => {
-          res.status(201); // created
-          res.json(user);
+          // user with ONLY the neccessary properties
+          const userInDB = {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+          };
+          // create jsonwebtoken and add it to the user object
+          // to send as the response.
+          jwt.sign(userInDB, process.env.JWT_SECRET, (err, token) => {
+            if (err) {
+              next({ message: err });
+            } else {
+              res.status(201); // created
+              // send the token along with the newly inserted user
+              res.json({
+                ...userInDB,
+                token,
+              });
+            }
+          });
         })
         // if the user failed to be created.
         .catch((e) => next({ message: e.message }));
     });
   }
 });
+
+// delete a user from the db
+router.delete(
+  '/:id',
+  validateParam,
+  isTokenPresent,
+  validateUser,
+  (req, res, next) => {
+    User.destroy({
+      where: {
+        id: req.user.id,
+      },
+    })
+      .then((user) => {
+        res.json({ message: 'User has been deleted', user });
+      })
+      .catch((e) => next({ message: e.message }));
+  },
+);
 
 module.exports = router;

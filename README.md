@@ -4,11 +4,11 @@
 
 ## The Plan
 
-_React/Redux on the client and Express API using PostgreSQL on the server_
+> React/Redux on the client and Express API using PostgreSQL on the server
 
 ## TODO
 
-_will most likely change as I work_
+> will most likely change as I work
 
 - Client
 
@@ -81,7 +81,6 @@ _will most likely change as I work_
 
       - ~~attributes: title(string), order(integer), archived(boolean), boardId(integer)~~
         - ~~title, order and boardId are required~~
-        - ~~order has unique contraint~~
         - ~~archived default value is 'false'~~
       - ~~hasMany cards~~
       - ~~belongsTo board~~
@@ -89,7 +88,6 @@ _will most likely change as I work_
     - ~~_cards_~~
       - ~~attributes: title, order, archived, listId~~
         - ~~title, order, listId are required~~
-        - ~~order has unique contraint~~
         - ~~archived default value is 'false'~~
       - ~~belongsTo list~~
 
@@ -97,20 +95,21 @@ _will most likely change as I work_
 
     - _/users_
 
-      - GET
+      - ~~GET~~
 
-        - /:id
-          - get a single user
-          - protected route. user needs authorization
+        - ~~/:id~~
+          - ~~get a single user~~
+          - ~~protected route. user needs authorization~~
 
       - ~~POST~~
 
         - ~~create a user and add it to the db~~
         - ~~hash password before storing in db~~
 
-      - DELETE
-        - /:id
-          - remove the user with the id from the db
+      - ~~DELETE~~
+        - ~~/:id~~
+          - ~~remove the user with the id from the db~~
+          - ~~protected route. user needs authorization~~
 
     - _/boards_
 

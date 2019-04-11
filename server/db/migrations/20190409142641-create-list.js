@@ -28,6 +28,14 @@ module.exports = {
       boardId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        references: {
+          // has a reference to the boards table
+          model: 'boards',
+          key: 'id',
+        },
+        // when the board is deleted so will the lists associated with it
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
       },
       createdAt: {
         allowNull: false,

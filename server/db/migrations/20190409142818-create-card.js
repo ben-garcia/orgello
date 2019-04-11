@@ -28,6 +28,13 @@ module.exports = {
       listId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        references: {
+          model: 'lists',
+          key: 'id',
+        },
+        // when the list is deleted so are all the cards associated with it
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
       },
       createdAt: {
         allowNull: false,
