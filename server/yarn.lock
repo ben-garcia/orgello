@@ -641,11 +641,6 @@ delegates@^1.0.0:
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
   integrity sha1-hMbhWbgZBP3KWaDvRM2HDTElD5o=
 
-depd@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/depd/-/depd-2.0.0.tgz#b696163cc757560d09cf22cc8fad1571b79e76df"
-  integrity sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
-
 depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
@@ -2982,15 +2977,14 @@ sequelize-pool@^1.0.2:
   dependencies:
     bluebird "^3.5.3"
 
-sequelize@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-5.1.1.tgz#dc21efb387ad70b5e61719cdbc553c71f043b925"
-  integrity sha512-AaFZQ578yCNrQ1ewQQJ4w8Xe4eEnJ/jz5XX8f14kG5eHajWGkRrq6q9CWo8OFWfz2Nh9Z6kRQtvg5kQGOx9lBQ==
+sequelize@^5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-5.3.1.tgz#1ef5f1b38a0f728659a05605e58cabf5976b3091"
+  integrity sha512-h79d4ZvXee/pgwuPhqxHZ8Llz/v4vufspn0tfBR2ggYJBL9K1GTuYg5Bp848Y642scanJKwz3LfiyT/ZPfBcxQ==
   dependencies:
     bluebird "^3.5.0"
     cls-bluebird "^2.1.0"
     debug "^4.1.1"
-    depd "^2.0.0"
     dottie "^2.0.0"
     inflection "1.12.0"
     lodash "^4.17.11"

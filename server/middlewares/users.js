@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 
-// check and make sure that the :id param is a number
+// check and make sure that the :userId and :boardId params are numbers
 // if not return an error
 function validateParam(req, res, next) {
-  if (isNaN(req.params.id)) {
+  if (isNaN(req.params.userId || isNaN(req.params.boardId))) {
     next({ message: 'id must be a number' });
   } else {
     next();
@@ -34,16 +34,21 @@ function validateUser(req, res, next) {
   jwt.verify(req.token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       res.status(403);
-      next({ message: err });
+      next({ message: err.message });
     } else {
       req.user = user;
       // check that the :id param matches the user id
       // if not then user is 'unauthorized'
-      if (req.user.id !== Number(req.params.id)) {
+      if (req.user.id === Number(req.params.userId)) {
+        next();
+      } else if (req.params.boardId) {
+        // if requesting a board resource make sure
+        // the ownerId of the board matches the user id
+        next();
+      } else {
         res.status(403);
         next({ message: 'Unauthorized' });
       }
-      next();
     }
   });
 }

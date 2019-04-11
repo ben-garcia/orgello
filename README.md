@@ -93,7 +93,7 @@
 
   - **Routers**
 
-    - _/users_
+    - ~~_/users_~~
 
       - ~~GET~~
 
@@ -111,16 +111,17 @@
           - ~~remove the user with the id from the db~~
           - ~~protected route. user needs authorization~~
 
-    - _/boards_
+    - ~~_/boards_~~
 
 
-      - POST
+      - ~~POST~~
 
-        - create a board associated with a user
+        - ~~create a board associated with a user~~
 
-      - PUT
-        - /:id
-          - modify the board
+      - ~~PUT~~
+        - ~~/:id~~
+          - ~~modify the board~~
+          - ~~protected route. user neds authorization~~
 
     - _/lists_
 

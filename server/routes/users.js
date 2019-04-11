@@ -50,7 +50,7 @@ router.get('/', (req, res, next) => {
 
 // get a single user with the id that matches req.params.id
 router.get(
-  '/:id',
+  '/:userId',
   validateParam,
   isTokenPresent,
   validateUser,
@@ -122,7 +122,7 @@ router.post('/', (req, res, next) => {
 
 // delete a user from the db
 router.delete(
-  '/:id',
+  '/:userId',
   validateParam,
   isTokenPresent,
   validateUser,
