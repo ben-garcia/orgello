@@ -30,7 +30,7 @@ function isTokenPresent(req, res, next) {
 
 // compare the token in the request object with the
 // jsonwebtoken used to sign it.
-function validateUser(req, res, next) {
+function verifyToken(req, res, next) {
   jwt.verify(req.token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       res.status(403);
@@ -42,8 +42,15 @@ function validateUser(req, res, next) {
       if (req.user.id === Number(req.params.userId)) {
         next();
       } else if (req.params.boardId) {
-        // if requesting a board resource make sure
-        // the ownerId of the board matches the user id
+        // if requesting a board resource
+        // pass it along the middleware stack
+        next();
+      } else if (req.params.listId) {
+        // if requesting a list
+        // call the next middleware in the stack
+        next();
+      } else if (req.params.cardId) {
+        // if requesting a card
         next();
       } else {
         res.status(403);
@@ -56,5 +63,5 @@ function validateUser(req, res, next) {
 module.exports = {
   validateParam,
   isTokenPresent,
-  validateUser,
+  verifyToken,
 };

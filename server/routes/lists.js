@@ -7,6 +7,16 @@ const Board = require('../db/models').board;
 const List = require('../db/models').list;
 const Card = require('../db/models').card;
 
+const {
+  validateParam,
+  isTokenPresent,
+  verifyToken,
+} = require('../middlewares/users');
+const {
+  validateListHasCorrectBodyContents,
+  checkListOwnerIdMatchesUserId,
+} = require('../middlewares/lists');
+
 // every new list MUST meet these requirements.
 const schema = Joi.object().keys({
   title: Joi.string()
@@ -21,6 +31,7 @@ const schema = Joi.object().keys({
     .required(),
 });
 
+// get all lists along with its board and cards
 router.get('/', (req, res, next) => {
   List.findAll({
     include: [
@@ -40,6 +51,7 @@ router.get('/', (req, res, next) => {
     .catch((e) => next({ message: e.message }));
 });
 
+// create a list and add it to the db
 router.post('/', (req, res, next) => {
   const result = Joi.validate(req.body, schema);
 
@@ -63,5 +75,27 @@ router.post('/', (req, res, next) => {
       .catch((e) => next({ message: e.message }));
   }
 });
+
+// update the list with the given id using property/properties
+// in req.body
+router.put(
+  '/:listId',
+  validateParam,
+  isTokenPresent,
+  verifyToken,
+  validateListHasCorrectBodyContents,
+  checkListOwnerIdMatchesUserId,
+  (req, res, next) => {
+    List.update(req.body, {
+      where: {
+        id: req.params.listId,
+      },
+    })
+      .then((updatedList) => {
+        res.json({ message: 'list updated', updatedList });
+      })
+      .catch((e) => next({ message: e.message }));
+  },
+);
 
 module.exports = router;

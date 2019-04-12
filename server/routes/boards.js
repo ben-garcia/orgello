@@ -10,7 +10,7 @@ const List = require('../db/models').list;
 const {
   validateParam,
   isTokenPresent,
-  validateUser,
+  verifyToken,
 } = require('../middlewares/users');
 const {
   validateBoardHasCorrectBodyContents,
@@ -82,13 +82,13 @@ router.put(
   '/:boardId',
   validateParam,
   isTokenPresent,
-  validateUser,
+  verifyToken,
   validateBoardHasCorrectBodyContents,
   checkBoardOwnerIdMatchesUserId,
   (req, res, next) => {
     Board.update(req.body, {
       where: {
-        id: req.user.id,
+        id: req.params.boardId,
       },
     })
       .then((updatedBoard) => {

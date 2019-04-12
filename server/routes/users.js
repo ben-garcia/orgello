@@ -11,7 +11,7 @@ const Board = require('../db/models').board;
 const {
   validateParam,
   isTokenPresent,
-  validateUser,
+  verifyToken,
 } = require('../middlewares/users');
 
 // every new user MUST meet these requirements.
@@ -53,7 +53,7 @@ router.get(
   '/:userId',
   validateParam,
   isTokenPresent,
-  validateUser,
+  verifyToken,
   (req, res, next) => {
     // user req.user.id to query the db
     User.findOne({
@@ -125,7 +125,7 @@ router.delete(
   '/:userId',
   validateParam,
   isTokenPresent,
-  validateUser,
+  verifyToken,
   (req, res, next) => {
     User.destroy({
       where: {

@@ -6,6 +6,16 @@ const router = express.Router();
 const List = require('../db/models').list;
 const Card = require('../db/models').card;
 
+const {
+  validateParam,
+  isTokenPresent,
+  verifyToken,
+} = require('../middlewares/users');
+const {
+  validateCardHasCorrectBodyContents,
+  checkCardOwnerIdMatchesUserId,
+} = require('../middlewares/cards');
+
 // every new card MUST meet these requirements.
 const schema = Joi.object().keys({
   title: Joi.string()
@@ -20,6 +30,7 @@ const schema = Joi.object().keys({
     .required(),
 });
 
+// send all the cards and the list associated with each.
 router.get('/', (req, res, next) => {
   Card.findAll({
     include: [
@@ -35,6 +46,7 @@ router.get('/', (req, res, next) => {
     .catch((e) => next({ message: e.message }));
 });
 
+// create a new card that MUST match the schema
 router.post('/', (req, res, next) => {
   const result = Joi.validate(req.body, schema);
 
@@ -58,5 +70,26 @@ router.post('/', (req, res, next) => {
       .catch((e) => next({ message: e.message }));
   }
 });
+
+// update the card with properties in req.body
+router.put(
+  '/:cardId',
+  validateParam,
+  isTokenPresent,
+  verifyToken,
+  validateCardHasCorrectBodyContents,
+  checkCardOwnerIdMatchesUserId,
+  (req, res, next) => {
+    Card.update(req.body, {
+      where: {
+        id: req.params.cardId,
+      },
+    })
+      .then((updatedCard) => {
+        res.json({ message: 'card updated', updatedCard });
+      })
+      .catch((e) => next({ message: e.message }));
+  },
+);
 
 module.exports = router;

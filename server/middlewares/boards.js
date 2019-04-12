@@ -36,7 +36,7 @@ function checkBoardOwnerIdMatchesUserId(req, res, next) {
     ],
   })
     .then((board) => {
-      // make sure the query returns at lease one board
+      // make sure the query returns at least one board
       if (board) {
         // check that the user id matches the board owner
         if (req.user.id === board.owner.id) {

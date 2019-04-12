@@ -97,7 +97,7 @@
 
       - ~~GET~~
 
-        - ~~/:id~~
+        - ~~/:userId~~
           - ~~get a single user~~
           - ~~protected route. user needs authorization~~
 
@@ -107,7 +107,7 @@
         - ~~hash password before storing in db~~
 
       - ~~DELETE~~
-        - ~~/:id~~
+        - ~~/:userId~~
           - ~~remove the user with the id from the db~~
           - ~~protected route. user needs authorization~~
 
@@ -119,32 +119,35 @@
         - ~~create a board associated with a user~~
 
       - ~~PUT~~
-        - ~~/:id~~
+        - ~~/:boardId~~
           - ~~modify the board~~
-          - ~~protected route. user neds authorization~~
+          - ~~protected route. user needs authorization~~
 
     - _/lists_
 
       - ~~POST~~
         - ~~create a list associated with a board~~
-      - PUT
-        - /:id
-          - modify a board with :id in the db
-      - DELETE
-
-        - /:id
-          - archive to list with the :id
+      - ~~PUT~~
+        - ~~/:listId~~
+          - ~~modify a board with :id in the db~~
+          - ~~protected route. user needs authorization~~
 
     - _/cards_
 
       - ~~POST~~
         - ~~create a card associatad with a list~~
-      - PUT
-        - /:id
-          - modify the list with :id
-      - DELETE
-        - /:id
-          - archive the card with :id
+      - ~~PUT~~
+        - ~~/:cardId~~
+          - ~~modify the list with :id~~
+          - ~~protected route. user needs authorization~~
+
+    - _/auth_
+      - GET
+        - /login
+      - POST
+        - /signup
+
+      - logout with be handled on the client since it will remove the jwt from localStorage
 
 ## Entity-Relationship Diagram
 
