@@ -1,17 +1,21 @@
 @import '../../partials/variables';
 
 .header {
-  background-color: $primary-color;
-  min-height: 9vh;
+  background-color: $header-color;
+  min-height: 84px;
 
   .nav {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    min-height: inherit;
+    align-items: center;
 
-    .logo {
+    &__logo {
       font-size: 1.5rem;
       text-decoration: none;
+      margin-left: 1rem;
+      color: $header-text-color;
     }
 
     &__inner {
@@ -19,9 +23,35 @@
       display: flex;
     }
 
+    &__link {
+      color: $header-text-color;
+      font-weight: 400;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
     &__item {
       list-style: none;
       text-decoration: none;
+      margin-left: 1rem;
+
+      .button {
+        padding: 0.5rem;
+        border-radius: 3px;
+        margin-right: 1rem;
+        text-decoration: none;
+        color: $header-color;
+        font-weight: 600;
+        line-height: 1rem;
+      }
+
+      // white background blue text
+      .button--white {
+        background-color: $header-text-color;
+      }
     }
   }
 }

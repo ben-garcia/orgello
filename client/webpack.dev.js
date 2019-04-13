@@ -23,4 +23,12 @@ module.exports = merge(common, {
       },
     ],
   },
+  devServer: {
+    // redirect all requests to index.html
+    // react router will handle it from there.
+    // prevent an error when refreshing a resource after the root
+    // ex. /login
+    historyApiFallback: true,
+    publicPath: '/',
+  },
 });
