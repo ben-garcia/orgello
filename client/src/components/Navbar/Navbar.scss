@@ -1,0 +1,27 @@
+@import '../../partials/variables';
+
+.header {
+  background-color: $primary-color;
+  min-height: 9vh;
+
+  .nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    .logo {
+      font-size: 1.5rem;
+      text-decoration: none;
+    }
+
+    &__inner {
+      list-style: none;
+      display: flex;
+    }
+
+    &__item {
+      list-style: none;
+      text-decoration: none;
+    }
+  }
+}
