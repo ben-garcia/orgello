@@ -60,6 +60,7 @@ class Signup extends Component {
       confirmPassword: '',
       confirmPasswordError: '',
       disabled: true,
+      serverError: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -183,6 +184,7 @@ class Signup extends Component {
     // prevent a refresh
     e.preventDefault();
 
+    const { history } = this.props;
     const { email, username, password } = this.state;
 
     const user = {
@@ -191,20 +193,49 @@ class Signup extends Component {
       password,
     };
 
+    // flag to keep track of error across .then
+    let isOk = true;
+
     // send the request to the server
     fetch('http://localhost:9000/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),
     })
-      .then((res) => res.json())
-      .then((user) => {
-        console.log(user);
-        console.log(this.props);
-        // redirect to the login page after a successfull signup
-        this.props.history.push('/login');
+      .then((res) => {
+        // if there was a error(validation) then
+        // set the flag to false
+        if (!res.ok) {
+          isOk = false;
+        }
+        // resolve the promise by calling json()
+        // which will parse the json
+        return res.json();
       })
-      .catch((e) => console.log('error: ', e.message));
+      .then((data) => {
+        if (isOk) {
+          // isOk === true means that there was no validation errors
+
+          // store the token, returned from the server, in local storage
+          // to authorized the user in subsequent requests.
+          localStorage.setItem('token', data.token);
+          // redirect to the login page after a successfull signup
+          history.push('/login');
+        } else {
+          // call the exception
+          throw new Error(data.error);
+        }
+      })
+      .catch((err) => {
+        // let the user know why they were unable to signup
+        // possible reasons are either
+        // 1. the email is already taken
+        // OR
+        // 2. the username is already taken
+        this.setState({
+          serverError: err.message,
+        });
+      });
   }
 
   // when the input losses focus.
@@ -221,10 +252,12 @@ class Signup extends Component {
       passwordError,
       confirmPasswordError,
       disabled,
+      serverError,
     } = this.state;
 
     return (
       <section className="signup">
+        {serverError ? <span className="form__error">{serverError}</span> : ''}
         <h1 className="title">Create an Account</h1>
         <form onSubmit={this.handleSubmit} className="form">
           <label className="form__item" htmlFor="email">

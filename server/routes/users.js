@@ -115,7 +115,16 @@ router.post('/', (req, res, next) => {
           });
         })
         // if the user failed to be created.
-        .catch((e) => next({ message: e.message }));
+        // .catch((e) => next({ message: e.message }));
+        .catch((e) => {
+          res.status(409); // Conflict unique contraint
+          // add the reason for the error along with a custom header
+          if (e.parent) {
+            res.set('X-Status-Reason', e.parent.detail);
+            next({ message: e.parent.detail });
+          }
+          next({ message: e });
+        });
     });
   }
 });

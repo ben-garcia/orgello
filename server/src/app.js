@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 // error handler
 // eslint-disable-next-line
 app.use((err, req, res, next) => {
-  res.json({ message: err.message });
+  res.json({ error: err.message });
 });
 
 db.sequelize
