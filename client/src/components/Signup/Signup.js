@@ -111,6 +111,10 @@ class Signup extends Component {
           disabled: false,
         });
       }
+    } else {
+      this.setState({
+        disabled: true,
+      });
     }
   }
 
@@ -133,9 +137,10 @@ class Signup extends Component {
           this.setState({
             confirmPasswordError: '',
           });
+          this.isFormReadyToSubmit();
         } else {
           this.setState({
-            confirmPasswordError: '"Confirm Password must match "Password"',
+            confirmPasswordError: '"Confirm Password" must match "Password"',
           });
         }
         return;
@@ -150,35 +155,32 @@ class Signup extends Component {
       [inputName]: inputValue,
     };
 
-    Joi.validate(user, schema)
-      .then(() => {
-        this.setState({
-          [propertyWithError]: '',
-        });
-        this.isFormReadyToSubmit();
-      })
-      .catch((err) => {
-        const errorMessage = err.message.split('[')[1].replace(']', '');
-        this.setState({
-          [propertyWithError]: errorMessage,
-        });
+    const result = Joi.validate(user, schema);
+
+    if (result.error === null) {
+      this.setState({
+        [propertyWithError]: '',
       });
+    } else {
+      const errorMessage = result.error.message.split('[')[1].replace(']', '');
+      this.setState({
+        [propertyWithError]: errorMessage,
+      });
+    }
   }
 
   handleChange(e) {
-    const { disabled } = this.state;
-
-    if (!disabled) {
-      this.setState({
-        disabled: true,
-      });
-    }
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+    this.setState(
+      {
+        [e.target.name]: e.target.value,
+      },
+      () => this.isFormReadyToSubmit()
+    );
   }
 
+  // handle form submission
   handleSubmit(e) {
+    // prevent a refresh
     e.preventDefault();
 
     const { email, username, password } = this.state;
@@ -189,9 +191,24 @@ class Signup extends Component {
       password,
     };
 
-    console.log('user submitted: ', user);
+    // send the request to the server
+    fetch('http://localhost:9000/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user),
+    })
+      .then((res) => res.json())
+      .then((user) => {
+        console.log(user);
+        console.log(this.props);
+        // redirect to the login page after a successfull signup
+        this.props.history.push('/login');
+      })
+      .catch((e) => console.log('error: ', e.message));
   }
 
+  // when the input losses focus.
+  // validate the schema
   handleBlur(e) {
     this.validateSchema(e.target.name, e.target.value);
     this.isFormReadyToSubmit();
@@ -203,12 +220,12 @@ class Signup extends Component {
       usernameError,
       passwordError,
       confirmPasswordError,
+      disabled,
     } = this.state;
-    const { disabled } = this.state;
 
     return (
       <section className="signup">
-        <h1 className="signup__title">Create an Account</h1>
+        <h1 className="title">Create an Account</h1>
         <form onSubmit={this.handleSubmit} className="form">
           <label className="form__item" htmlFor="email">
             Email

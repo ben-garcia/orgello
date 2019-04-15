@@ -1,0 +1,53 @@
+@import '../../partials/variables';
+
+.hero {
+  width: 100%;
+  height: 85vh;
+  background-color: $header-color;
+  color: $header-text-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__title {
+    font-size: 5rem;
+  }
+
+  &__text {
+    font-size: 2rem;
+    font-weight: lighter;
+    width: 40%;
+    font-family: $body-font;
+  }
+
+  &__link {
+    font-size: 2.1rem;
+    text-decoration: none;
+    color: rgba(209, 209, 209, 0.9);
+    font-weight: 700;
+    margin: 0 0.5rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__cta {
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: #61bd4f;
+    color: $header-text-color;
+    font-weight: 700;
+    text-decoration: none;
+    border: 1px solid #61bd4f;
+    font-size: 2rem;
+    border-radius: 7px;
+    transition: background-color 0.4s;
+
+    &:hover {
+      background-color: #50a73f;
+      border-color: #4b9e3b;
+    }
+  }
+}
