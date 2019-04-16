@@ -142,10 +142,9 @@
           - ~~protected route. user needs authorization~~
 
     - _/auth_
-      - GET
-        - /login
       - POST
         - /signup
+        - /login
 
       - logout with be handled on the client since it will remove the jwt from localStorage
 

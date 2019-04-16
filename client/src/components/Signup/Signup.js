@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import Joi from 'joi-browser';
 
+import usersUrl from '../../api';
+
 import './Signup.scss';
 
 const objectSchema = Joi.object().keys({
   email: Joi.string()
     .trim()
+    .regex(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)
     .email()
     .required(),
   username: Joi.string()
@@ -26,6 +29,7 @@ const objectSchema = Joi.object().keys({
 const emailSchema = Joi.object().keys({
   email: Joi.string()
     .trim()
+    .regex(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)
     .email()
     .required(),
 });
@@ -197,7 +201,7 @@ class Signup extends Component {
     let isOk = true;
 
     // send the request to the server
-    fetch('http://localhost:9000/users', {
+    fetch(usersUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),
@@ -222,7 +226,7 @@ class Signup extends Component {
           // redirect to the login page after a successfull signup
           history.push('/login');
         } else {
-          // call the exception
+          // create an error which will be caught by catch
           throw new Error(data.error);
         }
       })
@@ -257,7 +261,7 @@ class Signup extends Component {
 
     return (
       <section className="signup">
-        {serverError ? <span className="form__error">{serverError}</span> : ''}
+        {serverError ? <span className="error">{serverError}</span> : ''}
         <h1 className="title">Create an Account</h1>
         <form onSubmit={this.handleSubmit} className="form">
           <label className="form__item" htmlFor="email">
@@ -273,11 +277,7 @@ class Signup extends Component {
               id="email"
               placeholder="e.g. johndoe@hotmail.com"
             />
-            {emailError ? (
-              <span className="form__error">{emailError}</span>
-            ) : (
-              ''
-            )}
+            {emailError ? <span className="error">{emailError}</span> : ''}
           </label>
           <label className="form__item" htmlFor="username">
             Username
@@ -293,7 +293,7 @@ class Signup extends Component {
               placeholder="e.g. johndoe"
             />
             {usernameError ? (
-              <span className="form__error">{usernameError}</span>
+              <span className="error">{usernameError}</span>
             ) : (
               ''
             )}
@@ -312,7 +312,7 @@ class Signup extends Component {
               placeholder="e.g. ************"
             />
             {passwordError ? (
-              <span className="form__error">{passwordError}</span>
+              <span className="error">{passwordError}</span>
             ) : (
               ''
             )}
@@ -333,17 +333,13 @@ class Signup extends Component {
               placeholder="e.g. ************"
             />
             {confirmPasswordError ? (
-              <span className="form__error">{confirmPasswordError}</span>
+              <span className="error">{confirmPasswordError}</span>
             ) : (
               ''
             )}
           </label>
           <input
-            className={
-              disabled
-                ? 'signup-button'
-                : 'signup-button signup-button--enabled'
-            }
+            className={disabled ? 'button' : 'button button--enabled'}
             type="submit"
             value="Create New Account"
             disabled={disabled}
