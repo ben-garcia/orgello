@@ -161,7 +161,7 @@ router.post('/login', (req, res, next) => {
         } else {
           // user not found
           res.status(404);
-          next(new Error('User Not Found'));
+          next(new Error('Invalid Credentials'));
         }
       })
       // user not found
