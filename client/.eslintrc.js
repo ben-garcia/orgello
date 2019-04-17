@@ -3,7 +3,6 @@ module.exports = {
   env: {
     browser: true,
   },
-  plugins: ['prettier'],
   rules: {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
   },

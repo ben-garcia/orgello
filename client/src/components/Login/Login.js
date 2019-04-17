@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import usersUrl from '../../api';
+import authUrl from '../../api';
 
 import '../Signup/Signup.scss';
 import './Login.scss';
@@ -20,7 +20,6 @@ class Login extends Component {
   }
 
   handleChange(e) {
-    console.log(e.target.name);
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -29,8 +28,10 @@ class Login extends Component {
   // check that email is a valid email address and
   // username is alpha-numeric
   // fields cannot be left blank
-  isValid() {
+  inputValidation() {
     const { emailUsername, password } = this.state;
+    let userSubmittedEmail = false;
+    let userSubmittedUsername = false;
 
     if (!emailUsername || !password) {
       // neither emailUsername nor password fields can be blank
@@ -45,11 +46,14 @@ class Login extends Component {
       emailUsername.indexOf('@') !== -1 &&
       emailUsername.indexOf('.') !== -1
     ) {
-      // user is trying to login with a email
+      // does the email match a valid email address format
       if (!/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(emailUsername)) {
         this.setState({
           error: '"email" must be a valid email address',
         });
+      } else {
+        // user is trying to login with an email addresss
+        userSubmittedEmail = true;
       }
     } else {
       // user is trying to use username
@@ -65,22 +69,58 @@ class Login extends Component {
         });
         return false;
       }
+      // user is trying to login with a username
+      userSubmittedUsername = true;
     }
-    // if there were no error then fields are valid.
-    return true;
+    // if there were no errors then fields are valid.
+    return {
+      isValid: true,
+      email: userSubmittedEmail ? emailUsername : '',
+      username: userSubmittedUsername ? emailUsername : '',
+    };
   }
 
   // handle form submission
   handleSubmit(e) {
-    const { history } = this.props;
-
     // prevent a refresh
     e.preventDefault();
 
-    if (this.isValid()) {
+    const { history } = this.props;
+    const { password } = this.state;
+
+    const result = this.inputValidation();
+
+    const user = { password };
+
+    // user is trying to use email address
+    if (result.email) {
+      user.email = result.email;
+    }
+
+    // user is trying to use a username
+    if (result.username) {
+      user.username = result.username;
+    }
+
+    if (result.isValid) {
       // send a request to authenticate the user
-      // redirect to the users dashboard
-      history.push('/dashboard');
+      fetch(`${authUrl}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      })
+        .then((res) => {
+          console.log('res: ', res);
+          return res.json();
+        })
+        .then((data) => {
+          console.log('data: ', data);
+          // redirect to the users dashboard
+          history.push(`/${data.username}/dashboard`);
+        })
+        .catch((err) => {
+          console.log('error: ', err);
+        });
     }
   }
 
