@@ -1,11 +1,24 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
+const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
 const User = require('../db/models').user;
-const Op = require('../db/models').Sequelize.Op;
+const { Op } = require('../db/models').Sequelize;
+
+// Add the beforeCreate hook to hash the password.
+User.beforeCreate((user) => {
+  console.log('inside beforeCreate hook');
+  const newUser = user;
+  return bcrypt
+    .hash(newUser.password, 10)
+    .then((hashedPassword) => {
+      newUser.password = hashedPassword;
+    })
+    .catch((e) => console.log('bcrypt error: ', e));
+});
 
 // every new user MUST meet these requirements.
 const schema = Joi.object().keys({
@@ -44,50 +57,46 @@ const loginSchema = Joi.object().keys({
 // exists in the database
 router.post('/signup', (req, res, next) => {
   const result = Joi.validate(req.body, schema);
-  const { password } = req.body;
+  const { email, username, password } = req.body;
 
   // if req.body is not valid.
   if (result.error !== null) {
     res.status(422);
     next({ message: result.error.message });
   } else {
-    // generate a hash for the password
-    bcrypt
-      .hash(password, 10)
-      .then((hashedPassword) => {
-        const newUser = {
-          ...req.body,
-          password: hashedPassword,
-        };
-        User.findOrCreate({
-          where: {
-            email: newUser.email,
-            username: newUser.username,
-            password: hashedPassword,
-          },
-          default: newUser,
-        })
-          .then(([user, created]) => {
-            if (created) {
-              // a new user was not found in the db
-              // so it was create and added.
-              console.log(user.get({ plain: true }));
-              console.log(created);
-              res.json(user);
-            }
-          })
-          .catch((e) => {
-            res.status(409); // Conflict unique contraint
-            // add the reason for the error along with a custom header
-            if (e.parent) {
-              res.set('X-Status-Reason', e.parent.detail);
-              next({ message: e.parent.detail });
-            }
-            next({ message: e });
+    User.findOrCreate({
+      where: {
+        [Op.or]: [{ email }, { username }],
+      },
+      // if the user if not found in the db
+      // then use the user object passed by req.body
+      // to create the user
+      defaults: { email, username, password },
+    })
+      .then(([user, created]) => {
+        if (created) {
+          // user was not found in the db
+          // so a new user was created and added.
+
+          res.status(201);
+          res.json({ message: 'User Created' });
+        } else {
+          // the user was found in the database
+          // notify the client and respond with the user(email, username) found
+          res.json({
+            message: 'User found',
+            user: { email: user.email, username: user.username },
           });
+        }
       })
       .catch((e) => {
-        console.log('Failed to hash the password');
+        res.status(409); // Conflict unique contraint
+        // add the reason for the error along with a custom header
+        if (e.parent) {
+          res.set('X-Status-Reason', e.parent.detail);
+          next({ message: e.parent.detail });
+        }
+        next({ message: e });
       });
   }
 });
@@ -97,7 +106,7 @@ router.post('/signup', (req, res, next) => {
 router.post('/login', (req, res, next) => {
   // if the user is trying to log in with email, give the username a default value
   // if the user is trying to log in with a username, give the email a defaut value
-  const { email = 'no', username = 'no', password } = req.body;
+  const { email = 'no', username = 'no' } = req.body;
   const result = Joi.validate(req.body, loginSchema);
 
   // if req.body is not valid.
@@ -112,10 +121,39 @@ router.post('/login', (req, res, next) => {
         [Op.or]: [{ email }, { username }],
       },
     })
-      // user was found and sent as the response
-      .then((user) => res.status(200).json(user))
+      .then((user) => {
+        // user was found
+        if (user) {
+          // create a new user and do not include the password field
+          const newUser = {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          };
+
+          // create a token for the user
+          jwt.sign(newUser, process.env.JWT_SECRET, (e, token) => {
+            if (e) {
+              console.log('signing jwt failed');
+              next(new Error('failed to sign token'));
+            }
+            res.status(200);
+            res.json({ ...newUser, token });
+          });
+        } else {
+          // user not found
+          res.status(404);
+          next(new Error('User Not Found'));
+        }
+      })
       // user not found
-      .catch((e) => res.status(404).json(e));
+      .catch((e) => {
+        console.log('error-------', e);
+        next(new Error(e.message));
+      });
   }
 });
+
 module.exports = router;

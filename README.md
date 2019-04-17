@@ -95,17 +95,6 @@
 
     - ~~_/users_~~
 
-      - ~~GET~~
-
-        - ~~/:userId~~
-          - ~~get a single user~~
-          - ~~protected route. user needs authorization~~
-
-      - ~~POST~~
-
-        - ~~create a user and add it to the db~~
-        - ~~hash password before storing in db~~
-
       - ~~DELETE~~
         - ~~/:userId~~
           - ~~remove the user with the id from the db~~
@@ -141,10 +130,10 @@
           - ~~modify the list with :id~~
           - ~~protected route. user needs authorization~~
 
-    - _/auth_
-      - POST
-        - /signup
-        - /login
+    - ~~_/auth_~~
+      - ~~POST~~
+        - ~~/signup~~
+        - ~~/login~~
 
       - logout with be handled on the client since it will remove the jwt from localStorage
 
