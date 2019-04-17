@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Joi from 'joi-browser';
 
-import usersUrl from '../../api';
+import authUrl from '../../api';
 
 import './Signup.scss';
 
@@ -201,7 +201,7 @@ class Signup extends Component {
     let isOk = true;
 
     // send the request to the server
-    fetch(usersUrl, {
+    fetch(`${authUrl}/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),
@@ -227,7 +227,7 @@ class Signup extends Component {
           history.push('/login');
         } else {
           // create an error which will be caught by catch
-          throw new Error(data.error);
+          throw new Error(data.error.message);
         }
       })
       .catch((err) => {
@@ -238,6 +238,7 @@ class Signup extends Component {
         // 2. the username is already taken
         this.setState({
           serverError: err.message,
+          disabled: true,
         });
       });
   }

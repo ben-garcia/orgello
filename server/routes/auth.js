@@ -83,9 +83,25 @@ router.post('/signup', (req, res, next) => {
         } else {
           // the user was found in the database
           // notify the client and respond with the user(email, username) found
+
+          // determine is email, username or both are taken
+          let errorMessage = '';
+
+          // if email is taken
+          if (email === user.email) {
+            errorMessage += `There already exists a user with that email(${email})`;
+          }
+
+          // if username is taken
+          if (username === user.username) {
+            errorMessage += `\nThere alrleady exists a user with username(${username})`;
+          }
+
+          res.status(409); // Conflict email|username taken
           res.json({
-            message: 'User found',
-            user: { email: user.email, username: user.username },
+            error: {
+              message: errorMessage,
+            },
           });
         }
       })
