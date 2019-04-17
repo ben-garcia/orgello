@@ -103,6 +103,8 @@ class Login extends Component {
     }
 
     if (result.isValid) {
+      let isOk = true;
+
       // send a request to authenticate the user
       fetch(`${authUrl}/login`, {
         method: 'POST',
@@ -110,22 +112,39 @@ class Login extends Component {
         body: JSON.stringify(user),
       })
         .then((res) => {
-          console.log('res: ', res);
+          if (!res.ok) {
+            // if the user was not found
+            isOk = false;
+          }
+          // parse the response into JSON
           return res.json();
         })
         .then((data) => {
-          console.log('data: ', data);
-          // redirect to the users dashboard
-          history.push(`/${data.username}/dashboard`);
+          if (isOk) {
+            // isOk === means that the server returned a valid user
+
+            // store the token, returned from the server, in local storage
+            // to authorized the user in subsequent requests.
+            localStorage.setItem('token', data.token);
+
+            // redirect to the users dashboard
+            history.push(`/${data.username}/dashboard`);
+          } else {
+            throw new Error(data.error);
+          }
         })
-        .catch((err) => {
-          console.log('error: ', err);
+        .catch((error) => {
+          this.setState({
+            error: error.message,
+            emailUsername: '',
+            password: '',
+          });
         });
     }
   }
 
   render() {
-    const { error } = this.state;
+    const { emailUsername, password, error } = this.state;
 
     return (
       <section className="login">
@@ -136,6 +155,7 @@ class Login extends Component {
             Email or Username
             <input
               onChange={this.handleChange}
+              value={emailUsername}
               className="form__input"
               name="emailUsername"
               type="text"
@@ -147,6 +167,7 @@ class Login extends Component {
             Password
             <input
               onChange={this.handleChange}
+              value={password}
               className="form__input"
               name="password"
               type="password"

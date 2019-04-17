@@ -207,7 +207,7 @@ class Signup extends Component {
       body: JSON.stringify(user),
     })
       .then((res) => {
-        // if there was a error(validation) then
+        // if there was an error(validation) then
         // set the flag to false
         if (!res.ok) {
           isOk = false;
@@ -220,9 +220,6 @@ class Signup extends Component {
         if (isOk) {
           // isOk === true means that there was no validation errors
 
-          // store the token, returned from the server, in local storage
-          // to authorized the user in subsequent requests.
-          localStorage.setItem('token', data.token);
           // redirect to the login page after a successfull signup
           history.push('/login');
         } else {
