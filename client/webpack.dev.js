@@ -9,7 +9,9 @@ module.exports = merge(common, {
     filename: 'bundle.js',
     // where the output is placed
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/', // same as devServer.publicPath
   },
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
