@@ -45,6 +45,24 @@
           background: hsla(0, 0%, 100%, 0.2);
         }
       }
+
+      // fontawesome classes
+      .fa-home::before {
+        font-size: 1.2rem;
+      }
+
+      .fa-trello::before {
+        font-size: 1.2rem;
+      }
+
+      .fa-plus::before {
+        font-size: 1.4rem;
+        line-height: 1.2;
+      }
+
+      .fa-user::before {
+        font-size: 1.6rem;
+      }
     }
 
     &__link {
@@ -100,22 +118,4 @@
       }
     }
   }
-}
-
-// fontawesome classes
-.fa-home::before {
-  font-size: 1.2rem;
-}
-
-.fa-trello::before {
-  font-size: 1.2rem;
-}
-
-.fa-plus::before {
-  font-size: 1.4rem;
-  line-height: 1.2;
-}
-
-.fa-user::before {
-  font-size: 1.6rem;
 }
