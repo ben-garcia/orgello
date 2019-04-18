@@ -1,0 +1,3 @@
+const USER_LOGGED_IN_STATUS = 'USER_IS_LOGGED_IN';
+
+export default USER_LOGGED_IN_STATUS;

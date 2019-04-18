@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
 import LandingPage from './components/LandingPage/LandingPage';
 import Navbar from './components/Navbar/Navbar';
@@ -9,22 +10,27 @@ import Dashboard from './components/Dashboard/Dashboard';
 import Footer from './components/Footer/Footer';
 import NotFound from './components/NotFound/NotFound';
 
+import store from './store';
+
 import './App.scss';
 
+// Provider component makes the store available throught the app
 const App = () => (
-  <Router>
-    <Navbar />
-    <main className="main">
-      <Switch>
-        <Route exact path="/" component={LandingPage} />
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/:username/dashboard" component={Dashboard} />
-        <Route component={NotFound} />
-      </Switch>
-    </main>
-    <Footer />
-  </Router>
+  <Provider store={store}>
+    <Router>
+      <Navbar />
+      <main className="main">
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/:username/dashboard" component={Dashboard} />
+          <Route component={NotFound} />
+        </Switch>
+      </main>
+      <Footer />
+    </Router>
+  </Provider>
 );
 
 export default App;

@@ -16,15 +16,15 @@
 
     - ~~install Webpack and React~~
     - ~~install ESLint with Airbnb~~
-    - install React Router
-    - install Redux
+    - ~~install React router~~
+    - ~~install Redux~~
 
   - **Components**
 
     - create Navbar component
-    - create Footer component
-    - create Login component
-    - create Signup component
+    - ~~create Footer component~~
+    - ~~create Login component~~
+    - ~~create Signup component~~
     - create Dashboard component
     - create Board component
     - create List component

@@ -2,14 +2,21 @@
 
 .header {
   background-color: $header-color;
-  min-height: 4rem;
+
+  .nav--logged-in {
+    min-height: 3rem;
+  }
+
+  .nav--logged-out {
+    min-height: 4rem;
+  }
 
   .nav {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    min-height: inherit;
     align-items: center;
+    color: $header-text-color;
 
     &__logo {
       font-size: 1.9rem;
@@ -21,6 +28,23 @@
     &__inner {
       list-style: none;
       display: flex;
+
+      .user-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        border: 2px solid $header-text-color;
+        border-radius: 50px;
+        background-color: $header-color;
+        margin-left: 0.2rem !important;
+
+        &:hover {
+          cursor: pointer;
+          background: hsla(0, 0%, 100%, 0.2);
+        }
+      }
     }
 
     &__link {
@@ -31,6 +55,26 @@
 
       &:hover {
         text-decoration: underline;
+      }
+    }
+
+    &__item--border {
+      padding: 0.4rem 0.6rem;
+      background: hsla(0, 0%, 100%, 0.3);
+      margin-left: 0.2rem !important;
+      border-radius: 3px;
+
+      &:hover {
+        cursor: pointer;
+        background-color: hsla(0, 0%, 100%, 0.2);
+      }
+
+      .icon-text {
+        margin-left: 10px;
+      }
+
+      .item::before {
+        font-size: 2rem;
       }
     }
 
@@ -56,4 +100,22 @@
       }
     }
   }
+}
+
+// fontawesome classes
+.fa-home::before {
+  font-size: 1.2rem;
+}
+
+.fa-trello::before {
+  font-size: 1.2rem;
+}
+
+.fa-plus::before {
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+
+.fa-user::before {
+  font-size: 1.6rem;
 }
