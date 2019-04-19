@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
+import changeUserLoggedInStatus from '../../actions/users';
 import authUrl from '../../api';
 
 import '../Signup/Signup.scss';
@@ -85,7 +87,7 @@ class Login extends Component {
     // prevent a refresh
     e.preventDefault();
 
-    const { history } = this.props;
+    const { history, changeUserLoggedInStatus } = this.props;
     const { password } = this.state;
 
     const result = this.inputValidation();
@@ -123,10 +125,11 @@ class Login extends Component {
           if (isOk) {
             // isOk === means that the server returned a valid user
 
-            // store the token, returned from the server, in local storage
+            // store the user(with token), returned from the server, in local storage
             // to authorized the user in subsequent requests.
-            localStorage.setItem('token', data.token);
-
+            localStorage.setItem('user', JSON.stringify(data));
+            // dispatch 'changeUserLoggedInStatus' to change user.loggedIn to true
+            changeUserLoggedInStatus(true);
             // redirect to the users dashboard
             history.push(`/${data.username}/dashboard`);
           } else {
@@ -140,6 +143,21 @@ class Login extends Component {
             password: '',
           });
         });
+    }
+  }
+
+  componentDidMount() {
+    const { history, changeUserLoggedInStatus } = this.props;
+
+    let user = localStorage.getItem('user');
+    if (user) {
+      // parse the user object
+      user = JSON.parse(user);
+      // if the user is stored in localStorage then
+      // set the dispatch isUserLoggedInStatus(true)
+      changeUserLoggedInStatus(true);
+      // redirect the user to their dashboard
+      history.push(`${user.username}/dashboard`);
     }
   }
 
@@ -186,4 +204,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  changeUserLoggedInStatus: (status) =>
+    dispatch(changeUserLoggedInStatus(status)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);

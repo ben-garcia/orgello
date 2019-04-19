@@ -4,14 +4,18 @@ import USER_LOGGED_IN_STATUS from '../constants';
 // unless they have a token stored in localStorage
 const initialState = {
   user: {
-    isLoggedIn: true,
+    isLoggedIn: false,
   },
 };
 
 const usersReducer = (state = initialState, action) => {
   switch (action.type) {
     case USER_LOGGED_IN_STATUS:
-      return action.payload;
+      return {
+        user: {
+          isLoggedIn: action.payload,
+        },
+      };
     default:
       return state;
   }

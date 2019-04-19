@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Joi from 'joi-browser';
 
+import changeUserLoggedInStatus from '../../actions/users';
 import authUrl from '../../api';
 
 import './Signup.scss';
@@ -247,6 +249,21 @@ class Signup extends Component {
     this.isFormReadyToSubmit();
   }
 
+  componentDidMount() {
+    const { history, changeUserLoggedInStatus } = this.props;
+
+    let user = localStorage.getItem('user');
+    if (user) {
+      // parse the user object
+      user = JSON.parse(user);
+      // if the user is stored in localStorage then
+      // set the dispatch isUserLoggedInStatus(true)
+      changeUserLoggedInStatus(true);
+      // redirect the user to their dashboard
+      history.push(`${user.username}/dashboard`);
+    }
+  }
+
   render() {
     const {
       emailError,
@@ -348,4 +365,12 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+const mapDispatchToProps = (dispatch) => ({
+  changeUserLoggedInStatus: (status) =>
+    dispatch(changeUserLoggedInStatus(status)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Signup);
