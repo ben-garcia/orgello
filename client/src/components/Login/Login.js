@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import changeUserLoggedInStatus from '../../actions/users';
 import authUrl from '../../api';
@@ -19,6 +20,21 @@ class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    const { history, changeUserLoggedStatus } = this.props;
+
+    let user = localStorage.getItem('user');
+    if (user) {
+      // parse the user object
+      user = JSON.parse(user);
+      // if the user is stored in localStorage then
+      // set the dispatch isUserLoggedInStatus(true)
+      changeUserLoggedStatus(true);
+      // redirect the user to their dashboard
+      history.push(`${user.username}/dashboard`);
+    }
   }
 
   handleChange(e) {
@@ -87,7 +103,7 @@ class Login extends Component {
     // prevent a refresh
     e.preventDefault();
 
-    const { history, changeUserLoggedInStatus } = this.props;
+    const { history, changeUserLoggedStatus } = this.props;
     const { password } = this.state;
 
     const result = this.inputValidation();
@@ -129,7 +145,7 @@ class Login extends Component {
             // to authorized the user in subsequent requests.
             localStorage.setItem('user', JSON.stringify(data));
             // dispatch 'changeUserLoggedInStatus' to change user.loggedIn to true
-            changeUserLoggedInStatus(true);
+            changeUserLoggedStatus(true);
             // redirect to the users dashboard
             history.push(`/${data.username}/dashboard`);
           } else {
@@ -143,21 +159,6 @@ class Login extends Component {
             password: '',
           });
         });
-    }
-  }
-
-  componentDidMount() {
-    const { history, changeUserLoggedInStatus } = this.props;
-
-    let user = localStorage.getItem('user');
-    if (user) {
-      // parse the user object
-      user = JSON.parse(user);
-      // if the user is stored in localStorage then
-      // set the dispatch isUserLoggedInStatus(true)
-      changeUserLoggedInStatus(true);
-      // redirect the user to their dashboard
-      history.push(`${user.username}/dashboard`);
     }
   }
 
@@ -204,8 +205,15 @@ class Login extends Component {
   }
 }
 
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  changeUserLoggedStatus: PropTypes.func.isRequired,
+};
+
 const mapDispatchToProps = (dispatch) => ({
-  changeUserLoggedInStatus: (status) =>
+  changeUserLoggedStatus: (status) =>
     dispatch(changeUserLoggedInStatus(status)),
 });
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Joi from 'joi-browser';
 
@@ -74,54 +75,19 @@ class Signup extends Component {
     this.handleBlur = this.handleBlur.bind(this);
   }
 
-  // returns true is the password and confirmPassword are equal.
-  doPasswordsMatch() {
-    const { password, confirmPassword } = this.state;
-    return password === confirmPassword;
-  }
+  componentDidMount() {
+    const { history, changeUserLoggedStatus } = this.props;
+    console.log({ history });
 
-  // has the user object been validated
-  isFormReadyToSubmit() {
-    const {
-      email,
-      emailError,
-      username,
-      usernameError,
-      password,
-      passwordError,
-      confirmPassword,
-      confirmPasswordError,
-    } = this.state;
-
-    if (
-      email &&
-      !emailError &&
-      username &&
-      !usernameError &&
-      password &&
-      !passwordError &&
-      confirmPassword &&
-      !confirmPasswordError &&
-      this.doPasswordsMatch()
-    ) {
-      const user = {
-        email,
-        username,
-        password,
-        confirmPassword,
-      };
-
-      const result = Joi.validate(user, objectSchema);
-
-      if (result.error === null) {
-        this.setState({
-          disabled: false,
-        });
-      }
-    } else {
-      this.setState({
-        disabled: true,
-      });
+    let user = localStorage.getItem('user');
+    if (user) {
+      // parse the user object
+      user = JSON.parse(user);
+      // if the user is stored in localStorage then
+      // set the dispatch isUserLoggedInStatus(true)
+      changeUserLoggedStatus(true);
+      // redirect the user to their dashboard
+      history.push(`${user.username}/dashboard`);
     }
   }
 
@@ -249,19 +215,55 @@ class Signup extends Component {
     this.isFormReadyToSubmit();
   }
 
-  componentDidMount() {
-    const { history, changeUserLoggedInStatus } = this.props;
+  // has the user object been validated
+  isFormReadyToSubmit() {
+    const {
+      email,
+      emailError,
+      username,
+      usernameError,
+      password,
+      passwordError,
+      confirmPassword,
+      confirmPasswordError,
+    } = this.state;
 
-    let user = localStorage.getItem('user');
-    if (user) {
-      // parse the user object
-      user = JSON.parse(user);
-      // if the user is stored in localStorage then
-      // set the dispatch isUserLoggedInStatus(true)
-      changeUserLoggedInStatus(true);
-      // redirect the user to their dashboard
-      history.push(`${user.username}/dashboard`);
+    if (
+      email &&
+      !emailError &&
+      username &&
+      !usernameError &&
+      password &&
+      !passwordError &&
+      confirmPassword &&
+      !confirmPasswordError &&
+      this.doPasswordsMatch()
+    ) {
+      const user = {
+        email,
+        username,
+        password,
+        confirmPassword,
+      };
+
+      const result = Joi.validate(user, objectSchema);
+
+      if (result.error === null) {
+        this.setState({
+          disabled: false,
+        });
+      }
+    } else {
+      this.setState({
+        disabled: true,
+      });
     }
+  }
+
+  // returns true is the password and confirmPassword are equal.
+  doPasswordsMatch() {
+    const { password, confirmPassword } = this.state;
+    return password === confirmPassword;
   }
 
   render() {
@@ -365,8 +367,15 @@ class Signup extends Component {
   }
 }
 
+Signup.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  changeUserLoggedStatus: PropTypes.func.isRequired,
+};
+
 const mapDispatchToProps = (dispatch) => ({
-  changeUserLoggedInStatus: (status) =>
+  changeUserLoggedStatus: (status) =>
     dispatch(changeUserLoggedInStatus(status)),
 });
 

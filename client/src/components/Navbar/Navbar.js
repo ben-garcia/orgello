@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import './Navbar.scss';
 
@@ -50,6 +51,10 @@ const Navbar = ({ isUserLoggedIn }) => (
     )}
   </header>
 );
+
+Navbar.propTypes = {
+  isUserLoggedIn: PropTypes.bool.isRequired,
+};
 
 // function that takes the state from the store and
 // returns an object with the property that will contain

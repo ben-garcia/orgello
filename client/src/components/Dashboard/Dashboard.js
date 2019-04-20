@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './Dashboard.scss';
 
@@ -37,6 +38,12 @@ const Dashboard = ({ history }) => {
       </section>
     </section>
   );
+};
+
+Dashboard.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default Dashboard;
