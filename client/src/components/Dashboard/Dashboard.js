@@ -1,14 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import changeUserLoggedInStatus from '../../actions/users';
 
 import './Dashboard.scss';
 
-const Dashboard = ({ history }) => {
+const Dashboard = ({ history, changeUserLoggedStatus }) => {
   const user = localStorage.getItem('user');
-  if (!user) {
+  if (user) {
     // if user isn't logged in then
     // they shouldn't have access to the dashboard
-    // redirect to landing page.
+    // set the dispatch isUserLoggedStatus(true)
+    changeUserLoggedStatus(true);
+  } else {
+    // if user isn't logged in then
+    // redirect them to the landing page
     history.push('/');
   }
   return (
@@ -44,6 +51,15 @@ Dashboard.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  changeUserLoggedStatus: PropTypes.func.isRequired,
 };
 
-export default Dashboard;
+const mapDispatchToProps = (dispatch) => ({
+  changeUserLoggedStatus: (status) =>
+    dispatch(changeUserLoggedInStatus(status)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Dashboard);

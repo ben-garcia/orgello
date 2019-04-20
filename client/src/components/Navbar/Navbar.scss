@@ -49,6 +49,7 @@
       // fontawesome classes
       .fa-home::before {
         font-size: 1.2rem;
+        color: $header-text-color;
       }
 
       .fa-trello::before {
@@ -100,6 +101,14 @@
       list-style: none;
       text-decoration: none;
       margin-left: 1rem;
+
+      .nav__button {
+        background: transparent;
+        cursor: pointer;
+        color: $header-text-color;
+        outline: none;
+        border: none;
+      }
 
       .button {
         padding: 0.5rem;

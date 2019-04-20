@@ -77,7 +77,6 @@ class Signup extends Component {
 
   componentDidMount() {
     const { history, changeUserLoggedStatus } = this.props;
-    console.log({ history });
 
     let user = localStorage.getItem('user');
     if (user) {
