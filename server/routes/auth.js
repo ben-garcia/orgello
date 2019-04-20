@@ -122,7 +122,7 @@ router.post('/signup', (req, res, next) => {
 router.post('/login', (req, res, next) => {
   // if the user is trying to log in with email, give the username a default value
   // if the user is trying to log in with a username, give the email a defaut value
-  const { email = 'no', username = 'no' } = req.body;
+  const { email = 'no', username = 'no', password } = req.body;
   const result = Joi.validate(req.body, loginSchema);
 
   // if req.body is not valid.
@@ -140,24 +140,38 @@ router.post('/login', (req, res, next) => {
       .then((user) => {
         // user was found
         if (user) {
-          // create a new user and do not include the password field
-          const newUser = {
-            id: user.id,
-            email: user.email,
-            username: user.username,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-          };
+          // compare the password passed in to the hashed password in the db
+          bcrypt
+            .compare(password, user.password)
+            .then((passwordsMatch) => {
+              if (passwordsMatch) {
+                // if there was no error
+                // create a new user and do not include the password field
+                const newUser = {
+                  id: user.id,
+                  email: user.email,
+                  username: user.username,
+                  createdAt: user.createdAt,
+                  updatedAt: user.updatedAt,
+                };
 
-          // create a token for the user
-          jwt.sign(newUser, process.env.JWT_SECRET, (e, token) => {
-            if (e) {
-              console.log('signing jwt failed');
-              next(new Error('failed to sign token'));
-            }
-            res.status(200);
-            res.json({ ...newUser, token });
-          });
+                // create a token for the user
+                jwt.sign(newUser, process.env.JWT_SECRET, (e, token) => {
+                  if (e) {
+                    console.log('signing jwt failed');
+                    next(new Error('failed to sign token'));
+                  }
+                  res.status(200);
+                  res.json({ ...newUser, token });
+                });
+              } else {
+                res.status(404);
+                next(new Error('Credentials Dont Match'));
+              }
+            })
+            .catch((e) =>
+              console.log('error when comparing passwords----- ', e.message),
+            );
         } else {
           // user not found
           res.status(404);
