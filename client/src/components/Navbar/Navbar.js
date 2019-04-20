@@ -4,13 +4,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import BoardsDrawer from './BoardsDrawer/BoardsDrawer';
+import CreateBoardForm from './CreateBoardForm/CreateBoardForm';
 import UserDrawer from './UserDrawer/UserDrawer';
 
 import './Navbar.scss';
 
 const Navbar = ({ isUserLoggedIn }) => {
   const [boardsDrawerIsOpen, toggleBoardsDrawer] = useState(false);
-  const [createBoardIsOpen, toggleCreateBoard] = useState(false);
+  const [createBoardFormIsOpen, toggleCreateBoardForm] = useState(false);
   const [userDrawerIsOpen, toggleUserDrawer] = useState(false);
 
   return (
@@ -59,7 +60,7 @@ const Navbar = ({ isUserLoggedIn }) => {
             <li className="nav__item nav__item--border">
               <button
                 className="nav__button"
-                onClick={() => toggleCreateBoard(!createBoardIsOpen)}
+                onClick={() => toggleCreateBoardForm(!createBoardFormIsOpen)}
                 type="button"
               >
                 <i className="fas fa-plus" />
@@ -78,6 +79,7 @@ const Navbar = ({ isUserLoggedIn }) => {
         </nav>
       )}
       {boardsDrawerIsOpen ? <BoardsDrawer /> : null}
+      {createBoardFormIsOpen ? <CreateBoardForm /> : null}
       {userDrawerIsOpen ? <UserDrawer /> : null}
     </header>
   );
