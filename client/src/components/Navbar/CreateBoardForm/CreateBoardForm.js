@@ -6,6 +6,8 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import BackgroundOptions from './BackgroundOptions/BackgroundOptions';
+
 import changeCreateBoardFormStatus from '../../../actions/boards';
 
 import './CreateBoardForm.scss';
@@ -57,6 +59,7 @@ const CreateBoardForm = ({ changeBoardFormStatus, isCreateBoardFormOpen }) => {
   const [currentBoardBackground, setBoardBackground] = useState({
     backgroundImage: `url(${images[0].url})`,
   });
+  const [isBackgroundOptionsOpen, toggleBackgroundOptions] = useState(false);
 
   // extract the key from the currentBoardBackground object
   // posibble values are'backgroundImage' or 'backgroundColor'
@@ -66,8 +69,6 @@ const CreateBoardForm = ({ changeBoardFormStatus, isCreateBoardFormOpen }) => {
   // 'url(url goes here) for an backgroundImage
   // 'rgba(value goes here) for backgroundColor
   const boardBackgroundValue = Object.values(currentBoardBackground)[0];
-
-  console.log(boardBackgroundValue);
 
   return (
     <div
@@ -154,11 +155,15 @@ const CreateBoardForm = ({ changeBoardFormStatus, isCreateBoardFormOpen }) => {
                   <button
                     className="background__button background__button--options"
                     type="button"
+                    onClick={() =>
+                      toggleBackgroundOptions(!isBackgroundOptionsOpen)
+                    }
                   >
                     <i className="fas fa-ellipsis-h" />
                   </button>
                 </li>
               </ul>
+              {isBackgroundOptionsOpen ? <BackgroundOptions /> : null}
             </div>
           </div>
           <button

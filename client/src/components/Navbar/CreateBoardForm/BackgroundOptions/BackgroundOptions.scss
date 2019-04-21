@@ -1,0 +1,32 @@
+@import '../../../../partials/variables';
+@import '../../../../partials/resets';
+
+.background-options {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  width: 350px;
+  color: #6b808c;
+  background: $header-text-color;
+  border-radius: 4px;
+  padding: 0.5rem;
+
+  &__header {
+    text-align: center;
+    border-bottom: 1px solid rgba(9, 45, 66, 0.13);
+    padding: 0.5rem 0.2rem;
+  }
+
+  &__button {
+    border: none;
+    position: relative;
+    right: -80px;
+    cursor: pointer;
+  }
+
+  .photos {
+    display: flex;
+    justify-content: space-between;
+  }
+}
