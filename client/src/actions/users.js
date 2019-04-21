@@ -1,4 +1,4 @@
-import USER_LOGGED_IN_STATUS from '../constants';
+import { USER_LOGGED_IN_STATUS } from '../constants';
 
 const changeUserLoggedInStatus = (isUserLoggedIn) => ({
   type: USER_LOGGED_IN_STATUS,

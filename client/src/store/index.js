@@ -1,9 +1,9 @@
 import { createStore } from 'redux';
 
-import usersReducer from '../reducers/users';
+import rootReducer from '../reducers';
 
 const store = createStore(
-  usersReducer,
+  rootReducer,
   // redux dev tools
   // eslint-disable-next-line
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

@@ -1,4 +1,12 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable no-console */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import changeCreateBoardFormStatus from '../../../actions/boards';
 
 import './CreateBoardForm.scss';
 
@@ -44,77 +52,147 @@ const colors = [
   },
 ];
 
-const CreateBoardForm = () => {
+const CreateBoardForm = ({ changeBoardFormStatus, isCreateBoardFormOpen }) => {
   const [isDisabled, toggleDisabledButton] = useState(true);
+  const [currentBoardBackground, setBoardBackground] = useState({
+    backgroundImage: `url(${images[0].url})`,
+  });
+
+  // extract the key from the currentBoardBackground object
+  // posibble values are'backgroundImage' or 'backgroundColor'
+  const boardBackgroundKey = Object.keys(currentBoardBackground)[0];
+  // extract the value from the currentBoardBackground object
+  // possible values are
+  // 'url(url goes here) for an backgroundImage
+  // 'rgba(value goes here) for backgroundColor
+  const boardBackgroundValue = Object.values(currentBoardBackground)[0];
+
+  console.log(boardBackgroundValue);
+
   return (
-    <div className="create-board-form">
-      <form className="board-form">
-        <div className="board-form__container">
-          <div
-            className="board-form__inner"
-            style={{ backgroundImage: `url(${images[0].url})` }}
+    <div
+      className="create-board-overlay"
+      onClick={(e) => {
+        if (e.currentTarget === e.target) {
+          changeBoardFormStatus(!isCreateBoardFormOpen);
+        }
+      }}
+    >
+      <div className="create-board-form">
+        <form className="board-form">
+          <div className="board-form__container">
+            <div className="board-form__inner" style={currentBoardBackground}>
+              <input
+                className="board-form__input"
+                text="text"
+                placeholder="Add board title"
+                onChange={(e) => {
+                  if (e.target.value.length > 0) {
+                    toggleDisabledButton(false);
+                  } else {
+                    toggleDisabledButton(true);
+                  }
+                }}
+              />
+              <button
+                className="close-button"
+                type="button"
+                onClick={() => changeBoardFormStatus(!isCreateBoardFormOpen)}
+              >
+                <i className="fas fa-times" />
+              </button>
+            </div>
+            <div className="background">
+              <ul className="background__list">
+                {images.map((image) => (
+                  <li key={image.id} className="background__item">
+                    <button
+                      className={
+                        boardBackgroundValue === `url(${image.url})`
+                          ? 'background__button background__button--active'
+                          : 'background__button'
+                      }
+                      type="button"
+                      style={{ backgroundImage: `url(${image.url})` }}
+                      onClick={() =>
+                        setBoardBackground({
+                          backgroundImage: `url(${image.url})`,
+                        })
+                      }
+                    >
+                      {boardBackgroundKey === 'backgroundImage' &&
+                      boardBackgroundValue === `url(${image.url})` ? (
+                        <i className="fas fa-check" />
+                      ) : null}
+                    </button>
+                  </li>
+                ))}
+                {colors.map((color) => (
+                  <li key={color.id} className="background__item">
+                    <button
+                      className={
+                        boardBackgroundValue === color.value
+                          ? 'background__button background__button--active'
+                          : 'background__button'
+                      }
+                      type="button"
+                      style={{ backgroundColor: `${color.value}` }}
+                      onClick={() =>
+                        setBoardBackground({
+                          backgroundColor: `${color.value}`,
+                        })
+                      }
+                    >
+                      {boardBackgroundKey === 'backgroundColor' &&
+                      boardBackgroundValue === `${color.value}` ? (
+                        <i className="fas fa-check" />
+                      ) : null}
+                    </button>
+                  </li>
+                ))}
+                <li className="background__item">
+                  <button
+                    className="background__button background__button--options"
+                    type="button"
+                  >
+                    <i className="fas fa-ellipsis-h" />
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <button
+            className={
+              isDisabled
+                ? 'board-form__submit-button board-form__submit-button--disabled'
+                : 'board-form__submit-button board-form__submit-button--enabled'
+            }
+            type="submit"
+            disabled={isDisabled}
           >
-            <input
-              className="board-form__input"
-              text="text"
-              placeholder="Add board title"
-              onChange={(e) => {
-                if (e.target.value.length > 0) {
-                  toggleDisabledButton(false);
-                } else {
-                  toggleDisabledButton(true);
-                }
-              }}
-            />
-            <button className="close-button" type="button">
-              <i className="fas fa-times" />
-            </button>
-          </div>
-          <div className="background">
-            <ul className="background__list">
-              {images.map((image) => (
-                <li key={image.id} className="background__item">
-                  <button
-                    className="background__button"
-                    type="button"
-                    style={{ backgroundImage: `url(${image.url})` }}
-                  />
-                </li>
-              ))}
-              {colors.map((color) => (
-                <li key={color.id} className="background__item">
-                  <button
-                    className="background__button"
-                    type="button"
-                    style={{ backgroundColor: `${color.value}` }}
-                  />
-                </li>
-              ))}
-              <li className="background__item">
-                <button
-                  className="background__button background__button--options"
-                  type="button"
-                >
-                  <i className="fas fa-ellipsis-h" />
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <button
-          className={
-            isDisabled
-              ? 'board-form__submit-button board-form__submit-button--disabled'
-              : 'board-form__submit-button board-form__submit-button--enabled'
-          }
-          type="submit"
-          disabled={isDisabled}
-        >
-          Create Board
-        </button>
-      </form>
+            Create Board
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
 
-export default CreateBoardForm;
+CreateBoardForm.propTypes = {
+  isCreateBoardFormOpen: PropTypes.bool.isRequired,
+  changeBoardFormStatus: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  isCreateBoardFormOpen: state.isCreateBoardFormOpen,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  changeBoardFormStatus: (status) =>
+    dispatch(changeCreateBoardFormStatus(status)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateBoardForm);

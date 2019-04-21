@@ -6,12 +6,16 @@ import PropTypes from 'prop-types';
 import BoardsDrawer from './BoardsDrawer/BoardsDrawer';
 import CreateBoardForm from './CreateBoardForm/CreateBoardForm';
 import UserDrawer from './UserDrawer/UserDrawer';
+import changeCreateBoardFormStatus from '../../actions/boards';
 
 import './Navbar.scss';
 
-const Navbar = ({ isUserLoggedIn }) => {
+const Navbar = ({
+  isUserLoggedIn,
+  isCreateBoardFormOpen,
+  changeBoardFormStatus,
+}) => {
   const [boardsDrawerIsOpen, toggleBoardsDrawer] = useState(false);
-  const [createBoardFormIsOpen, toggleCreateBoardForm] = useState(false);
   const [userDrawerIsOpen, toggleUserDrawer] = useState(false);
 
   return (
@@ -60,7 +64,7 @@ const Navbar = ({ isUserLoggedIn }) => {
             <li className="nav__item nav__item--border">
               <button
                 className="nav__button"
-                onClick={() => toggleCreateBoardForm(!createBoardFormIsOpen)}
+                onClick={() => changeBoardFormStatus(!isCreateBoardFormOpen)}
                 type="button"
               >
                 <i className="fas fa-plus" />
@@ -79,14 +83,21 @@ const Navbar = ({ isUserLoggedIn }) => {
         </nav>
       )}
       {boardsDrawerIsOpen ? <BoardsDrawer /> : null}
-      {createBoardFormIsOpen ? <CreateBoardForm /> : null}
+      {isCreateBoardFormOpen ? <CreateBoardForm /> : null}
       {userDrawerIsOpen ? <UserDrawer /> : null}
     </header>
   );
 };
 
 Navbar.propTypes = {
-  isUserLoggedIn: PropTypes.bool.isRequired,
+  isUserLoggedIn: PropTypes.bool,
+  isCreateBoardFormOpen: PropTypes.bool.isRequired,
+  changeBoardFormStatus: PropTypes.func.isRequired,
+};
+
+// getting a 'isUserLoggedIn' is initially 'undefined'
+Navbar.defaultProps = {
+  isUserLoggedIn: false,
 };
 
 // function that takes the state from the store and
@@ -94,6 +105,19 @@ Navbar.propTypes = {
 // the isLoggedIn property from the user object.
 const mapStateToProps = (state) => ({
   isUserLoggedIn: state.user.isLoggedIn,
+  isCreateBoardFormOpen: state.isCreateBoardFormOpen,
 });
 
-export default connect(mapStateToProps)(Navbar);
+// function that takes dispatch(method that redux uses to
+// send an action the the store)
+// returns an object whose property is the found in props
+// and value is the method used to change the state of isCreateBoardFormOpen.
+const mapDispatchToProps = (dispatch) => ({
+  changeBoardFormStatus: (status) =>
+    dispatch(changeCreateBoardFormStatus(status)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Navbar);
