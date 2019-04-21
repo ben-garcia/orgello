@@ -1,8 +1,7 @@
 .create-board-form {
   position: absolute;
-  left: 40vw;
-  top: 5rem;
-  width: 400px;
+  left: 37.1vw;
+  top: 3.7rem;
 
   .board-form {
     display: flex;
@@ -13,8 +12,37 @@
     }
 
     &__inner {
-      width: 300px;
+      width: 350px;
+      height: 120px;
       background-size: cover;
+      background-position: 50%;
+      border-radius: 4px;
+      position: relative;
+
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .close-button {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        position: absolute;
+        top: 1.1rem;
+        right: 1.2rem;
+
+        .fa-times::before {
+          color: #fff;
+          font-size: 0.9rem;
+        }
+      }
     }
 
     &__input {
@@ -24,16 +52,20 @@
       color: #fff;
       font-weight: 700;
       background: transparent;
-      padding: 0.5rem 0;
-      margin: 0 0.3rem;
+      padding: 0.5rem;
+      margin: 0 1rem;
       border-radius: 4px;
 
-      &:focus {
+      &:focus,
+      &:hover {
         background: hsla(0, 0%, 100%, 0.3);
       }
     }
 
     .background {
+      width: 120px;
+      margin-left: 0.5rem;
+
       &__list {
         list-style: none;
         display: flex;
@@ -42,30 +74,51 @@
       }
 
       &__item {
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
+        margin-bottom: 0.4rem;
+
+        .fa-ellipsis-h::before {
+          color: rgba(0, 0, 0, 0.4);
+        }
       }
 
       &__button {
         width: 100%;
         height: 100%;
         background-size: cover;
+        background-position: 50%;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &--options {
+          background-color: #fff;
+        }
       }
     }
 
     &__submit-button {
-      width: 30%;
-      // background-color: #5aac44;
-      color: #fff;
+      width: 27%;
       font-size: 1rem;
-      padding: 0.6rem 0;
+      padding: 0.7rem 0.1rem;
+      margin-top: 0.5rem;
       font-weight: 700;
       border: none;
       border-radius: 4px;
-      color: #a6b3ba;
+    }
+
+    &__submit-button--disabled {
       background-color: #ebeef0;
       cursor: not-allowed;
+      color: #a6b3ba;
+    }
+
+    &__submit-button--enabled {
+      background-color: #5aac44;
+      cursor: pointer;
+      color: #fff;
     }
   }
 }

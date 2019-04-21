@@ -61,9 +61,14 @@ const CreateBoardForm = () => {
               onChange={(e) => {
                 if (e.target.value.length > 0) {
                   toggleDisabledButton(false);
+                } else {
+                  toggleDisabledButton(true);
                 }
               }}
             />
+            <button className="close-button" type="button">
+              <i className="fas fa-times" />
+            </button>
           </div>
           <div className="background">
             <ul className="background__list">
@@ -86,13 +91,22 @@ const CreateBoardForm = () => {
                 </li>
               ))}
               <li className="background__item">
-                <button className="background__button" type="button" />
+                <button
+                  className="background__button background__button--options"
+                  type="button"
+                >
+                  <i className="fas fa-ellipsis-h" />
+                </button>
               </li>
             </ul>
           </div>
         </div>
         <button
-          className="board-form__submit-button"
+          className={
+            isDisabled
+              ? 'board-form__submit-button board-form__submit-button--disabled'
+              : 'board-form__submit-button board-form__submit-button--enabled'
+          }
           type="submit"
           disabled={isDisabled}
         >
