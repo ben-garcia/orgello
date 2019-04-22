@@ -64,6 +64,16 @@
     flex-wrap: wrap;
     justify-content: space-between;
 
+    .photos__item {
+      bottom: 0.3rem;
+    }
+
+    .colors__item {
+      .fa-check::before {
+        bottom: 1.2rem;
+      }
+    }
+
     .photos__item,
     .colors__item {
       display: flex;
@@ -77,6 +87,12 @@
       border-radius: 4px;
       background-size: cover;
       background-position: 50%;
+
+      .fa-check::before {
+        color: #fff;
+        font-size: 1.5rem;
+        position: relative;
+      }
 
       &::before {
         content: '';

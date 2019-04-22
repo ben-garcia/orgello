@@ -1,4 +1,10 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { changeCreateBoardBackground } from '../../../../actions/boards';
 
 import './BackgroundOptions.scss';
 
@@ -64,53 +70,97 @@ const colors = [
   },
 ];
 
-const BackgroundOptions = () => (
-  <div className="background-options">
-    <div className="background-options__header">
-      <span className="background-options__title">Board Background</span>
-      <button className="background-options__button" type="button">
-        <i className="fas fa-times" />
-      </button>
-    </div>
-    <section className="photos">
-      <div className="photos__header">
-        <span className="photos__title">Photos</span>
-        <button className="photos__button" type="button">
-          See more
-        </button>
-      </div>
-      <ul className="photos__list">
-        {images.map((image) => (
-          <li
-            key={image.id}
-            className="photos__item"
-            style={{ backgroundImage: `url(${image.url})` }}
-          >
-            <a className="photos__link" href="#">
-              Profile Page
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
-    <section className="colors">
-      <div className="colors__header">
-        <span className="colors__title">Colors</span>
-        <button className="colors__button" type="button">
-          See more
-        </button>
-      </div>
-      <ul className="colors__list">
-        {colors.map((color) => (
-          <li
-            key={color.id}
-            className="colors__item"
-            style={{ backgroundColor: `${color.value}` }}
-          />
-        ))}
-      </ul>
-    </section>
-  </div>
-);
+const BackgroundOptions = ({
+  currentCreateBoardBackground,
+  changeBoardBackground,
+}) => {
+  const boardBackgroundKey = Object.keys(currentCreateBoardBackground)[0];
+  const boardBackgroundValue = Object.values(currentCreateBoardBackground)[0];
 
-export default BackgroundOptions;
+  return (
+    <div className="background-options">
+      <div className="background-options__header">
+        <span className="background-options__title">Board Background</span>
+        <button className="background-options__button" type="button">
+          <i className="fas fa-times" />
+        </button>
+      </div>
+      <section className="photos">
+        <div className="photos__header">
+          <span className="photos__title">Photos</span>
+          <button className="photos__button" type="button">
+            See more
+          </button>
+        </div>
+        <ul className="photos__list">
+          {images.map((image) => (
+            <li
+              key={image.id}
+              className="photos__item"
+              style={{ backgroundImage: `url(${image.url})` }}
+              onClick={() =>
+                changeBoardBackground({
+                  backgroundImage: `url(${image.url})`,
+                })
+              }
+            >
+              {boardBackgroundKey === 'backgroundImage' &&
+              boardBackgroundValue === `url(${image.url})` ? (
+                <i className="fas fa-check" />
+              ) : null}
+              <a className="photos__link" href="https://trello.com">
+                Profile Page
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section className="colors">
+        <div className="colors__header">
+          <span className="colors__title">Colors</span>
+          <button className="colors__button" type="button">
+            See more
+          </button>
+        </div>
+        <ul className="colors__list">
+          {colors.map((color) => (
+            <li
+              key={color.id}
+              className="colors__item"
+              style={{ backgroundColor: `${color.value}` }}
+              onClick={() =>
+                changeBoardBackground({
+                  backgroundColor: `${color.value}`,
+                })
+              }
+            >
+              {boardBackgroundKey === 'backgroundColor' &&
+              boardBackgroundValue === `${color.value}` ? (
+                <i className="fas fa-check" />
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  );
+};
+
+BackgroundOptions.propTypes = {
+  currentCreateBoardBackground: PropTypes.shape().isRequired,
+  changeBoardBackground: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  currentCreateBoardBackground: state.createBoard.currentBackground,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  changeBoardBackground: (newCreateBoardBackground) =>
+    dispatch(changeCreateBoardBackground(newCreateBoardBackground)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BackgroundOptions);

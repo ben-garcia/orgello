@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import BoardsDrawer from './BoardsDrawer/BoardsDrawer';
 import CreateBoardForm from './CreateBoardForm/CreateBoardForm';
 import UserDrawer from './UserDrawer/UserDrawer';
-import changeCreateBoardFormStatus from '../../actions/boards';
+import { changeCreateBoardFormStatus } from '../../actions/boards';
 
 import './Navbar.scss';
 
@@ -105,7 +105,7 @@ Navbar.defaultProps = {
 // the isLoggedIn property from the user object.
 const mapStateToProps = (state) => ({
   isUserLoggedIn: state.user.isLoggedIn,
-  isCreateBoardFormOpen: state.isCreateBoardFormOpen,
+  isCreateBoardFormOpen: state.createBoard.isFormOpen,
 });
 
 // function that takes dispatch(method that redux uses to

@@ -11,7 +11,7 @@ module.exports = merge(common, {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/', // same as devServer.publicPath
   },
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   module: {
     rules: [
       {

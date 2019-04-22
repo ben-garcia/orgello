@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
@@ -8,7 +7,10 @@ import PropTypes from 'prop-types';
 
 import BackgroundOptions from './BackgroundOptions/BackgroundOptions';
 
-import changeCreateBoardFormStatus from '../../../actions/boards';
+import {
+  changeCreateBoardFormStatus,
+  changeCreateBoardBackground,
+} from '../../../actions/boards';
 
 import './CreateBoardForm.scss';
 
@@ -54,21 +56,23 @@ const colors = [
   },
 ];
 
-const CreateBoardForm = ({ changeBoardFormStatus, isCreateBoardFormOpen }) => {
+const CreateBoardForm = ({
+  changeBoardFormStatus,
+  isCreateBoardFormOpen,
+  currentCreateBoardBackground,
+  changeBoardBackground,
+}) => {
   const [isDisabled, toggleDisabledButton] = useState(true);
-  const [currentBoardBackground, setBoardBackground] = useState({
-    backgroundImage: `url(${images[0].url})`,
-  });
   const [isBackgroundOptionsOpen, toggleBackgroundOptions] = useState(false);
 
   // extract the key from the currentBoardBackground object
   // posibble values are'backgroundImage' or 'backgroundColor'
-  const boardBackgroundKey = Object.keys(currentBoardBackground)[0];
+  const boardBackgroundKey = Object.keys(currentCreateBoardBackground)[0];
   // extract the value from the currentBoardBackground object
   // possible values are
   // 'url(url goes here) for an backgroundImage
   // 'rgba(value goes here) for backgroundColor
-  const boardBackgroundValue = Object.values(currentBoardBackground)[0];
+  const boardBackgroundValue = Object.values(currentCreateBoardBackground)[0];
 
   return (
     <div
@@ -81,13 +85,14 @@ const CreateBoardForm = ({ changeBoardFormStatus, isCreateBoardFormOpen }) => {
     >
       <div
         className="create-board-form"
-        style={
-          isBackgroundOptionsOpen ? { width: '710px' } : { width: '490px' }
-        }
+        style={isBackgroundOptionsOpen ? { width: 710 } : { width: 490 }}
       >
         <form className="board-form">
           <div className="board-form__container">
-            <div className="board-form__inner" style={currentBoardBackground}>
+            <div
+              className="board-form__inner"
+              style={currentCreateBoardBackground}
+            >
               <input
                 className="board-form__input"
                 text="text"
@@ -121,7 +126,7 @@ const CreateBoardForm = ({ changeBoardFormStatus, isCreateBoardFormOpen }) => {
                       type="button"
                       style={{ backgroundImage: `url(${image.url})` }}
                       onClick={() =>
-                        setBoardBackground({
+                        changeBoardBackground({
                           backgroundImage: `url(${image.url})`,
                         })
                       }
@@ -144,7 +149,7 @@ const CreateBoardForm = ({ changeBoardFormStatus, isCreateBoardFormOpen }) => {
                       type="button"
                       style={{ backgroundColor: `${color.value}` }}
                       onClick={() =>
-                        setBoardBackground({
+                        changeBoardBackground({
                           backgroundColor: `${color.value}`,
                         })
                       }
@@ -191,15 +196,20 @@ const CreateBoardForm = ({ changeBoardFormStatus, isCreateBoardFormOpen }) => {
 CreateBoardForm.propTypes = {
   isCreateBoardFormOpen: PropTypes.bool.isRequired,
   changeBoardFormStatus: PropTypes.func.isRequired,
+  currentCreateBoardBackground: PropTypes.shape().isRequired,
+  changeBoardBackground: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  isCreateBoardFormOpen: state.isCreateBoardFormOpen,
+  isCreateBoardFormOpen: state.createBoard.isFormOpen,
+  currentCreateBoardBackground: state.createBoard.currentBackground,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   changeBoardFormStatus: (status) =>
     dispatch(changeCreateBoardFormStatus(status)),
+  changeBoardBackground: (newCreateBoardBackground) =>
+    dispatch(changeCreateBoardBackground(newCreateBoardBackground)),
 });
 
 export default connect(

@@ -1,7 +1,7 @@
-import { USER_LOGGED_IN_STATUS } from '../constants';
+import { CHANGE_USER_LOGGED_IN_STATUS } from '../constants';
 
 const changeUserLoggedInStatus = (isUserLoggedIn) => ({
-  type: USER_LOGGED_IN_STATUS,
+  type: CHANGE_USER_LOGGED_IN_STATUS,
   payload: isUserLoggedIn,
 });
 
