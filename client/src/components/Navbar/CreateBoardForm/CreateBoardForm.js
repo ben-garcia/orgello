@@ -81,6 +81,14 @@ const CreateBoardForm = ({
         if (e.currentTarget === e.target && !isBackgroundOptionsOpen) {
           changeBoardFormStatus(!isCreateBoardFormOpen);
         }
+        if (
+          e.currentTarget === e.target ||
+          e.target.className === 'board-form__input' ||
+          (e.target.className === 'board-form__inner' &&
+            isBackgroundOptionsOpen)
+        ) {
+          toggleBackgroundOptions(false);
+        }
       }}
     >
       <div
