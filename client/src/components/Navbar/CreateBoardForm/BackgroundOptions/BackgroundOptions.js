@@ -2,6 +2,68 @@ import React from 'react';
 
 import './BackgroundOptions.scss';
 
+// temporary data
+// will be replace with api data from unsplash api
+const images = [
+  {
+    id: 1,
+    url:
+      'https://images.unsplash.com/photo-1554291499-563a504e0734?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9',
+  },
+  {
+    id: 2,
+    url:
+      'https://images.unsplash.com/photo-1555485038-a63855aa7ba9?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9',
+  },
+  {
+    id: 3,
+    url:
+      'https://images.unsplash.com/photo-1555488205-d5e67846cf40?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9',
+  },
+  {
+    id: 4,
+    url:
+      'https://images.unsplash.com/photo-1555454762-24a52b98f75f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9',
+  },
+  {
+    id: 5,
+    url:
+      'https://images.unsplash.com/photo-1555704832-69016c4bf0c6?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9',
+  },
+  {
+    id: 6,
+    url:
+      'https://images.unsplash.com/photo-1555570371-517b4d4434cb?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9',
+  },
+];
+
+const colors = [
+  {
+    id: 1,
+    value: 'rgb(0, 121, 191)',
+  },
+  {
+    id: 2,
+    value: 'rgb(210, 144, 52)',
+  },
+  {
+    id: 3,
+    value: 'rgb(81, 152, 57)',
+  },
+  {
+    id: 4,
+    value: 'rgb(176, 70, 50)',
+  },
+  {
+    id: 5,
+    value: 'rgb(137, 96, 158)',
+  },
+  {
+    id: 6,
+    value: 'rgb(205, 90, 145)',
+  },
+];
+
 const BackgroundOptions = () => (
   <div className="background-options">
     <div className="background-options__header">
@@ -18,9 +80,17 @@ const BackgroundOptions = () => (
         </button>
       </div>
       <ul className="photos__list">
-        <li className="photos__item">
-          <span className="photos__link" />
-        </li>
+        {images.map((image) => (
+          <li
+            key={image.id}
+            className="photos__item"
+            style={{ backgroundImage: `url(${image.url})` }}
+          >
+            <a className="photos__link" href="#">
+              Profile Page
+            </a>
+          </li>
+        ))}
       </ul>
     </section>
     <section className="colors">
@@ -31,9 +101,13 @@ const BackgroundOptions = () => (
         </button>
       </div>
       <ul className="colors__list">
-        <li className="colors__item">
-          <span className="colors__link" />
-        </li>
+        {colors.map((color) => (
+          <li
+            key={color.id}
+            className="colors__item"
+            style={{ backgroundColor: `${color.value}` }}
+          />
+        ))}
       </ul>
     </section>
   </div>

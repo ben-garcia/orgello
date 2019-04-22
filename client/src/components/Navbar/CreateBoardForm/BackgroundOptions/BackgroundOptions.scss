@@ -10,7 +10,7 @@
   color: #6b808c;
   background: $header-text-color;
   border-radius: 4px;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
 
   &__header {
     text-align: center;
@@ -23,10 +23,98 @@
     position: relative;
     right: -80px;
     cursor: pointer;
+
+    .fa-times:before {
+      color: rgba(9, 45, 66, 0.3);
+    }
   }
 
-  .photos {
+  .photos__header,
+  .colors__header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+
+  .photos__title,
+  .colors__title {
+    font-size: 0.9rem;
+    color: #000;
+  }
+
+  .photos__button,
+  .colors__button {
+    text-decoration: underline;
+    color: #6b808c;
+    background-color: #fff;
+    padding: 0.5rem;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: rgba(9, 45, 66, 0.13);
+      color: #17394d;
+    }
+  }
+
+  .photos__list,
+  .colors__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .photos__item,
+    .colors__item {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      position: relative;
+      width: 31%;
+      height: 65px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      background-size: cover;
+      background-position: 50%;
+
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        &::before {
+          background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .photos__link,
+        .colors_link {
+          opacity: 1;
+
+          &:hover {
+            background: rgba(0, 0, 0, 0.8);
+          }
+        }
+      }
+
+      .photos__link,
+      .colors__link {
+        position: relative;
+        color: #fff;
+        text-decoration: none;
+        background: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        font-size: 0.85rem;
+        width: 100%;
+      }
+    }
   }
 }

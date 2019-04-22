@@ -74,12 +74,17 @@ const CreateBoardForm = ({ changeBoardFormStatus, isCreateBoardFormOpen }) => {
     <div
       className="create-board-overlay"
       onClick={(e) => {
-        if (e.currentTarget === e.target) {
+        if (e.currentTarget === e.target && !isBackgroundOptionsOpen) {
           changeBoardFormStatus(!isCreateBoardFormOpen);
         }
       }}
     >
-      <div className="create-board-form">
+      <div
+        className="create-board-form"
+        style={
+          isBackgroundOptionsOpen ? { width: '710px' } : { width: '490px' }
+        }
+      >
         <form className="board-form">
           <div className="board-form__container">
             <div className="board-form__inner" style={currentBoardBackground}>
