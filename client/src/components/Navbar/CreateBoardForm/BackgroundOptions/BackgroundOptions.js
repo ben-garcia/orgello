@@ -32,7 +32,7 @@ const BackgroundOptions = ({
   }
 
   if (isPhotosOptionsOpen) {
-    title = 'Photos';
+    title = 'Photos by ';
   }
 
   return (
@@ -54,7 +54,6 @@ const BackgroundOptions = ({
             <i className="fas fa-arrow-left" />
           </button>
         ) : null}
-        {/* <span className="background-options__title">{title}</span> */}
         <span
           className="background-options__title"
           style={
@@ -63,7 +62,19 @@ const BackgroundOptions = ({
               : {}
           }
         >
-          {title}
+          {isPhotosOptionsOpen && title}
+          {isPhotosOptionsOpen ? (
+            <a
+              className="unsplash-attribution"
+              href="https://unsplash.com/?utm_source=orgello&utm_medium=referral&utm_campaign=api-credit"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Unsplash
+            </a>
+          ) : (
+            title
+          )}
         </span>
         <button className="background-options__button" type="button">
           <i className="fas fa-times" />

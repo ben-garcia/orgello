@@ -17,6 +17,10 @@
     padding: 0.5rem 0.2rem;
     display: flex;
     justify-content: space-between;
+
+    .unsplash-attribution {
+      color: #000;
+    }
   }
 
   &__button {
