@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import changeUserLoggedInStatus from '../../actions/users';
-import authUrl from '../../api';
+import { authUrl } from '../../api';
 
 import '../Signup/Signup.scss';
 import './Login.scss';

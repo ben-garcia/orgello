@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Joi from 'joi-browser';
 
 import changeUserLoggedInStatus from '../../actions/users';
-import authUrl from '../../api';
+import { authUrl } from '../../api';
 
 import './Signup.scss';
 
