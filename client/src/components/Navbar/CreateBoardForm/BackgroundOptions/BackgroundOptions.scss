@@ -13,17 +13,17 @@
   padding: 0.5rem 1rem;
 
   &__header {
-    text-align: center;
     border-bottom: 1px solid rgba(9, 45, 66, 0.13);
     padding: 0.5rem 0.2rem;
+    display: flex;
+    justify-content: space-between;
   }
 
   &__button {
     border: none;
-    position: relative;
-    right: -80px;
     cursor: pointer;
 
+    .fa-arrow-left,
     .fa-times:before {
       color: rgba(9, 45, 66, 0.3);
     }
