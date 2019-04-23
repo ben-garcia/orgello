@@ -125,11 +125,14 @@
       .colors__link {
         position: relative;
         color: #fff;
-        text-decoration: none;
         background: rgba(0, 0, 0, 0.5);
         opacity: 0;
         font-size: 0.85rem;
         width: 100%;
+        overflow: hidden;
+        text-decoration: underline;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
   }

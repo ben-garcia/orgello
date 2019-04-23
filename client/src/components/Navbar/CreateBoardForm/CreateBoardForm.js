@@ -13,26 +13,9 @@ import {
   requestLatestSixPhotos,
 } from '../../../actions/boards';
 
-import './CreateBoardForm.scss';
+import colors from '../../../api/colors';
 
-const colors = [
-  {
-    id: 1,
-    value: 'rgb(0, 121, 191)',
-  },
-  {
-    id: 2,
-    value: 'rgb(210, 144, 52)',
-  },
-  {
-    id: 3,
-    value: 'rgb(81, 152, 57)',
-  },
-  {
-    id: 4,
-    value: 'rgb(176, 70, 50)',
-  },
-];
+import './CreateBoardForm.scss';
 
 const CreateBoardForm = ({
   changeBoardFormStatus,
@@ -109,7 +92,7 @@ const CreateBoardForm = ({
             <div className="background">
               <ul className="background__list">
                 {latestSixPhotos
-                  .filter((e, i) => i < 4)
+                  .filter((image, i) => i < 4)
                   .map((image) => (
                     <li key={image.id} className="background__item">
                       <button
@@ -133,29 +116,31 @@ const CreateBoardForm = ({
                       </button>
                     </li>
                   ))}
-                {colors.map((color) => (
-                  <li key={color.id} className="background__item">
-                    <button
-                      className={
-                        boardBackgroundValue === color.value
-                          ? 'background__button background__button--active'
-                          : 'background__button'
-                      }
-                      type="button"
-                      style={{ backgroundColor: `${color.value}` }}
-                      onClick={() =>
-                        changeBoardBackground({
-                          backgroundColor: `${color.value}`,
-                        })
-                      }
-                    >
-                      {boardBackgroundKey === 'backgroundColor' &&
-                      boardBackgroundValue === `${color.value}` ? (
-                        <i className="fas fa-check" />
-                      ) : null}
-                    </button>
-                  </li>
-                ))}
+                {colors
+                  .filter((c, i) => i < 4)
+                  .map((color) => (
+                    <li key={color.id} className="background__item">
+                      <button
+                        className={
+                          boardBackgroundValue === color.value
+                            ? 'background__button background__button--active'
+                            : 'background__button'
+                        }
+                        type="button"
+                        style={{ backgroundColor: `${color.value}` }}
+                        onClick={() =>
+                          changeBoardBackground({
+                            backgroundColor: `${color.value}`,
+                          })
+                        }
+                      >
+                        {boardBackgroundKey === 'backgroundColor' &&
+                        boardBackgroundValue === `${color.value}` ? (
+                          <i className="fas fa-check" />
+                        ) : null}
+                      </button>
+                    </li>
+                  ))}
                 <li className="background__item">
                   <button
                     className="background__button background__button--options"
