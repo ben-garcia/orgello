@@ -15,29 +15,6 @@ import {
 
 import './CreateBoardForm.scss';
 
-const images = [
-  {
-    id: 1,
-    url:
-      'https://images.unsplash.com/photo-1554291499-563a504e0734?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9',
-  },
-  {
-    id: 2,
-    url:
-      'https://images.unsplash.com/photo-1555485038-a63855aa7ba9?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9',
-  },
-  {
-    id: 3,
-    url:
-      'https://images.unsplash.com/photo-1555488205-d5e67846cf40?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9',
-  },
-  {
-    id: 4,
-    url:
-      'https://images.unsplash.com/photo-1555454762-24a52b98f75f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjcwNjZ9',
-  },
-];
-
 const colors = [
   {
     id: 1,
@@ -63,6 +40,7 @@ const CreateBoardForm = ({
   currentCreateBoardBackground,
   changeBoardBackground,
   requestSixPhotos,
+  latestSixPhotos,
 }) => {
   const [isDisabled, toggleDisabledButton] = useState(true);
   const [isBackgroundOptionsOpen, toggleBackgroundOptions] = useState(false);
@@ -130,29 +108,31 @@ const CreateBoardForm = ({
             </div>
             <div className="background">
               <ul className="background__list">
-                {images.map((image) => (
-                  <li key={image.id} className="background__item">
-                    <button
-                      className={
-                        boardBackgroundValue === `url(${image.url})`
-                          ? 'background__button background__button--active'
-                          : 'background__button'
-                      }
-                      type="button"
-                      style={{ backgroundImage: `url(${image.url})` }}
-                      onClick={() =>
-                        changeBoardBackground({
-                          backgroundImage: `url(${image.url})`,
-                        })
-                      }
-                    >
-                      {boardBackgroundKey === 'backgroundImage' &&
-                      boardBackgroundValue === `url(${image.url})` ? (
-                        <i className="fas fa-check" />
-                      ) : null}
-                    </button>
-                  </li>
-                ))}
+                {latestSixPhotos
+                  .filter((e, i) => i < 4)
+                  .map((image) => (
+                    <li key={image.id} className="background__item">
+                      <button
+                        className={
+                          boardBackgroundValue === `url(${image.urls.thumb})`
+                            ? 'background__button background__button--active'
+                            : 'background__button'
+                        }
+                        type="button"
+                        style={{ backgroundImage: `url(${image.urls.thumb})` }}
+                        onClick={() =>
+                          changeBoardBackground({
+                            backgroundImage: `url(${image.urls.thumb})`,
+                          })
+                        }
+                      >
+                        {boardBackgroundKey === 'backgroundImage' &&
+                        boardBackgroundValue === `url(${image.urls.thumb})` ? (
+                          <i className="fas fa-check" />
+                        ) : null}
+                      </button>
+                    </li>
+                  ))}
                 {colors.map((color) => (
                   <li key={color.id} className="background__item">
                     <button
@@ -214,11 +194,13 @@ CreateBoardForm.propTypes = {
   currentCreateBoardBackground: PropTypes.shape().isRequired,
   changeBoardBackground: PropTypes.func.isRequired,
   requestSixPhotos: PropTypes.func.isRequired,
+  latestSixPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   isCreateBoardFormOpen: state.createBoard.isFormOpen,
   currentCreateBoardBackground: state.createBoard.currentBackground,
+  latestSixPhotos: state.createBoard.latestSixPhotos,
 });
 
 const mapDispatchToProps = (dispatch) => ({
