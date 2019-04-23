@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -10,6 +10,7 @@ import BackgroundOptions from './BackgroundOptions/BackgroundOptions';
 import {
   changeCreateBoardFormStatus,
   changeCreateBoardBackground,
+  requestLatestSixPhotos,
 } from '../../../actions/boards';
 
 import './CreateBoardForm.scss';
@@ -61,9 +62,15 @@ const CreateBoardForm = ({
   isCreateBoardFormOpen,
   currentCreateBoardBackground,
   changeBoardBackground,
+  requestSixPhotos,
 }) => {
   const [isDisabled, toggleDisabledButton] = useState(true);
   const [isBackgroundOptionsOpen, toggleBackgroundOptions] = useState(false);
+
+  // make api request to get latest six photos when component is mounted.
+  useEffect(() => {
+    requestSixPhotos();
+  }, []);
 
   // extract the key from the currentBoardBackground object
   // posibble values are'backgroundImage' or 'backgroundColor'
@@ -206,6 +213,7 @@ CreateBoardForm.propTypes = {
   changeBoardFormStatus: PropTypes.func.isRequired,
   currentCreateBoardBackground: PropTypes.shape().isRequired,
   changeBoardBackground: PropTypes.func.isRequired,
+  requestSixPhotos: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -218,6 +226,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changeCreateBoardFormStatus(status)),
   changeBoardBackground: (newCreateBoardBackground) =>
     dispatch(changeCreateBoardBackground(newCreateBoardBackground)),
+  requestSixPhotos: () => dispatch(requestLatestSixPhotos()),
 });
 
 export default connect(

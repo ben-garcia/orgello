@@ -6,8 +6,8 @@ import { fetchPhotos } from '../api';
 
 function* getLatestSixPhotos() {
   try {
-    const data = yield call(fetchPhotos, 'new-releases');
-    yield put(receivedLatestSixPhotos(data));
+    const photos = yield call(fetchPhotos, 'http://localhost:9000/photos');
+    yield put(receivedLatestSixPhotos(photos));
   } catch (e) {
     console.log(e);
   }

@@ -29,7 +29,7 @@ const boardsReducer = (state = initialState, action) => {
     case RECEIVED_LATEST_SIX_PHOTOS:
       return {
         ...state,
-        latestSixPhotos: [...action.payload.photos],
+        latestSixPhotos: [...action.data],
       };
     default:
       return state;
