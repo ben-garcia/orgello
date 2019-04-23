@@ -8,6 +8,7 @@ const boardsRouter = require('../routes/boards');
 const listsRouter = require('../routes/lists');
 const cardsRouter = require('../routes/cards');
 const authRouter = require('../routes/auth');
+const photosReducer = require('../routes/unsplash');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use('/users', usersRouter);
 app.use('/boards', boardsRouter);
 app.use('/lists', listsRouter);
 app.use('/cards', cardsRouter);
+app.use('/photos', photosReducer);
 
 // 404 Not Found
 // eslint-disable-next-line
