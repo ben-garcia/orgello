@@ -4,7 +4,11 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { changeCreateBoardBackground } from '../../../../actions/boards';
+import {
+  changeCreateBoardBackground,
+  requestLatestPhotos,
+  removeLatestPhotos,
+} from '../../../../actions/boards';
 
 import colors from '../../../../api/colors';
 
@@ -14,6 +18,9 @@ const BackgroundOptions = ({
   currentCreateBoardBackground,
   changeBoardBackground,
   latestSixPhotos,
+  latestPhotos,
+  removePhotos,
+  requestPhotos,
 }) => {
   const [isColorsOptionsOpen, toggleColorsOptions] = useState(false);
   const [isPhotosOptionsOpen, togglePhotosOptions] = useState(false);
@@ -22,12 +29,19 @@ const BackgroundOptions = ({
   const boardBackgroundValue = Object.values(currentCreateBoardBackground)[0];
 
   let title = 'Board Background';
+  let photosToRender = latestSixPhotos;
   let modifiedColors = colors;
+
+  if (latestPhotos.length > 0) {
+    photosToRender = latestPhotos;
+  } else {
+    photosToRender = photosToRender.filter((image, i) => i < 6);
+  }
 
   if (isColorsOptionsOpen) {
     title = 'Colors';
   } else {
-    // render the first six colors
+    // find the first 6 colors in the colors object array
     modifiedColors = colors.filter((color, index) => index < 6);
   }
 
@@ -46,8 +60,14 @@ const BackgroundOptions = ({
               if (isPhotosOptionsOpen) {
                 togglePhotosOptions(false);
               }
+
               if (isColorsOptionsOpen) {
                 toggleColorsOptions(false);
+              }
+
+              if (isPhotosOptionsOpen && latestPhotos.length > 0) {
+                // empty the latestPhotos array
+                removePhotos();
               }
             }}
           >
@@ -80,27 +100,53 @@ const BackgroundOptions = ({
           <i className="fas fa-times" />
         </button>
       </div>
-      {!isColorsOptionsOpen ? (
-        <section className="photos">
-          {!isPhotosOptionsOpen ? (
-            <div className="photos__header">
-              <span className="photos__title">Photos</span>
-              <button
-                className="photos__button"
-                type="button"
-                onClick={() => togglePhotosOptions(true)}
-              >
-                See more
-              </button>
-            </div>
-          ) : null}
-          <ul
-            className="photos__list"
-            style={isPhotosOptionsOpen ? { marginTop: '1rem' } : {}}
-          >
-            {latestSixPhotos
-              .filter((image, i) => i < 6)
-              .map((image) => (
+      <div
+        className="grid-container"
+        onScroll={(e) => {
+          if (
+            isPhotosOptionsOpen &&
+            e.target.scrollTop >= e.target.offsetHeight / 1.5
+          ) {
+            // console.log('top: ', e.target.scrollTop);
+            // console.log('height: ', e.target.offsetHeight / 1.5);
+            // requestLatestPhotos();
+          }
+        }}
+      >
+        {!isColorsOptionsOpen ? (
+          <section className="photos">
+            {!isPhotosOptionsOpen ? (
+              <div className="photos__header">
+                <span className="photos__title">Photos</span>
+                <button
+                  className="photos__button"
+                  type="button"
+                  onClick={() => {
+                    togglePhotosOptions(true);
+                    requestPhotos();
+                  }}
+                >
+                  See more
+                </button>
+              </div>
+            ) : null}
+            {isPhotosOptionsOpen && (
+              <div className="photos__search">
+                <input
+                  className="photos__input"
+                  type="text"
+                  placeholder="Photos"
+                />
+                <span className="photos-search-icon">
+                  <i className="fas fa-search" />
+                </span>
+              </div>
+            )}
+            <ul
+              className="photos__list"
+              style={isPhotosOptionsOpen ? { marginTop: '1rem' } : {}}
+            >
+              {photosToRender.map((image) => (
                 <li
                   key={image.id}
                   className="photos__item"
@@ -128,48 +174,48 @@ const BackgroundOptions = ({
                   </a>
                 </li>
               ))}
-          </ul>
-        </section>
-      ) : null}
-
-      {!isPhotosOptionsOpen ? (
-        <section className="colors">
-          {!isColorsOptionsOpen ? (
-            <div className="colors__header">
-              <span className="colors__title">Colors</span>
-              <button
-                className="colors__button"
-                type="button"
-                onClick={() => toggleColorsOptions(true)}
-              >
-                See more
-              </button>
-            </div>
-          ) : null}
-          <ul
-            className="colors__list"
-            style={isColorsOptionsOpen ? { marginTop: '1rem' } : {}}
-          >
-            {modifiedColors.map((color) => (
-              <li
-                key={color.id}
-                className="colors__item"
-                style={{ backgroundColor: `${color.value}` }}
-                onClick={() =>
-                  changeBoardBackground({
-                    backgroundColor: `${color.value}`,
-                  })
-                }
-              >
-                {boardBackgroundKey === 'backgroundColor' &&
-                boardBackgroundValue === `${color.value}` ? (
-                  <i className="fas fa-check" />
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+            </ul>
+          </section>
+        ) : null}
+        {!isPhotosOptionsOpen ? (
+          <section className="colors">
+            {!isColorsOptionsOpen ? (
+              <div className="colors__header">
+                <span className="colors__title">Colors</span>
+                <button
+                  className="colors__button"
+                  type="button"
+                  onClick={() => toggleColorsOptions(true)}
+                >
+                  See more
+                </button>
+              </div>
+            ) : null}
+            <ul
+              className="colors__list"
+              style={isColorsOptionsOpen ? { marginTop: '1rem' } : {}}
+            >
+              {modifiedColors.map((color) => (
+                <li
+                  key={color.id}
+                  className="colors__item"
+                  style={{ backgroundColor: `${color.value}` }}
+                  onClick={() =>
+                    changeBoardBackground({
+                      backgroundColor: `${color.value}`,
+                    })
+                  }
+                >
+                  {boardBackgroundKey === 'backgroundColor' &&
+                  boardBackgroundValue === `${color.value}` ? (
+                    <i className="fas fa-check" />
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+      </div>
     </div>
   );
 };
@@ -178,16 +224,22 @@ BackgroundOptions.propTypes = {
   currentCreateBoardBackground: PropTypes.shape().isRequired,
   changeBoardBackground: PropTypes.func.isRequired,
   latestSixPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  latestPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  requestPhotos: PropTypes.func.isRequired,
+  removePhotos: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   currentCreateBoardBackground: state.createBoard.currentBackground,
   latestSixPhotos: state.createBoard.latestSixPhotos,
+  latestPhotos: state.createBoard.latestPhotos,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   changeBoardBackground: (newCreateBoardBackground) =>
     dispatch(changeCreateBoardBackground(newCreateBoardBackground)),
+  requestPhotos: () => dispatch(requestLatestPhotos()),
+  removePhotos: () => dispatch(removeLatestPhotos()),
 });
 
 export default connect(

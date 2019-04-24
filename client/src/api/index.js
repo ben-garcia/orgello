@@ -2,8 +2,9 @@
 
 export const authUrl = 'http://localhost:9000/auth';
 
-export const fetchPhotos = async (url) => {
+export const fetchData = async (baseUrl, query, page, perPage) => {
   let photos = null;
+  const url = `${baseUrl}?query=${query}&page=${page}&perPage=${perPage}`;
 
   try {
     const response = await fetch(url);

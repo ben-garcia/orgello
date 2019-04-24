@@ -25,6 +25,7 @@
       height: 120px;
       background-size: cover;
       background-position: 50%;
+      background-repeat: no-repeat;
       border-radius: 4px;
       position: relative;
 
@@ -36,6 +37,7 @@
         right: 0;
         bottom: 0;
         top: 0;
+        background-color: rgba(0, 0, 0, 0.4);
       }
 
       .close-button {

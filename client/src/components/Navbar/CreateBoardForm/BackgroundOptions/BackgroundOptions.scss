@@ -10,26 +10,57 @@
   color: #6b808c;
   background: $header-text-color;
   border-radius: 4px;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0 0.5rem 1rem;
 
   &__header {
     border-bottom: 1px solid rgba(9, 45, 66, 0.13);
     padding: 0.5rem 0.2rem;
     display: flex;
     justify-content: space-between;
+    margin-right: 1rem;
 
     .unsplash-attribution {
       color: #000;
     }
   }
 
+  .grid-container {
+    padding-right: 1rem;
+    overflow: scroll;
+    max-height: calc(100vh - 6rem);
+  }
+
   &__button {
     border: none;
     cursor: pointer;
+    background-color: transparent;
 
     .fa-arrow-left,
     .fa-times:before {
       color: rgba(9, 45, 66, 0.3);
+    }
+  }
+
+  .photos__search {
+    margin: 0.8rem 0 0.2rem 0;
+    position: relative;
+
+    .photos__input {
+      width: 100%;
+      padding-left: 2rem;
+      box-shadow: inset 0 0 0 2px #dfe3e6;
+      padding: 0.5rem 0 0.3rem 2rem;
+    }
+
+    .photos-search-icon {
+      position: absolute;
+      top: 5px;
+      left: 12px;
+
+      .fa-search::before {
+        font-size: 1.1rem;
+        color: #798d99;
+      }
     }
   }
 
@@ -137,6 +168,7 @@
         text-decoration: underline;
         text-overflow: ellipsis;
         white-space: nowrap;
+        padding: 0px 0 1px 3px;
       }
     }
   }
