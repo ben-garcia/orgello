@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { REQUEST_LATEST_SIX_PHOTOS, REQUEST_LATEST_PHOTOS } from '../constants';
 import {
@@ -6,6 +6,7 @@ import {
   receivedLatestPhotos,
 } from '../actions/boards';
 import { fetchData } from '../api';
+import getLatestPhotosPage from './selectors';
 
 function* getLatestSixPhotos() {
   try {
@@ -28,12 +29,16 @@ function* getLatestSixPhotos() {
 
 function* getLatestPhotos() {
   try {
+    const latestPhotosFromState = yield select(getLatestPhotosPage);
+
     const latestPhotos = yield call(
       fetchData,
       'http://localhost:9000/photos',
       'latest',
-      1,
-      18
+      latestPhotosFromState.page,
+      latestPhotosFromState.photos.length < 0
+        ? latestPhotosFromState.photos.length
+        : 18
     );
     // put effect dispatches an action the store
     yield put(receivedLatestPhotos(latestPhotos));

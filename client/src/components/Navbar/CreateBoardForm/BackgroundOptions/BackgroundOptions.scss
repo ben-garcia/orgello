@@ -26,6 +26,7 @@
 
   .grid-container {
     padding-right: 1rem;
+    margin-top: 1rem;
     overflow: scroll;
     max-height: calc(100vh - 6rem);
   }
@@ -42,7 +43,6 @@
   }
 
   .photos__search {
-    margin: 0.8rem 0 0.2rem 0;
     position: relative;
 
     .photos__input {

@@ -107,9 +107,7 @@ const BackgroundOptions = ({
             isPhotosOptionsOpen &&
             e.target.scrollTop >= e.target.offsetHeight / 1.5
           ) {
-            // console.log('top: ', e.target.scrollTop);
-            // console.log('height: ', e.target.offsetHeight / 1.5);
-            // requestLatestPhotos();
+            requestPhotos();
           }
         }}
       >
@@ -232,7 +230,7 @@ BackgroundOptions.propTypes = {
 const mapStateToProps = (state) => ({
   currentCreateBoardBackground: state.createBoard.currentBackground,
   latestSixPhotos: state.createBoard.latestSixPhotos,
-  latestPhotos: state.createBoard.latestPhotos,
+  latestPhotos: state.createBoard.latestPhotos.photos,
 });
 
 const mapDispatchToProps = (dispatch) => ({

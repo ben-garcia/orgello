@@ -14,7 +14,10 @@ const initialState = {
     backgroundImage: '',
   },
   latestSixPhotos: [],
-  latestPhotos: [],
+  latestPhotos: {
+    photos: [],
+    page: 0,
+  },
   queryPhotos: [],
 };
 
@@ -41,7 +44,10 @@ const boardsReducer = (state = initialState, action) => {
     case RECEIVED_LATEST_PHOTOS:
       return {
         ...state,
-        latestPhotos: [...action.latestPhotos],
+        latestPhotos: {
+          photos: [...state.latestPhotos.photos, ...action.latestPhotos],
+          page: state.latestPhotos.page + 1,
+        },
       };
     case REMOVE_LATEST_PHOTOS:
       return {
