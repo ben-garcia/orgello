@@ -107,6 +107,9 @@ const BackgroundOptions = ({
             isPhotosOptionsOpen &&
             e.target.scrollTop >= e.target.offsetHeight / 1.5
           ) {
+            // when the user scrolls down enough then
+            // dispatch action to get more photos and render
+            // them to the page.
             requestPhotos();
           }
         }}
