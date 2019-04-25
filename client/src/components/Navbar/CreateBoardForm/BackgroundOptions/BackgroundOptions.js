@@ -81,14 +81,6 @@ const BackgroundOptions = ({
     title = 'Photos by ';
   }
 
-  // if queryPhotos array has been populated
-  // then render those photos
-  if (queryPhotos.length > 0) {
-    photosToRender = queryPhotos;
-  } else {
-    photosToRender = latestPhotos;
-  }
-
   return (
     <div className="background-options">
       <div className="background-options__header">
