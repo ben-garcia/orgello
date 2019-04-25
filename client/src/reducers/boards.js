@@ -22,6 +22,7 @@ const initialState = {
   queryPhotos: {
     photos: [],
     searchTerm: '',
+    page: 0,
   },
 };
 
@@ -64,13 +65,17 @@ const boardsReducer = (state = initialState, action) => {
     case RECEIVED_QUERY_PHOTOS:
       return {
         ...state,
-        queryPhotos: [action.queryPhotos],
+        queryPhotos: {
+          ...state.queryPhotos,
+          photos: [...action.queryPhotos],
+          page: state.queryPhotos.page + 1,
+        },
       };
     case CHANGE_QUERY_PHOTOS_SEARCH_TERM:
       return {
         ...state,
         queryPhotos: {
-          ...state.queryPhotos.photos,
+          ...state.queryPhotos,
           searchTerm: action.searchTerm,
         },
       };

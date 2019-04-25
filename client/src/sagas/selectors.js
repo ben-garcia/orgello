@@ -3,5 +3,4 @@
 
 export const getLatestPhotosPage = (state) => state.createBoard.latestPhotos;
 
-export const getQueryPhotosSearchTerm = (state) =>
-  state.createBoard.queryPhotos.searchTerm;
+export const getQueryPhotosFromState = (state) => state.createBoard.queryPhotos;

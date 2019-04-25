@@ -1,12 +1,17 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { REQUEST_LATEST_SIX_PHOTOS, REQUEST_LATEST_PHOTOS } from '../constants';
+import {
+  REQUEST_LATEST_SIX_PHOTOS,
+  REQUEST_LATEST_PHOTOS,
+  REQUEST_QUERY_PHOTOS,
+} from '../constants';
 import {
   receivedLatestSixPhotos,
   receivedLatestPhotos,
+  receivedQueryPhotos,
 } from '../actions/boards';
 import { fetchData } from '../api';
-import { getLatestPhotosPage, getQueryPhotosSearchTerm } from './selectors';
+import { getLatestPhotosPage, getQueryPhotosFromState } from './selectors';
 
 function* getLatestSixPhotos() {
   try {
@@ -23,7 +28,7 @@ function* getLatestSixPhotos() {
     // dispatch an action to the store with put effect
     yield put(receivedLatestSixPhotos(photos));
   } catch (e) {
-    console.log('receivedLatesSixPhotos() error: ', e.message);
+    console.error('receivedLatesSixPhotos() error: ', e.message);
   }
 }
 
@@ -41,7 +46,25 @@ function* getLatestPhotos() {
     // put effect dispatches an action the store
     yield put(receivedLatestPhotos(latestPhotos));
   } catch (e) {
-    console.log('getLatestPhotos() error: ', e.message);
+    console.error('getLatestPhotos() error: ', e.message);
+  }
+}
+
+function* getQueryPhotos() {
+  try {
+    const queryPhotosFromState = yield select(getQueryPhotosFromState);
+
+    const queryPhotos = yield call(
+      fetchData,
+      'http://localhost:9000/photos/search',
+      queryPhotosFromState.searchTerm,
+      queryPhotosFromState.page + 1,
+      18
+    );
+    // put effect dispatches an action to the store
+    yield put(receivedQueryPhotos(queryPhotos));
+  } catch ({ message }) {
+    console.error('getQueryPhotos() error: ', message);
   }
 }
 
@@ -51,4 +74,5 @@ export default function* rootSaga() {
   // while the first is canceled
   yield takeLatest(REQUEST_LATEST_SIX_PHOTOS, getLatestSixPhotos);
   yield takeLatest(REQUEST_LATEST_PHOTOS, getLatestPhotos);
+  yield takeLatest(REQUEST_QUERY_PHOTOS, getQueryPhotos);
 }

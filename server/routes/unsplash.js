@@ -69,8 +69,12 @@ router.get('/search', validateQueryParams, (req, res) => {
 
   unsplash.search
     .photos(query, page, perPage)
-    .then(toJson)
-    .then((photos) => res.status(200).json(photos))
+    .then((resp) => {
+      console.log(resp.headers);
+
+      return toJson(resp);
+    })
+    .then((photos) => res.status(200).json(photos.results))
     .catch((e) => console.log('/search error: ', e.message));
 });
 

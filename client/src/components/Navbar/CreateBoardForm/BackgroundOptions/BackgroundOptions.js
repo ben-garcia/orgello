@@ -9,6 +9,7 @@ import {
   requestLatestPhotos,
   removeLatestPhotos,
   changeQueryPhotosSearchTerm,
+  requestQueryPhotos,
 } from '../../../../actions/boards';
 
 import colors from '../../../../api/colors';
@@ -23,6 +24,8 @@ const BackgroundOptions = ({
   removePhotos,
   requestPhotos,
   changePhotosSearchTerm,
+  requestSearchPhotos,
+  queryPhotos,
 }) => {
   const [isColorsOptionsOpen, toggleColorsOptions] = useState(false);
   const [isPhotosOptionsOpen, togglePhotosOptions] = useState(false);
@@ -76,6 +79,14 @@ const BackgroundOptions = ({
 
   if (isPhotosOptionsOpen) {
     title = 'Photos by ';
+  }
+
+  // if queryPhotos array has been populated
+  // then render those photos
+  if (queryPhotos.length > 0) {
+    photosToRender = queryPhotos;
+  } else {
+    photosToRender = latestPhotos;
   }
 
   return (
@@ -141,7 +152,11 @@ const BackgroundOptions = ({
             // when the user scrolls down enough then
             // dispatch action to get more photos and render
             // them on the page.
-            requestPhotos();
+            if (queryPhotos.length > 0) {
+              requestQueryPhotos();
+            } else {
+              requestPhotos();
+            }
           }
         }}
       >
@@ -170,8 +185,10 @@ const BackgroundOptions = ({
                   placeholder="Photos"
                   ref={searchRef}
                   onChange={(e) => {
-                    console.log(e.target.value);
-                    changePhotosSearchTerm(e.target.value);
+                    if (e.target.value.length > 0) {
+                      changePhotosSearchTerm(e.target.value);
+                      requestSearchPhotos();
+                    }
                   }}
                 />
                 <span className="photos-search-icon">
@@ -265,12 +282,15 @@ BackgroundOptions.propTypes = {
   requestPhotos: PropTypes.func.isRequired,
   removePhotos: PropTypes.func.isRequired,
   changePhotosSearchTerm: PropTypes.func.isRequired,
+  requestSearchPhotos: PropTypes.func.isRequired,
+  queryPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   currentCreateBoardBackground: state.createBoard.currentBackground,
   latestSixPhotos: state.createBoard.latestSixPhotos,
   latestPhotos: state.createBoard.latestPhotos.photos,
+  queryPhotos: state.createBoard.queryPhotos.photos,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -280,6 +300,7 @@ const mapDispatchToProps = (dispatch) => ({
   removePhotos: () => dispatch(removeLatestPhotos()),
   changePhotosSearchTerm: (searchTerm) =>
     dispatch(changeQueryPhotosSearchTerm(searchTerm)),
+  requestSearchPhotos: () => dispatch(requestQueryPhotos()),
 });
 
 export default connect(
