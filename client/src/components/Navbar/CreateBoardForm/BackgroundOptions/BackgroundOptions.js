@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -24,6 +24,23 @@ const BackgroundOptions = ({
 }) => {
   const [isColorsOptionsOpen, toggleColorsOptions] = useState(false);
   const [isPhotosOptionsOpen, togglePhotosOptions] = useState(false);
+
+  // this reference is used to change the position of the scrollbar after
+  // a new batch of images have been rendered.
+  const scrollRef = useRef(null);
+
+  // check the height of the grid container
+  useEffect(() => {
+    if (
+      isPhotosOptionsOpen &&
+      scrollRef.current.offsetHeight >= 502 &&
+      latestPhotos.length >= 18 &&
+      latestPhotos.length < 32
+    ) {
+      console.log('requestPhotos called!');
+      requestPhotos();
+    }
+  });
 
   const boardBackgroundKey = Object.keys(currentCreateBoardBackground)[0];
   const boardBackgroundValue = Object.values(currentCreateBoardBackground)[0];
@@ -102,15 +119,21 @@ const BackgroundOptions = ({
       </div>
       <div
         className="grid-container"
+        ref={scrollRef}
         onScroll={(e) => {
-          if (
-            isPhotosOptionsOpen &&
-            e.target.scrollTop >= e.target.offsetHeight / 1.5
-          ) {
+          // console.log('scrollRefScrollTop: ', scrollRef.current.scrollTop);
+          // console.log(
+          //   'scrollRefScrollHeight: ',
+          //   scrollRef.current.scrollHeight
+          // );
+          // console.log('offsetHeight: ', e.target.offsetHeight);
+          // console.log('-------------------------');
+
+          if (isPhotosOptionsOpen) {
             // when the user scrolls down enough then
             // dispatch action to get more photos and render
             // them to the page.
-            requestPhotos();
+            // requestPhotos();
           }
         }}
       >

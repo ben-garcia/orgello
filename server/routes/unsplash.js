@@ -16,19 +16,19 @@ function validateQueryParams(req, res, next) {
   // but the unsplash api accepts numbers for
   // page and per_page arguements.
 
-  // const { query } = req.query;
+  const { query } = req.query;
 
-  // // make sure query params is not null
-  // if (!query) {
-  //   res.status(422);
-  //   next(new Error('query param cannot be empty'));
-  // }
+  // make sure query params is not null
+  if (!query) {
+    res.status(422);
+    next(new Error('query param cannot be empty'));
+  }
 
   // make sure the query.query is a string(only containing letters a-zA-Z)
-  // if (!/^[a-zA-Z]+$/.test(query)) {
-  //   res.status(422);
-  //   next(new Error('query param can only contain letters(a-zA-Z)'));
-  // }
+  if (!/^[a-zA-Z]+$/.test(query)) {
+    res.status(422);
+    next(new Error('query param can only contain letters(a-zA-Z)'));
+  }
 
   // convert arguements to numbers
   const page = Number(req.query.page);
@@ -46,13 +46,19 @@ function validateQueryParams(req, res, next) {
 }
 
 // get 6 newly added photos
-router.get('/', validateQueryParams, (req, res) => {
+router.get('/', validateQueryParams, (req, res, next) => {
   const { page, perPage } = req.query;
 
   unsplash.photos
     .listPhotos(page, perPage)
-    .then(toJson)
-    .then((photos) => res.status(200).json(photos))
+    .then((resp) => {
+      console.log(resp.headers);
+
+      return toJson(resp);
+    })
+    .then((photos) => {
+      res.status(200).json(photos);
+    })
     .catch((e) => console.log('/photos error: ', e.message));
 });
 

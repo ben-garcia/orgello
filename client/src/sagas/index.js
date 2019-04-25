@@ -35,10 +35,8 @@ function* getLatestPhotos() {
       fetchData,
       'http://localhost:9000/photos',
       'latest',
-      latestPhotosFromState.page,
-      latestPhotosFromState.photos.length < 0
-        ? latestPhotosFromState.photos.length
-        : 18
+      latestPhotosFromState.page + 1, // start at the first page
+      18
     );
     // put effect dispatches an action the store
     yield put(receivedLatestPhotos(latestPhotos));

@@ -52,7 +52,10 @@ const boardsReducer = (state = initialState, action) => {
     case REMOVE_LATEST_PHOTOS:
       return {
         ...state,
-        latestPhotos: [],
+        latestPhotos: {
+          photos: [],
+          page: 0,
+        },
       };
     case RECEIVED_QUERY_PHOTOS:
       return {
