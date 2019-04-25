@@ -30,14 +30,14 @@ const BackgroundOptions = ({
   const scrollRef = useRef(null);
 
   // check the height of the grid container
+  // at present this effect is called every render
   useEffect(() => {
     if (
       isPhotosOptionsOpen &&
       scrollRef.current.offsetHeight >= 502 &&
       latestPhotos.length >= 18 &&
-      latestPhotos.length < 32
+      latestPhotos.length <= 54
     ) {
-      console.log('requestPhotos called!');
       requestPhotos();
     }
   });
@@ -120,20 +120,16 @@ const BackgroundOptions = ({
       <div
         className="grid-container"
         ref={scrollRef}
-        onScroll={(e) => {
-          // console.log('scrollRefScrollTop: ', scrollRef.current.scrollTop);
-          // console.log(
-          //   'scrollRefScrollHeight: ',
-          //   scrollRef.current.scrollHeight
-          // );
-          // console.log('offsetHeight: ', e.target.offsetHeight);
-          // console.log('-------------------------');
-
-          if (isPhotosOptionsOpen) {
+        onScroll={() => {
+          if (
+            isPhotosOptionsOpen &&
+            scrollRef.current.scrollTop + scrollRef.current.offsetHeight >=
+              scrollRef.current.scrollHeight - 200
+          ) {
             // when the user scrolls down enough then
             // dispatch action to get more photos and render
-            // them to the page.
-            // requestPhotos();
+            // them on the page.
+            requestPhotos();
           }
         }}
       >
