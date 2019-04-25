@@ -5,6 +5,7 @@ import {
   RECEIVED_LATEST_PHOTOS,
   REMOVE_LATEST_PHOTOS,
   RECEIVED_QUERY_PHOTOS,
+  CHANGE_QUERY_PHOTOS_SEARCH_TERM,
 } from '../constants';
 
 // CreateBoardForm component shouldn't be visible
@@ -18,7 +19,10 @@ const initialState = {
     photos: [],
     page: 0,
   },
-  queryPhotos: [],
+  queryPhotos: {
+    photos: [],
+    searchTerm: '',
+  },
 };
 
 const boardsReducer = (state = initialState, action) => {
@@ -61,6 +65,14 @@ const boardsReducer = (state = initialState, action) => {
       return {
         ...state,
         queryPhotos: [action.queryPhotos],
+      };
+    case CHANGE_QUERY_PHOTOS_SEARCH_TERM:
+      return {
+        ...state,
+        queryPhotos: {
+          ...state.queryPhotos.photos,
+          searchTerm: action.searchTerm,
+        },
       };
     default:
       return state;

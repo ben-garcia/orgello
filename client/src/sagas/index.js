@@ -6,7 +6,7 @@ import {
   receivedLatestPhotos,
 } from '../actions/boards';
 import { fetchData } from '../api';
-import getLatestPhotosPage from './selectors';
+import { getLatestPhotosPage, getQueryPhotosSearchTerm } from './selectors';
 
 function* getLatestSixPhotos() {
   try {

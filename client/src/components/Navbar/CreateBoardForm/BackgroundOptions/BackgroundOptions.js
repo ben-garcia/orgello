@@ -8,6 +8,7 @@ import {
   changeCreateBoardBackground,
   requestLatestPhotos,
   removeLatestPhotos,
+  changeQueryPhotosSearchTerm,
 } from '../../../../actions/boards';
 
 import colors from '../../../../api/colors';
@@ -21,6 +22,7 @@ const BackgroundOptions = ({
   latestPhotos,
   removePhotos,
   requestPhotos,
+  changePhotosSearchTerm,
 }) => {
   const [isColorsOptionsOpen, toggleColorsOptions] = useState(false);
   const [isPhotosOptionsOpen, togglePhotosOptions] = useState(false);
@@ -28,6 +30,8 @@ const BackgroundOptions = ({
   // this reference is used to change the position of the scrollbar after
   // a new batch of images have been rendered.
   const scrollRef = useRef(null);
+  // reference for the search input field in the photos options
+  const searchRef = useRef(null);
 
   // check the height of the grid container
   // at present this effect is called every render
@@ -41,6 +45,14 @@ const BackgroundOptions = ({
       requestPhotos();
     }
   });
+
+  // when PhotosOptions is open
+  // search input field should have focus
+  useEffect(() => {
+    if (searchRef.current) {
+      searchRef.current.focus();
+    }
+  }, [isPhotosOptionsOpen]);
 
   const boardBackgroundKey = Object.keys(currentCreateBoardBackground)[0];
   const boardBackgroundValue = Object.values(currentCreateBoardBackground)[0];
@@ -156,6 +168,11 @@ const BackgroundOptions = ({
                   className="photos__input"
                   type="text"
                   placeholder="Photos"
+                  ref={searchRef}
+                  onChange={(e) => {
+                    console.log(e.target.value);
+                    changePhotosSearchTerm(e.target.value);
+                  }}
                 />
                 <span className="photos-search-icon">
                   <i className="fas fa-search" />
@@ -247,6 +264,7 @@ BackgroundOptions.propTypes = {
   latestPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
   requestPhotos: PropTypes.func.isRequired,
   removePhotos: PropTypes.func.isRequired,
+  changePhotosSearchTerm: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -260,6 +278,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changeCreateBoardBackground(newCreateBoardBackground)),
   requestPhotos: () => dispatch(requestLatestPhotos()),
   removePhotos: () => dispatch(removeLatestPhotos()),
+  changePhotosSearchTerm: (searchTerm) =>
+    dispatch(changeQueryPhotosSearchTerm(searchTerm)),
 });
 
 export default connect(

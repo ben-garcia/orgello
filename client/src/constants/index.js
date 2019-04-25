@@ -24,3 +24,7 @@ export const REMOVE_LATEST_PHOTOS = 'REMOVE_LATEST_PHOTOS';
 // request is fired to fetch photos that match their input
 export const REQUEST_QUERY_PHOTOS = 'REQUEST_QUERY_PHOTOS';
 export const RECEIVED_QUERY_PHOTOS = 'RECEIVED_QUERY_PHOTOS';
+// when the user is typing in the search field
+// the value should change accordingly
+export const CHANGE_QUERY_PHOTOS_SEARCH_TERM =
+  'CHANGE_QUERY_PHOTOS_SEARCH_TERM';
