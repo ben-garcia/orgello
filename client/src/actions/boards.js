@@ -9,6 +9,7 @@ import {
   REQUEST_QUERY_PHOTOS,
   RECEIVED_QUERY_PHOTOS,
   CHANGE_QUERY_PHOTOS_SEARCH_TERM,
+  REMOVE_QUERY_PHOTOS,
 } from '../constants';
 
 export const changeCreateBoardFormStatus = (isCreateBoardFormOpen) => ({
@@ -55,4 +56,8 @@ export const receivedQueryPhotos = (queryPhotos) => ({
 export const changeQueryPhotosSearchTerm = (searchTerm) => ({
   type: CHANGE_QUERY_PHOTOS_SEARCH_TERM,
   searchTerm,
+});
+
+export const removeQueryPhotos = () => ({
+  type: REMOVE_QUERY_PHOTOS,
 });

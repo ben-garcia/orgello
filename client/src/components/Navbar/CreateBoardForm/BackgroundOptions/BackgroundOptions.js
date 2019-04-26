@@ -10,6 +10,7 @@ import {
   removeLatestPhotos,
   changeQueryPhotosSearchTerm,
   requestQueryPhotos,
+  removeQueryPhotos,
 } from '../../../../actions/boards';
 
 import colors from '../../../../api/colors';
@@ -26,6 +27,7 @@ const BackgroundOptions = ({
   changePhotosSearchTerm,
   requestSearchPhotos,
   queryPhotos,
+  removeQPhotos,
 }) => {
   const [isColorsOptionsOpen, toggleColorsOptions] = useState(false);
   const [isPhotosOptionsOpen, togglePhotosOptions] = useState(false);
@@ -43,7 +45,7 @@ const BackgroundOptions = ({
       isPhotosOptionsOpen &&
       scrollRef.current.offsetHeight >= 502 &&
       latestPhotos.length >= 18 &&
-      latestPhotos.length <= 54
+      latestPhotos.length < 36
     ) {
       requestPhotos();
     }
@@ -99,7 +101,14 @@ const BackgroundOptions = ({
 
               if (isPhotosOptionsOpen && latestPhotos.length > 0) {
                 // empty the latestPhotos array
+                // by dipatching an action to the store.
                 removePhotos();
+              }
+
+              if (isPhotosOptionsOpen && queryPhotos.length > 0) {
+                // empty the queryPhotos array
+                // by dispatching action to the store.
+                removeQPhotos();
               }
             }}
           >
@@ -144,9 +153,11 @@ const BackgroundOptions = ({
             // when the user scrolls down enough then
             // dispatch action to get more photos and render
             // them on the page.
-            if (queryPhotos.length > 0) {
+            // - keep queryPhoto and latestPhoto to a maximum of 54
+            // - so as to not make more than 50 requests per hour(unslash api guidelines)
+            if (queryPhotos.length > 0 && queryPhotos.length < 36) {
               requestQueryPhotos();
-            } else {
+            } else if (latestPhotos.length > 0 && latestPhotos.length < 36) {
               requestPhotos();
             }
           }
@@ -180,6 +191,7 @@ const BackgroundOptions = ({
                     if (e.target.value.length > 0) {
                       changePhotosSearchTerm(e.target.value);
                       requestSearchPhotos();
+                      photosToRender = queryPhotos;
                     }
                   }}
                 />
@@ -276,6 +288,7 @@ BackgroundOptions.propTypes = {
   changePhotosSearchTerm: PropTypes.func.isRequired,
   requestSearchPhotos: PropTypes.func.isRequired,
   queryPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  removeQPhotos: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -293,6 +306,7 @@ const mapDispatchToProps = (dispatch) => ({
   changePhotosSearchTerm: (searchTerm) =>
     dispatch(changeQueryPhotosSearchTerm(searchTerm)),
   requestSearchPhotos: () => dispatch(requestQueryPhotos()),
+  removeQPhotos: () => dispatch(removeQueryPhotos()),
 });
 
 export default connect(

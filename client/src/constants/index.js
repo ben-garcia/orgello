@@ -28,3 +28,5 @@ export const RECEIVED_QUERY_PHOTOS = 'RECEIVED_QUERY_PHOTOS';
 // the value should change accordingly
 export const CHANGE_QUERY_PHOTOS_SEARCH_TERM =
   'CHANGE_QUERY_PHOTOS_SEARCH_TERM';
+// empty the query photos when user hits left arrow button
+export const REMOVE_QUERY_PHOTOS = 'REMOVE_QUERY_PHOTOS';
