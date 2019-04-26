@@ -51,6 +51,19 @@ const BackgroundOptions = ({
     }
   });
 
+  // populate the queryPhotos array with more than 18 if
+  // the grid container's height is 502 or greater
+  useEffect(() => {
+    if (
+      isPhotosOptionsOpen &&
+      scrollRef.current.offsetHeight >= 502 &&
+      queryPhotos.length >= 18 &&
+      queryPhotos.length < 36
+    ) {
+      requestSearchPhotos();
+    }
+  });
+
   // when PhotosOptions is open
   // search input field should have focus
   useEffect(() => {
@@ -66,10 +79,14 @@ const BackgroundOptions = ({
   let photosToRender = latestSixPhotos;
   let modifiedColors = colors;
 
-  if (latestPhotos.length > 0) {
+  if (latestPhotos.length > 0 && isPhotosOptionsOpen) {
     photosToRender = latestPhotos;
   } else {
     photosToRender = photosToRender.filter((image, i) => i < 6);
+  }
+
+  if (queryPhotos.length > 0 && isPhotosOptionsOpen) {
+    photosToRender = queryPhotos;
   }
 
   if (isColorsOptionsOpen) {
@@ -190,8 +207,14 @@ const BackgroundOptions = ({
                   onChange={(e) => {
                     if (e.target.value.length > 0) {
                       changePhotosSearchTerm(e.target.value);
+                      // empty the queryPhotos array when the user
+                      // types another letter
+                      removeQPhotos();
+                      // populate the array with the new images
                       requestSearchPhotos();
                       photosToRender = queryPhotos;
+                    } else {
+                      photosToRender = latestPhotos;
                     }
                   }}
                 />

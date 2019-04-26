@@ -68,7 +68,7 @@ const boardsReducer = (state = initialState, action) => {
         ...state,
         queryPhotos: {
           ...state.queryPhotos,
-          photos: [...action.queryPhotos],
+          photos: [...state.queryPhotos.photos, ...action.queryPhotos],
           page: state.queryPhotos.page + 1,
         },
       };
@@ -77,7 +77,7 @@ const boardsReducer = (state = initialState, action) => {
         ...state,
         queryPhotos: {
           photos: [],
-          searchTerm: '',
+          searchTerm: state.queryPhotos.searchTerm,
           page: 0,
         },
       };
