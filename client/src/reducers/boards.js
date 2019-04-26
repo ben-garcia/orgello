@@ -1,6 +1,7 @@
 import {
   CHANGE_CREATE_BOARD_FORM_STATUS,
   CHANGE_BACKGROUND_OPTIONS,
+  CHANGE_CREATE_BOARD_TITLE,
   CHANGE_CREATE_BOARD_BACKGROUND,
   RECEIVED_LATEST_SIX_PHOTOS,
   RECEIVED_LATEST_PHOTOS,
@@ -14,6 +15,7 @@ import {
 const initialState = {
   isFormOpen: false,
   isBackgroundOptionsOpen: false,
+  title: '',
   currentBackground: {
     backgroundImage: '',
   },
@@ -40,6 +42,11 @@ const boardsReducer = (state = initialState, action) => {
       return {
         ...state,
         isBackgroundOptionsOpen: action.newStatus,
+      };
+    case CHANGE_CREATE_BOARD_TITLE:
+      return {
+        ...state,
+        title: action.newTitle,
       };
     case CHANGE_CREATE_BOARD_BACKGROUND:
       return {

@@ -10,6 +10,9 @@ export const CHANGE_CREATE_BOARD_FORM_STATUS =
 // changing the board background or clicks the close button
 export const CHANGE_BACKGROUND_OPTIONS = 'CHANGE_BACKGROUND_OPTIONS';
 
+// title for the new board
+export const CHANGE_CREATE_BOARD_TITLE = 'CHANGE_CREATE_BOARD_TITLE';
+
 // when the use clicks on a new background image
 export const CHANGE_CREATE_BOARD_BACKGROUND = 'CHANGE_CREATE_BOARD_BACKGROUND';
 

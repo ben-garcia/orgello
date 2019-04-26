@@ -10,6 +10,7 @@ import BackgroundOptions from './BackgroundOptions/BackgroundOptions';
 import {
   changeCreateBoardFormStatus,
   changeBackgroundOptions,
+  changeCreateBoardTitle,
   changeCreateBoardBackground,
   requestLatestSixPhotos,
 } from '../../../actions/boards';
@@ -22,6 +23,7 @@ const CreateBoardForm = ({
   changeBoardFormStatus,
   isCreateBoardFormOpen,
   isBackgroundOptionsOpen,
+  changeBoardTitle,
   changeBackOptions,
   currentCreateBoardBackground,
   changeBoardBackground,
@@ -57,7 +59,8 @@ const CreateBoardForm = ({
           (e.target.className === 'board-form__inner' &&
             isBackgroundOptionsOpen)
         ) {
-          changeBackOptions(!isBackgroundOptionsOpen);
+          // changeBackOptions(!isBackgroundOptionsOpen);
+          changeBackOptions(false);
         }
       }}
     >
@@ -77,6 +80,7 @@ const CreateBoardForm = ({
                 placeholder="Add board title"
                 onChange={(e) => {
                   if (e.target.value.length > 0) {
+                    changeBoardTitle(e.target.value);
                     toggleDisabledButton(false);
                   } else {
                     toggleDisabledButton(true);
@@ -177,6 +181,7 @@ CreateBoardForm.propTypes = {
   isCreateBoardFormOpen: PropTypes.bool.isRequired,
   isBackgroundOptionsOpen: PropTypes.bool.isRequired,
   changeBackOptions: PropTypes.func.isRequired,
+  changeBoardTitle: PropTypes.func.isRequired,
   changeBoardFormStatus: PropTypes.func.isRequired,
   currentCreateBoardBackground: PropTypes.shape().isRequired,
   changeBoardBackground: PropTypes.func.isRequired,
@@ -196,6 +201,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changeCreateBoardFormStatus(status)),
   changeBackOptions: (newStatus) =>
     dispatch(changeBackgroundOptions(newStatus)),
+  changeBoardTitle: (newTitle) => dispatch(changeCreateBoardTitle(newTitle)),
   changeBoardBackground: (newCreateBoardBackground) =>
     dispatch(changeCreateBoardBackground(newCreateBoardBackground)),
   requestSixPhotos: () => dispatch(requestLatestSixPhotos()),
