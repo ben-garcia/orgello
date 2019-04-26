@@ -44,8 +44,8 @@ const BackgroundOptions = ({
     if (
       isPhotosOptionsOpen &&
       scrollRef.current.offsetHeight >= 502 &&
-      latestPhotos.length >= 18 &&
-      latestPhotos.length < 36
+      latestPhotos.length > 0 &&
+      latestPhotos.length < 18
     ) {
       requestPhotos();
     }
@@ -57,8 +57,8 @@ const BackgroundOptions = ({
     if (
       isPhotosOptionsOpen &&
       scrollRef.current.offsetHeight >= 502 &&
-      queryPhotos.length >= 18 &&
-      queryPhotos.length < 36
+      queryPhotos.length > 0 &&
+      queryPhotos.length < 18
     ) {
       requestSearchPhotos();
     }
@@ -214,6 +214,10 @@ const BackgroundOptions = ({
                       requestSearchPhotos();
                       photosToRender = queryPhotos;
                     } else {
+                      // when the search input in empty
+                      // remove the queryPhotos to show the
+                      // latestPhotos instead
+                      removeQPhotos();
                       changePhotosSearchTerm('');
                       photosToRender = latestPhotos;
                     }
