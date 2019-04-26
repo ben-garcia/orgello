@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import {
   changeCreateBoardBackground,
+  changeBackgroundOptions,
   requestLatestPhotos,
   removeLatestPhotos,
   changeQueryPhotosSearchTerm,
@@ -18,6 +19,8 @@ import colors from '../../../../api/colors';
 import './BackgroundOptions.scss';
 
 const BackgroundOptions = ({
+  isBackgroundOptionsOpen,
+  changeBackOptions,
   currentCreateBoardBackground,
   changeBoardBackground,
   latestSixPhotos,
@@ -154,7 +157,11 @@ const BackgroundOptions = ({
             title
           )}
         </span>
-        <button className="background-options__button" type="button">
+        <button
+          className="background-options__button"
+          type="button"
+          onClick={() => changeBackOptions(!isBackgroundOptionsOpen)}
+        >
           <i className="fas fa-times" />
         </button>
       </div>
@@ -307,6 +314,8 @@ const BackgroundOptions = ({
 };
 
 BackgroundOptions.propTypes = {
+  isBackgroundOptionsOpen: PropTypes.bool.isRequired,
+  changeBackOptions: PropTypes.func.isRequired,
   currentCreateBoardBackground: PropTypes.shape().isRequired,
   changeBoardBackground: PropTypes.func.isRequired,
   latestSixPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -320,6 +329,7 @@ BackgroundOptions.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  isBackgroundOptionsOpen: state.createBoard.isBackgroundOptionsOpen,
   currentCreateBoardBackground: state.createBoard.currentBackground,
   latestSixPhotos: state.createBoard.latestSixPhotos,
   latestPhotos: state.createBoard.latestPhotos.photos,
@@ -327,6 +337,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  changeBackOptions: (newStatus) =>
+    dispatch(changeBackgroundOptions(newStatus)),
   changeBoardBackground: (newCreateBoardBackground) =>
     dispatch(changeCreateBoardBackground(newCreateBoardBackground)),
   requestPhotos: () => dispatch(requestLatestPhotos()),

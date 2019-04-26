@@ -5,7 +5,12 @@ export const CHANGE_USER_LOGGED_IN_STATUS = 'CHANGE_USER_LOGGED_IN_STATUS';
 // change when use clicks on the arrow in the navbar to create a new board.`
 export const CHANGE_CREATE_BOARD_FORM_STATUS =
   'CHANGE_CREATE_BOARD_FORM_STATUS';
-// when the use clicks the horizontal ellipsis icon(***) when changing the board background
+
+// when the user clicks on the horizontal ellipsis icon(***) when
+// changing the board background or clicks the close button
+export const CHANGE_BACKGROUND_OPTIONS = 'CHANGE_BACKGROUND_OPTIONS';
+
+// when the use clicks on a new background image
 export const CHANGE_CREATE_BOARD_BACKGROUND = 'CHANGE_CREATE_BOARD_BACKGROUND';
 
 // when the create board component mounts it fires an request for

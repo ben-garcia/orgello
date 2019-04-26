@@ -1,5 +1,6 @@
 import {
   CHANGE_CREATE_BOARD_FORM_STATUS,
+  CHANGE_BACKGROUND_OPTIONS,
   CHANGE_CREATE_BOARD_BACKGROUND,
   RECEIVED_LATEST_SIX_PHOTOS,
   RECEIVED_LATEST_PHOTOS,
@@ -12,6 +13,7 @@ import {
 // CreateBoardForm component shouldn't be visible
 const initialState = {
   isFormOpen: false,
+  isBackgroundOptionsOpen: false,
   currentBackground: {
     backgroundImage: '',
   },
@@ -33,6 +35,11 @@ const boardsReducer = (state = initialState, action) => {
       return {
         ...state,
         isFormOpen: action.payload,
+      };
+    case CHANGE_BACKGROUND_OPTIONS:
+      return {
+        ...state,
+        isBackgroundOptionsOpen: action.newStatus,
       };
     case CHANGE_CREATE_BOARD_BACKGROUND:
       return {

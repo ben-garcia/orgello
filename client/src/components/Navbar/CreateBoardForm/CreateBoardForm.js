@@ -9,6 +9,7 @@ import BackgroundOptions from './BackgroundOptions/BackgroundOptions';
 
 import {
   changeCreateBoardFormStatus,
+  changeBackgroundOptions,
   changeCreateBoardBackground,
   requestLatestSixPhotos,
 } from '../../../actions/boards';
@@ -20,13 +21,14 @@ import './CreateBoardForm.scss';
 const CreateBoardForm = ({
   changeBoardFormStatus,
   isCreateBoardFormOpen,
+  isBackgroundOptionsOpen,
+  changeBackOptions,
   currentCreateBoardBackground,
   changeBoardBackground,
   requestSixPhotos,
   latestSixPhotos,
 }) => {
   const [isDisabled, toggleDisabledButton] = useState(true);
-  const [isBackgroundOptionsOpen, toggleBackgroundOptions] = useState(false);
 
   // make api request to get latest six photos when component is mounted.
   useEffect(() => {
@@ -55,7 +57,7 @@ const CreateBoardForm = ({
           (e.target.className === 'board-form__inner' &&
             isBackgroundOptionsOpen)
         ) {
-          toggleBackgroundOptions(false);
+          changeBackOptions(!isBackgroundOptionsOpen);
         }
       }}
     >
@@ -145,9 +147,7 @@ const CreateBoardForm = ({
                   <button
                     className="background__button background__button--options"
                     type="button"
-                    onClick={() =>
-                      toggleBackgroundOptions(!isBackgroundOptionsOpen)
-                    }
+                    onClick={() => changeBackOptions(!isBackgroundOptionsOpen)}
                   >
                     <i className="fas fa-ellipsis-h" />
                   </button>
@@ -175,6 +175,8 @@ const CreateBoardForm = ({
 
 CreateBoardForm.propTypes = {
   isCreateBoardFormOpen: PropTypes.bool.isRequired,
+  isBackgroundOptionsOpen: PropTypes.bool.isRequired,
+  changeBackOptions: PropTypes.func.isRequired,
   changeBoardFormStatus: PropTypes.func.isRequired,
   currentCreateBoardBackground: PropTypes.shape().isRequired,
   changeBoardBackground: PropTypes.func.isRequired,
@@ -184,6 +186,7 @@ CreateBoardForm.propTypes = {
 
 const mapStateToProps = (state) => ({
   isCreateBoardFormOpen: state.createBoard.isFormOpen,
+  isBackgroundOptionsOpen: state.createBoard.isBackgroundOptionsOpen,
   currentCreateBoardBackground: state.createBoard.currentBackground,
   latestSixPhotos: state.createBoard.latestSixPhotos,
 });
@@ -191,6 +194,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeBoardFormStatus: (status) =>
     dispatch(changeCreateBoardFormStatus(status)),
+  changeBackOptions: (newStatus) =>
+    dispatch(changeBackgroundOptions(newStatus)),
   changeBoardBackground: (newCreateBoardBackground) =>
     dispatch(changeCreateBoardBackground(newCreateBoardBackground)),
   requestSixPhotos: () => dispatch(requestLatestSixPhotos()),

@@ -1,5 +1,6 @@
 import {
   CHANGE_CREATE_BOARD_FORM_STATUS,
+  CHANGE_BACKGROUND_OPTIONS,
   CHANGE_CREATE_BOARD_BACKGROUND,
   REQUEST_LATEST_SIX_PHOTOS,
   RECEIVED_LATEST_SIX_PHOTOS,
@@ -15,6 +16,11 @@ import {
 export const changeCreateBoardFormStatus = (isCreateBoardFormOpen) => ({
   type: CHANGE_CREATE_BOARD_FORM_STATUS,
   payload: isCreateBoardFormOpen,
+});
+
+export const changeBackgroundOptions = (newStatus) => ({
+  type: CHANGE_BACKGROUND_OPTIONS,
+  newStatus,
 });
 
 export const changeCreateBoardBackground = (newCreateBoardBackground) => ({
