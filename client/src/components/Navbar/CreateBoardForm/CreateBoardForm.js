@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import BackgroundOptions from './BackgroundOptions/BackgroundOptions';
@@ -21,6 +22,9 @@ import { submitNewBoard } from '../../../api';
 import './CreateBoardForm.scss';
 
 const CreateBoardForm = ({
+  history,
+  userId,
+  newBoardTitle,
   changeBoardFormStatus,
   isCreateBoardFormOpen,
   isBackgroundOptionsOpen,
@@ -183,7 +187,18 @@ const CreateBoardForm = ({
             }
             type="submit"
             disabled={isDisabled}
-            onClick={() => submitNewBoard()}
+            onClick={(e) => {
+              e.preventDefault();
+              const newBoard = {
+                title: newBoardTitle,
+                background: currentCreateBoardBackground.backgroundImage
+                  ? currentCreateBoardBackground.backgroundImage.regular
+                  : currentCreateBoardBackground.backgroundColor,
+                ownerId: userId,
+              };
+              submitNewBoard(newBoard);
+              history.replace(`/board/${newBoardTitle}`);
+            }}
           >
             Create Board
           </button>
@@ -194,9 +209,14 @@ const CreateBoardForm = ({
 };
 
 CreateBoardForm.propTypes = {
+  history: PropTypes.shape({
+    replace: PropTypes.func.isRequired,
+  }).isRequired,
+  userId: PropTypes.number.isRequired,
   isCreateBoardFormOpen: PropTypes.bool.isRequired,
   isBackgroundOptionsOpen: PropTypes.bool.isRequired,
   changeBackOptions: PropTypes.func.isRequired,
+  newBoardTitle: PropTypes.string.isRequired,
   changeBoardTitle: PropTypes.func.isRequired,
   changeBoardFormStatus: PropTypes.func.isRequired,
   currentCreateBoardBackground: PropTypes.shape().isRequired,
@@ -206,6 +226,8 @@ CreateBoardForm.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  userId: state.user.id,
+  newBoardTitle: state.createBoard.title,
   isCreateBoardFormOpen: state.createBoard.isFormOpen,
   isBackgroundOptionsOpen: state.createBoard.isBackgroundOptionsOpen,
   currentCreateBoardBackground: state.createBoard.currentBackground,
@@ -226,4 +248,5 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateBoardForm);
+  // withRouter hoc that passes history props to CreateBoardForm
+)(withRouter(CreateBoardForm));

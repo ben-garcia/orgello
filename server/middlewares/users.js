@@ -37,11 +37,18 @@ function verifyToken(req, res, next) {
       next({ message: err.message });
     } else {
       req.user = user;
+      console.log('user------- ', user);
+      console.log('req.body------- ', req.body);
       // check that the :id param matches the user id
       // if not then user is 'unauthorized'
       if (req.user.id === Number(req.params.userId)) {
         next();
-      } else if (req.params.boardId) {
+      } else if (
+        req.params.boardId ||
+        // if req.body contains the neccessary object to create a new board
+        // then call next to move to the /boards POST endpoint
+        (req.body.title && req.body.background && req.body.ownerId)
+      ) {
         // if requesting a board resource
         // pass it along the middleware stack
         next();

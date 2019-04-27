@@ -52,29 +52,35 @@ router.get('/', (req, res, next) => {
 });
 
 // create a new board and validate before adding it to the db.
-router.post('/', (req, res, next) => {
-  const result = Joi.validate(req.body, schema);
+router.post(
+  '/',
+  validateParam,
+  isTokenPresent,
+  verifyToken,
+  (req, res, next) => {
+    const result = Joi.validate(req.body, schema);
 
-  // if req.body is not valid.
-  if (result.error !== null) {
-    res.status(422);
-    next({ message: result.error.message });
-  } else {
-    // new board
-    const newBoard = {
-      ...req.body,
-    };
-    // insert board into the database.
-    Board.create(newBoard)
-      // send to newly created board to the client.
-      .then((board) => {
-        res.status(201); // created
-        res.json(board);
-      })
-      // if the board failed to be created.
-      .catch((e) => next({ message: e.message }));
-  }
-});
+    // if req.body is not valid.
+    if (result.error !== null) {
+      res.status(422);
+      next({ message: result.error.message });
+    } else {
+      // new board
+      const newBoard = {
+        ...req.body,
+      };
+      // insert board into the database.
+      Board.create(newBoard)
+        // send to newly created board to the client.
+        .then((board) => {
+          res.status(201); // created
+          res.json(board);
+        })
+        // if the board failed to be created.
+        .catch((e) => next({ message: e.message }));
+    }
+  },
+);
 
 // update the board with the given id using property/properties
 // in req.body
