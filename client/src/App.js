@@ -9,6 +9,7 @@ import Login from './components/Login/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import Footer from './components/Footer/Footer';
 import NotFound from './components/NotFound/NotFound';
+import Board from './components/Board/Board';
 
 import store from './store';
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/:username/dashboard" component={Dashboard} />
+          <Route path="/board/:boardTitle" component={Board} />
           <Route component={NotFound} />
         </Switch>
       </main>

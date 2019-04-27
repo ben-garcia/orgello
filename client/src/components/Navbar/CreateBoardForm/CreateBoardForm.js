@@ -197,7 +197,15 @@ const CreateBoardForm = ({
                 ownerId: userId,
               };
               submitNewBoard(newBoard);
-              history.replace(`/board/${newBoardTitle}`);
+              // remove the create new board component
+              changeBoardFormStatus(false);
+              // remove the background options panel
+              changeBackOptions(false);
+              // replace the url
+              // with /board/:boardTitle
+              // to prevent url having spaces(because of the board title)
+              // replace any empty characters with the '-' character
+              history.replace(`/board/${newBoardTitle.replace(' ', '-')}`);
             }}
           >
             Create Board

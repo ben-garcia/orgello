@@ -17,7 +17,7 @@ const usersReducer = (state = initialState, action) => {
         email: action.userInfo.email,
         username: action.userInfo.username,
         createdAt: action.userInfo.createdAt,
-        updateAt: action.userInfo.updatedAt,
+        updatedAt: action.userInfo.updatedAt,
       };
     case LOGOUT_USER:
       return {

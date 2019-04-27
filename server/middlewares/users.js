@@ -37,8 +37,6 @@ function verifyToken(req, res, next) {
       next({ message: err.message });
     } else {
       req.user = user;
-      console.log('user------- ', user);
-      console.log('req.body------- ', req.body);
       // check that the :id param matches the user id
       // if not then user is 'unauthorized'
       if (req.user.id === Number(req.params.userId)) {
