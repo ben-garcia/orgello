@@ -17,7 +17,10 @@ const initialState = {
   isBackgroundOptionsOpen: false,
   title: '',
   currentBackground: {
-    backgroundImage: '',
+    backgroundImage: {
+      thumbnail: '',
+      regular: '',
+    },
   },
   latestSixPhotos: [],
   latestPhotos: {
@@ -51,13 +54,16 @@ const boardsReducer = (state = initialState, action) => {
     case CHANGE_CREATE_BOARD_BACKGROUND:
       return {
         ...state,
-        currentBackground: action.payload,
+        currentBackground: action.newCreateBoardBackground,
       };
     case RECEIVED_LATEST_SIX_PHOTOS:
       return {
         ...state,
         currentBackground: {
-          backgroundImage: `url(${action.data[0].urls.thumb})`,
+          backgroundImage: {
+            thumbnail: `url(${action.data[0].urls.thumb})`,
+            regular: `url(${action.data[0].urls.regular})`,
+          },
         },
         latestSixPhotos: [...action.data],
       };

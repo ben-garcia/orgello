@@ -31,7 +31,7 @@ export const changeCreateBoardTitle = (newTitle) => ({
 
 export const changeCreateBoardBackground = (newCreateBoardBackground) => ({
   type: CHANGE_CREATE_BOARD_BACKGROUND,
-  payload: newCreateBoardBackground,
+  newCreateBoardBackground,
 });
 
 export const requestLatestSixPhotos = () => ({

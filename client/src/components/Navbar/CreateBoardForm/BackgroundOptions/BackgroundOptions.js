@@ -75,9 +75,20 @@ const BackgroundOptions = ({
     }
   }, [isPhotosOptionsOpen]);
 
+  // extract the key from the currentBoardBackground object
+  // posibble values are'backgroundImage' or 'backgroundColor'
   const boardBackgroundKey = Object.keys(currentCreateBoardBackground)[0];
-  const boardBackgroundValue = Object.values(currentCreateBoardBackground)[0];
+  // extract the value from the currentBoardBackground object
+  // possible values are
+  // 'url(url goes here) for an backgroundImage
+  // 'rgba(value goes here) for backgroundColor
 
+  let boardBackgroundValue = Object.values(currentCreateBoardBackground)[0]
+    .thumbnail;
+
+  if (!boardBackgroundValue) {
+    boardBackgroundValue = currentCreateBoardBackground[boardBackgroundKey];
+  }
   let title = 'Board Background';
   let photosToRender = latestSixPhotos;
   let modifiedColors = colors;
@@ -246,7 +257,10 @@ const BackgroundOptions = ({
                   style={{ backgroundImage: `url(${image.urls.thumb})` }}
                   onClick={() =>
                     changeBoardBackground({
-                      backgroundImage: `url(${image.urls.thumb})`,
+                      backgroundImage: {
+                        thumbnail: `url(${image.urls.thumb})`,
+                        regular: `url(${image.urls.regular})`,
+                      },
                     })
                   }
                 >

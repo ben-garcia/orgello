@@ -44,7 +44,12 @@ const CreateBoardForm = ({
   // possible values are
   // 'url(url goes here) for an backgroundImage
   // 'rgba(value goes here) for backgroundColor
-  const boardBackgroundValue = Object.values(currentCreateBoardBackground)[0];
+  let boardBackgroundValue = Object.values(currentCreateBoardBackground)[0]
+    .thumbnail;
+
+  if (!boardBackgroundValue) {
+    boardBackgroundValue = currentCreateBoardBackground[boardBackgroundKey];
+  }
 
   return (
     <div
@@ -54,12 +59,11 @@ const CreateBoardForm = ({
           changeBoardFormStatus(!isCreateBoardFormOpen);
         }
         if (
-          e.currentTarget === e.target ||
-          e.target.className === 'board-form__input' ||
-          (e.target.className === 'board-form__inner' &&
-            isBackgroundOptionsOpen)
+          e.currentTarget === e.target &&
+          (e.target.className === 'board-form__input' ||
+            e.target.className === 'board-form__inner') &&
+          isBackgroundOptionsOpen
         ) {
-          // changeBackOptions(!isBackgroundOptionsOpen);
           changeBackOptions(false);
         }
       }}
@@ -72,7 +76,14 @@ const CreateBoardForm = ({
           <div className="board-form__container">
             <div
               className="board-form__inner"
-              style={currentCreateBoardBackground}
+              style={
+                currentCreateBoardBackground.backgroundImage
+                  ? {
+                      backgroundImage:
+                        currentCreateBoardBackground.backgroundImage.thumbnail,
+                    }
+                  : currentCreateBoardBackground
+              }
             >
               <input
                 className="board-form__input"
@@ -111,7 +122,10 @@ const CreateBoardForm = ({
                         style={{ backgroundImage: `url(${image.urls.thumb})` }}
                         onClick={() =>
                           changeBoardBackground({
-                            backgroundImage: `url(${image.urls.thumb})`,
+                            backgroundImage: {
+                              thumbnail: `url(${image.urls.thumb})`,
+                              regular: `url(${image.urls.regular})`,
+                            },
                           })
                         }
                       >
