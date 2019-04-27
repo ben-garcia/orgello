@@ -15,3 +15,8 @@ export const fetchData = async (baseUrl, query, page, perPage) => {
 
   return photos;
 };
+
+export const submitNewBoard = async (url) => {
+  console.log(`submitting new board to ${url}`);
+  console.log('...');
+};

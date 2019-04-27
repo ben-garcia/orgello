@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Joi from 'joi-browser';
 
-import changeUserLoggedInStatus from '../../actions/users';
 import { authUrl } from '../../api';
 
 import './Signup.scss';
@@ -76,17 +75,11 @@ class Signup extends Component {
   }
 
   componentDidMount() {
-    const { history, changeUserLoggedStatus } = this.props;
+    const { history, user } = this.props;
 
-    let user = localStorage.getItem('user');
-    if (user) {
-      // parse the user object
-      user = JSON.parse(user);
-      // if the user is stored in localStorage then
-      // set the dispatch isUserLoggedInStatus(true)
-      changeUserLoggedStatus(true);
+    if (user.isLoggedIn) {
       // redirect the user to their dashboard
-      history.push(`${user.username}/dashboard`);
+      history.push(`/:${user.username}/dashboard`);
     }
   }
 
@@ -370,15 +363,11 @@ Signup.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  changeUserLoggedStatus: PropTypes.func.isRequired,
+  user: PropTypes.shape.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  changeUserLoggedStatus: (status) =>
-    dispatch(changeUserLoggedInStatus(status)),
+const mapStateToProps = (state) => ({
+  user: state.user,
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Signup);
+export default connect(mapStateToProps)(Signup);

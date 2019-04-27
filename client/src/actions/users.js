@@ -1,8 +1,10 @@
-import { CHANGE_USER_LOGGED_IN_STATUS } from '../constants';
+import { LOGIN_USER, LOGOUT_USER } from '../constants';
 
-const changeUserLoggedInStatus = (isUserLoggedIn) => ({
-  type: CHANGE_USER_LOGGED_IN_STATUS,
-  payload: isUserLoggedIn,
+export const loginUser = (userInfo) => ({
+  type: LOGIN_USER,
+  userInfo,
 });
 
-export default changeUserLoggedInStatus;
+export const logoutUser = () => ({
+  type: LOGOUT_USER,
+});

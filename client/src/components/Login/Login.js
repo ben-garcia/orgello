@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import changeUserLoggedInStatus from '../../actions/users';
+import { loginUser } from '../../actions/users';
 import { authUrl } from '../../api';
 
 import '../Signup/Signup.scss';
@@ -23,16 +23,9 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    const { history, changeUserLoggedStatus } = this.props;
+    const { history, user } = this.props;
 
-    let user = localStorage.getItem('user');
-    if (user) {
-      // parse the user object
-      user = JSON.parse(user);
-      // if the user is stored in localStorage then
-      // set the dispatch isUserLoggedInStatus(true)
-      changeUserLoggedStatus(true);
-      // redirect the user to their dashboard
+    if (user.isLoggedIn) {
       history.push(`${user.username}/dashboard`);
     }
   }
@@ -103,7 +96,7 @@ class Login extends Component {
     // prevent a refresh
     e.preventDefault();
 
-    const { history, changeUserLoggedStatus } = this.props;
+    const { history, login } = this.props;
     const { password } = this.state;
 
     const result = this.inputValidation();
@@ -145,7 +138,7 @@ class Login extends Component {
             // to authorized the user in subsequent requests.
             localStorage.setItem('user', JSON.stringify(data));
             // dispatch 'changeUserLoggedInStatus' to change user.loggedIn to true
-            changeUserLoggedStatus(true);
+            login({ ...data, isLoggedIn: true });
             // redirect to the users dashboard
             history.push(`/${data.username}/dashboard`);
           } else {
@@ -209,15 +202,19 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  changeUserLoggedStatus: PropTypes.func.isRequired,
+  user: PropTypes.shape.isRequired,
+  login: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
 const mapDispatchToProps = (dispatch) => ({
-  changeUserLoggedStatus: (status) =>
-    dispatch(changeUserLoggedInStatus(status)),
+  login: (userInfo) => dispatch(loginUser(userInfo)),
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Login);

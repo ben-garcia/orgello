@@ -16,6 +16,7 @@ import {
 } from '../../../actions/boards';
 
 import colors from '../../../api/colors';
+import { submitNewBoard } from '../../../api';
 
 import './CreateBoardForm.scss';
 
@@ -56,13 +57,13 @@ const CreateBoardForm = ({
       className="create-board-overlay"
       onClick={(e) => {
         if (e.currentTarget === e.target && !isBackgroundOptionsOpen) {
-          changeBoardFormStatus(!isCreateBoardFormOpen);
+          changeBoardFormStatus(false);
         }
         if (
-          e.currentTarget === e.target &&
-          (e.target.className === 'board-form__input' ||
+          e.currentTarget === e.target ||
+          ((e.target.className === 'board-form__input' ||
             e.target.className === 'board-form__inner') &&
-          isBackgroundOptionsOpen
+            isBackgroundOptionsOpen)
         ) {
           changeBackOptions(false);
         }
@@ -182,6 +183,7 @@ const CreateBoardForm = ({
             }
             type="submit"
             disabled={isDisabled}
+            onClick={() => submitNewBoard()}
           >
             Create Board
           </button>

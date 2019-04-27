@@ -1,5 +1,8 @@
 // users
-export const CHANGE_USER_LOGGED_IN_STATUS = 'CHANGE_USER_LOGGED_IN_STATUS';
+// when a user is logged in
+export const LOGIN_USER = 'LOGIN_USER';
+// when a use is logged out
+export const LOGOUT_USER = 'LOGOUT_USER';
 
 // boards
 // change when use clicks on the arrow in the navbar to create a new board.`

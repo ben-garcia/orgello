@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import changeUserLoggedInStatus from '../../actions/users';
+import { loginUser } from '../../actions/users';
 
 import './LandingPage.scss';
 
-const LandingPage = ({ history, changeUserLoggedStatus }) => {
+const LandingPage = ({ history, login }) => {
   let user = localStorage.getItem('user');
   if (user) {
     // parse the user object
     user = JSON.parse(user);
     // if the user is stored in localStorage then
     // set the dispatch isUserLoggedInStatus(true)
-    changeUserLoggedStatus(true);
+    login({ ...user, isLoggedIn: true });
     // redirect the user to their dashboard
     history.push(`${user.username}/dashboard`);
   }
@@ -40,12 +40,11 @@ LandingPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  changeUserLoggedStatus: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  changeUserLoggedStatus: (status) =>
-    dispatch(changeUserLoggedInStatus(status)),
+  login: (userInfo) => dispatch(loginUser(userInfo)),
 });
 
 export default connect(
