@@ -3,9 +3,7 @@ const Joi = require('joi');
 
 const router = express.Router();
 
-const User = require('../db/models').user;
 const Board = require('../db/models').board;
-const List = require('../db/models').list;
 
 const {
   validateParam,
@@ -30,26 +28,24 @@ const schema = Joi.object().keys({
     .required(),
 });
 
-// get all the boards including models associated with each
-// the user(owner) and lists
-router.get('/', (req, res, next) => {
-  Board.findAll({
-    include: [
-      {
-        model: User,
-        as: 'owner', // board.owner
+// get all the boards associated with a particular user
+router.get(
+  '/',
+  validateParam,
+  isTokenPresent,
+  verifyToken,
+  (req, res, next) => {
+    Board.findAll({
+      where: {
+        ownerId: req.query.ownerId,
       },
-      {
-        model: List,
-        as: 'lists',
-      },
-    ],
-  })
-    .then((users) => {
-      res.json(users);
     })
-    .catch((e) => next({ message: e.message }));
-});
+      .then((boards) => {
+        res.json(boards);
+      })
+      .catch((e) => next({ message: e.message }));
+  },
+);
 
 // create a new board and validate before adding it to the db.
 router.post(

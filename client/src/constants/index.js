@@ -4,6 +4,11 @@ export const LOGIN_USER = 'LOGIN_USER';
 // when a use is logged out
 export const LOGOUT_USER = 'LOGOUT_USER';
 
+// request all the boards associated with a particular user
+export const REQUEST_USERS_BOARDS = 'REQUEST_USERS_BOARDS';
+// when the request was successfull
+export const RECEIVED_USERS_BOARDS = 'RECEIVED_USERS_BOARDS';
+
 // boards
 // change when use clicks on the arrow in the navbar to create a new board.`
 export const CHANGE_CREATE_BOARD_FORM_STATUS =

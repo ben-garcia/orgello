@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { loginUser } from '../../actions/users';
+import { loginUser, requestUsersBoards } from '../../actions/users';
 
 import './LandingPage.scss';
 
-const LandingPage = ({ history, login }) => {
+const LandingPage = ({ history, login, requestAllUsersBoards }) => {
   let user = localStorage.getItem('user');
   if (user) {
     // parse the user object
@@ -15,6 +15,8 @@ const LandingPage = ({ history, login }) => {
     // if the user is stored in localStorage then
     // set the dispatch isUserLoggedInStatus(true)
     login({ ...user, isLoggedIn: true });
+    // fetch the users boards
+    requestAllUsersBoards();
     // redirect the user to their dashboard
     history.push(`${user.username}/dashboard`);
   }
@@ -41,10 +43,12 @@ LandingPage.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
   login: PropTypes.func.isRequired,
+  requestAllUsersBoards: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   login: (userInfo) => dispatch(loginUser(userInfo)),
+  requestAllUsersBoards: () => dispatch(requestUsersBoards()),
 });
 
 export default connect(

@@ -8,7 +8,7 @@ const Dashboard = ({ history, user }) => {
   if (!user.isLoggedIn) {
     // if user isn't logged in then
     // redirect them to the landing page
-    history.push('/');
+    history.replace('/');
   }
 
   return (
@@ -42,13 +42,13 @@ const Dashboard = ({ history, user }) => {
 
 Dashboard.propTypes = {
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
   }).isRequired,
   user: PropTypes.shape({
     isLoggedIn: PropTypes.bool,
     id: PropTypes.number,
     email: PropTypes.string,
-    createAt: PropTypes.string,
+    createdAt: PropTypes.string,
   }),
 };
 

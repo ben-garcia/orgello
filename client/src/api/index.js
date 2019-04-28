@@ -42,3 +42,24 @@ export const submitNewBoard = async ({ title, background, ownerId }) => {
 
   return responseJson;
 };
+
+export const getUsersBoards = async (ownerId) => {
+  let responseJson = null;
+
+  const { token } = JSON.parse(localStorage.getItem('user'));
+
+  try {
+    const response = await fetch(`${boardUrl}?ownerId=${ownerId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    responseJson = await response.json();
+  } catch (e) {
+    console.log('getUsersBoards() error: ', e.message);
+  }
+
+  return responseJson;
+};

@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGOUT_USER } from '../constants';
+import { LOGIN_USER, LOGOUT_USER, RECEIVED_USERS_BOARDS } from '../constants';
 
 // when the user vists the site they are not logged in.
 // unless they have a token stored in localStorage
@@ -22,6 +22,11 @@ const usersReducer = (state = initialState, action) => {
     case LOGOUT_USER:
       return {
         isLoggedIn: false,
+      };
+    case RECEIVED_USERS_BOARDS:
+      return {
+        ...state,
+        boards: action.boards,
       };
     default:
       return state;

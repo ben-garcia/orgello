@@ -45,7 +45,10 @@ function verifyToken(req, res, next) {
         req.params.boardId ||
         // if req.body contains the neccessary object to create a new board
         // then call next to move to the /boards POST endpoint
-        (req.body.title && req.body.background && req.body.ownerId)
+        (req.body.title && req.body.background && req.body.ownerId) ||
+        // if req.params contains ownerId then the client is requesting
+        // all boards associated with a particular user
+        req.query.ownerId
       ) {
         // if requesting a board resource
         // pass it along the middleware stack
