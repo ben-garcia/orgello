@@ -16,6 +16,7 @@ module.exports = {
     // creates html file to inject css and js.
     new HtmlWebpackPlugin({
       template: './public/index.html',
+      favicon: './public/logo.png',
     }),
   ],
 };
