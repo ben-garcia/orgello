@@ -32,7 +32,11 @@ const BackgroundOptions = ({
   queryPhotos,
   removeQPhotos,
 }) => {
+  // keep track when the user clicks 'See more' button
+  // to see more photos options
   const [isColorsOptionsOpen, toggleColorsOptions] = useState(false);
+  // keep track when the user clicks 'See more' button
+  // to see more colors options
   const [isPhotosOptionsOpen, togglePhotosOptions] = useState(false);
 
   // this reference is used to change the position of the scrollbar after
@@ -82,51 +86,70 @@ const BackgroundOptions = ({
   // possible values are
   // 'url(url goes here) for an backgroundImage
   // 'rgba(value goes here) for backgroundColor
-
   let boardBackgroundValue = Object.values(currentCreateBoardBackground)[0]
     .thumbnail;
 
+  // if boardBackgroundValue doesn't have a thumbnail property
+  // then it contains a color value
   if (!boardBackgroundValue) {
     boardBackgroundValue = currentCreateBoardBackground[boardBackgroundKey];
   }
+  // title in the header
   let title = 'Board Background';
+  // array that contains photos that should be rendered
+  // which is the latest 6 photos to start
   let photosToRender = latestSixPhotos;
+  // colors to be rendered
   let modifiedColors = colors;
 
   if (latestPhotos.length > 0 && isPhotosOptionsOpen) {
+    // if photos optins is open and latestPhotos isn't empty
+    // render the latest photos
     photosToRender = latestPhotos;
   } else {
     photosToRender = photosToRender.filter((image, i) => i < 6);
   }
 
+  // then query photos array has been populated(user is typing in search input field)
+  // render those photos
   if (queryPhotos.length > 0 && isPhotosOptionsOpen) {
     photosToRender = queryPhotos;
   }
 
+  // when colors options is open
   if (isColorsOptionsOpen) {
+    // set the title
     title = 'Colors';
   } else {
     // find the first 6 colors in the colors object array
     modifiedColors = colors.filter((color, index) => index < 6);
   }
 
+  // when photos options is open
   if (isPhotosOptionsOpen) {
+    // set the title
     title = 'Photos by ';
   }
 
   return (
     <div className="background-options">
       <div className="background-options__header">
+        {/* when either the photos options or colors options is open
+          then show the left arrow back button */}
         {isPhotosOptionsOpen || isColorsOptionsOpen ? (
           <button
             className="background-options__button"
             type="button"
             onClick={() => {
               if (isPhotosOptionsOpen) {
+                // when the photos options is open
+                // close it when the user clicks the left arrow back button
                 togglePhotosOptions(false);
               }
 
               if (isColorsOptionsOpen) {
+                // when the colors options is open
+                // close it when the user clicks the left arrow back button
                 toggleColorsOptions(false);
               }
 
@@ -155,6 +178,7 @@ const BackgroundOptions = ({
           }
         >
           {isPhotosOptionsOpen && title}
+          {/* when photos optins is open show the unsplash attribution link */}
           {isPhotosOptionsOpen ? (
             <a
               className="unsplash-attribution"
@@ -171,7 +195,10 @@ const BackgroundOptions = ({
         <button
           className="background-options__button"
           type="button"
-          onClick={() => changeBackOptions(!isBackgroundOptionsOpen)}
+          onClick={() => {
+            // close the background options menu when user clicks close button
+            changeBackOptions(!isBackgroundOptionsOpen);
+          }}
         >
           <i className="fas fa-times" />
         </button>
@@ -192,14 +219,18 @@ const BackgroundOptions = ({
             // - so as to not make more than 50 requests per hour(unslash api guidelines)
             if (queryPhotos.length > 0 && queryPhotos.length < 36) {
               requestQueryPhotos();
+              // same as above for latestPhotos
             } else if (latestPhotos.length > 0 && latestPhotos.length < 36) {
               requestPhotos();
             }
           }
         }}
       >
+        {/* render the photos when colors options is closed  */}
         {!isColorsOptionsOpen ? (
           <section className="photos">
+            {/* when neither colors or photos options is open,
+                show the 'See more' button */}
             {!isPhotosOptionsOpen ? (
               <div className="photos__header">
                 <span className="photos__title">Photos</span>
@@ -215,6 +246,7 @@ const BackgroundOptions = ({
                 </button>
               </div>
             ) : null}
+            {/* when photos options is open render the view */}
             {isPhotosOptionsOpen && (
               <div className="photos__search">
                 <input
@@ -264,6 +296,7 @@ const BackgroundOptions = ({
                     })
                   }
                 >
+                  {/* render the checkmark if image and background match */}
                   {boardBackgroundKey === 'backgroundImage' &&
                   boardBackgroundValue === `url(${image.urls.thumb})` ? (
                     <i className="fas fa-check" />
@@ -284,8 +317,11 @@ const BackgroundOptions = ({
             </ul>
           </section>
         ) : null}
+        {/* render colors when photos optinos is closed */}
         {!isPhotosOptionsOpen ? (
           <section className="colors">
+            {/* render 'See more' button when neither colors nor photos
+                options is open */}
             {!isColorsOptionsOpen ? (
               <div className="colors__header">
                 <span className="colors__title">Colors</span>
@@ -313,6 +349,7 @@ const BackgroundOptions = ({
                     })
                   }
                 >
+                  {/* render checkmark if color matches background */}
                   {boardBackgroundKey === 'backgroundColor' &&
                   boardBackgroundValue === `${color.value}` ? (
                     <i className="fas fa-check" />
@@ -327,6 +364,9 @@ const BackgroundOptions = ({
   );
 };
 
+// prop validation
+// it will probably be better to have creatBoard in props
+// rather than every property
 BackgroundOptions.propTypes = {
   isBackgroundOptionsOpen: PropTypes.bool.isRequired,
   changeBackOptions: PropTypes.func.isRequired,
@@ -342,6 +382,8 @@ BackgroundOptions.propTypes = {
   removeQPhotos: PropTypes.func.isRequired,
 };
 
+// object passed as props to component
+// that contains the requested state
 const mapStateToProps = (state) => ({
   isBackgroundOptionsOpen: state.createBoard.isBackgroundOptionsOpen,
   currentCreateBoardBackground: state.createBoard.currentBackground,
@@ -350,6 +392,8 @@ const mapStateToProps = (state) => ({
   queryPhotos: state.createBoard.queryPhotos.photos,
 });
 
+// object passed as props to component
+// that contains actions that are dispatched to change state
 const mapDispatchToProps = (dispatch) => ({
   changeBackOptions: (newStatus) =>
     dispatch(changeBackgroundOptions(newStatus)),

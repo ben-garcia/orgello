@@ -61,6 +61,8 @@ const CreateBoardForm = ({
       className="create-board-overlay"
       onClick={(e) => {
         if (e.currentTarget === e.target && !isBackgroundOptionsOpen) {
+          // close the create board menu when the user clicks outside
+          // the menu
           changeBoardFormStatus(false);
         }
         if (
@@ -69,6 +71,8 @@ const CreateBoardForm = ({
             e.target.className === 'board-form__inner') &&
             isBackgroundOptionsOpen)
         ) {
+          // close the background options menu when user either clicks
+          // the board title input, board background, or anywhere outside(overlay)
           changeBackOptions(false);
         }
       }}
@@ -95,10 +99,14 @@ const CreateBoardForm = ({
                 text="text"
                 placeholder="Add board title"
                 onChange={(e) => {
+                  // take action only when the input isn't empty
                   if (e.target.value.length > 0) {
+                    // dipatch action to change title
                     changeBoardTitle(e.target.value);
+                    // disable the 'Create Board' button
                     toggleDisabledButton(false);
                   } else {
+                    // enable the 'Create Board' button
                     toggleDisabledButton(true);
                   }
                 }}
@@ -134,6 +142,8 @@ const CreateBoardForm = ({
                           })
                         }
                       >
+                        {/* if background matches image then render white
+                            checkmark */}
                         {boardBackgroundKey === 'backgroundImage' &&
                         boardBackgroundValue === `url(${image.urls.thumb})` ? (
                           <i className="fas fa-check" />
@@ -159,6 +169,7 @@ const CreateBoardForm = ({
                           })
                         }
                       >
+                        {/* render white checkmark if background matches color value */}
                         {boardBackgroundKey === 'backgroundColor' &&
                         boardBackgroundValue === `${color.value}` ? (
                           <i className="fas fa-check" />
@@ -196,6 +207,7 @@ const CreateBoardForm = ({
                   : currentCreateBoardBackground.backgroundColor,
                 ownerId: userId,
               };
+              // rend the request to the server api
               submitNewBoard(newBoard);
               // remove the create new board component
               changeBoardFormStatus(false);
