@@ -228,14 +228,14 @@ const BackgroundOptions = ({
       >
         {/* render the photos when colors options is closed  */}
         {!isColorsOptionsOpen ? (
-          <section className="photos">
+          <section className="grid-container__item">
             {/* when neither colors or photos options is open,
                 show the 'See more' button */}
             {!isPhotosOptionsOpen ? (
-              <div className="photos__header">
-                <span className="photos__title">Photos</span>
+              <div className="item">
+                <span className="item__title">Photos</span>
                 <button
-                  className="photos__button"
+                  className="item__button"
                   type="button"
                   onClick={() => {
                     togglePhotosOptions(true);
@@ -248,9 +248,9 @@ const BackgroundOptions = ({
             ) : null}
             {/* when photos options is open render the view */}
             {isPhotosOptionsOpen && (
-              <div className="photos__search">
+              <div className="search">
                 <input
-                  className="photos__input"
+                  className="search__input"
                   type="text"
                   placeholder="Photos"
                   ref={searchRef}
@@ -279,13 +279,13 @@ const BackgroundOptions = ({
               </div>
             )}
             <ul
-              className="photos__list"
+              className="item-list"
               style={isPhotosOptionsOpen ? { marginTop: '1rem' } : {}}
             >
               {photosToRender.map((image) => (
                 <li
                   key={image.id}
-                  className="photos__item"
+                  className="item-list__item photos-item"
                   style={{ backgroundImage: `url(${image.urls.thumb})` }}
                   onClick={() =>
                     changeBoardBackground({
@@ -302,7 +302,7 @@ const BackgroundOptions = ({
                     <i className="fas fa-check" />
                   ) : null}
                   <a
-                    className="photos__link"
+                    className="list-item__link"
                     href={`${
                       image.user.links.html
                     }?utm_source=orgello&utm_medium=referral&utm_campaign=api-credit`}
@@ -319,14 +319,14 @@ const BackgroundOptions = ({
         ) : null}
         {/* render colors when photos optinos is closed */}
         {!isPhotosOptionsOpen ? (
-          <section className="colors">
+          <section className="grid-container__item">
             {/* render 'See more' button when neither colors nor photos
                 options is open */}
             {!isColorsOptionsOpen ? (
-              <div className="colors__header">
-                <span className="colors__title">Colors</span>
+              <div className="item">
+                <span className="item__title">Colors</span>
                 <button
-                  className="colors__button"
+                  className="item__button"
                   type="button"
                   onClick={() => toggleColorsOptions(true)}
                 >
@@ -335,13 +335,13 @@ const BackgroundOptions = ({
               </div>
             ) : null}
             <ul
-              className="colors__list"
+              className="item-list"
               style={isColorsOptionsOpen ? { marginTop: '1rem' } : {}}
             >
               {modifiedColors.map((color) => (
                 <li
                   key={color.id}
-                  className="colors__item"
+                  className="item-list__item colors-item"
                   style={{ backgroundColor: `${color.value}` }}
                   onClick={() =>
                     changeBoardBackground({
