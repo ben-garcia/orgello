@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import BoardsList from './BoardsList/BoardsList';
+
 import './Dashboard.scss';
 
 const Dashboard = ({ history, user }) => {
@@ -29,12 +31,8 @@ const Dashboard = ({ history, user }) => {
           </li>
         </ul>
       </section>
-      <section className="boards">
-        <ul className="boards__inner">
-          <li className="boards__item">
-            <span>Create a Board</span>
-          </li>
-        </ul>
+      <section className="container">
+        <BoardsList />
       </section>
     </section>
   );

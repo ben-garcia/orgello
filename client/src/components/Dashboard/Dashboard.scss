@@ -16,20 +16,13 @@
     }
   }
 
-  &__inner {
-  }
-
   &__link {
     margin: 0.5rem 0;
     width: 100%;
   }
 
-  .boards {
+  .container {
     width: 900px;
     margin-left: 4rem;
-
-    &__inner {
-      list-style: none;
-    }
   }
 }

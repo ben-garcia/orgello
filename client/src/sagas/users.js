@@ -7,7 +7,6 @@ import { getUsersId } from './selectors';
 function* getAllUsersBoards() {
   try {
     const ownerId = yield select(getUsersId);
-    console.log(ownerId);
     // call effect calls the function passed as first arguement.
     // any other arguments passed are the arguements of the function call passed
     // as the first, which is fetchData in this case

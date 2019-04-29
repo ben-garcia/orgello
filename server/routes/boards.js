@@ -39,6 +39,8 @@ router.get(
       where: {
         ownerId: req.query.ownerId,
       },
+      // order by the most recently updated
+      order: [['updatedAt', 'DESC']],
     })
       .then((boards) => {
         res.json(boards);

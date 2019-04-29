@@ -1,0 +1,78 @@
+.boards {
+  &__header {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+
+  &__logo {
+    margin-right: 0.6rem;
+
+    .fa-user::before {
+      font-size: 1.1rem;
+    }
+  }
+
+  &__title {
+    color: #172b4d;
+    font-size: 1.2rem;
+    line-height: 23px;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+
+    .create-board-button {
+      background-color: rgba(9, 30, 66, 0.08);
+      color: #6b778c;
+      height: 100px;
+      width: 23%;
+      font-weight: 900;
+
+      &:hover {
+        background-color: rgba(9, 30, 66, 0.13);
+        color: #172b4d;
+      }
+    }
+
+    .boards__item {
+      height: 100px;
+      width: 23%;
+      border-radius: 4px;
+      margin: 0 1rem 1rem 0;
+      position: relative;
+
+      &::before {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.15);
+      }
+
+      &:hover {
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.75);
+      }
+
+      .board__link {
+        text-decoration: none;
+        position: relative;
+        display: block;
+        height: 100%;
+        z-index: 1;
+      }
+
+      .board__title {
+        color: #fff;
+        padding: 0.5rem;
+        font-size: 1.3rem;
+      }
+    }
+  }
+}
