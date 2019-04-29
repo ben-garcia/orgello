@@ -7,6 +7,7 @@ import BoardsDrawer from './BoardsDrawer/BoardsDrawer';
 import CreateBoardForm from './CreateBoardForm/CreateBoardForm';
 import UserDrawer from './UserDrawer/UserDrawer';
 import { changeCreateBoardFormStatus } from '../../actions/boards';
+import { closeBoard } from '../../actions/board';
 
 import './Navbar.scss';
 
@@ -14,12 +15,17 @@ const Navbar = ({
   isUserLoggedIn,
   isCreateBoardFormOpen,
   changeBoardFormStatus,
+  isBoardOpen,
+  closeBoardPage,
 }) => {
   const [boardsDrawerIsOpen, toggleBoardsDrawer] = useState(false);
   const [userDrawerIsOpen, toggleUserDrawer] = useState(false);
 
   return (
-    <header className="header">
+    <header
+      className="header"
+      style={isBoardOpen ? { background: 'transparent' } : {}}
+    >
       {!isUserLoggedIn ? (
         <nav className="nav nav--logged-out">
           <Link className="nav__logo" to="/">
@@ -42,7 +48,7 @@ const Navbar = ({
         <nav className="nav nav--logged-in">
           <ul className="nav__inner">
             <li className="nav__item nav__item--border">
-              <Link to="/">
+              <Link to="/" onClick={() => closeBoardPage()}>
                 <i className="fas fa-home" />
               </Link>
             </li>
@@ -93,6 +99,8 @@ Navbar.propTypes = {
   isUserLoggedIn: PropTypes.bool,
   isCreateBoardFormOpen: PropTypes.bool.isRequired,
   changeBoardFormStatus: PropTypes.func.isRequired,
+  isBoardOpen: PropTypes.bool.isRequired,
+  closeBoardPage: PropTypes.func.isRequired,
 };
 
 // getting a 'isUserLoggedIn' is initially 'undefined'
@@ -106,6 +114,7 @@ Navbar.defaultProps = {
 const mapStateToProps = (state) => ({
   isUserLoggedIn: state.user.isLoggedIn,
   isCreateBoardFormOpen: state.createBoard.isFormOpen,
+  isBoardOpen: state.board.isOpen,
 });
 
 // function that takes dispatch(method that redux uses to
@@ -115,6 +124,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeBoardFormStatus: (status) =>
     dispatch(changeCreateBoardFormStatus(status)),
+  closeBoardPage: () => dispatch(closeBoard()),
 });
 
 export default connect(

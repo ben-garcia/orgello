@@ -9,6 +9,15 @@ export const REQUEST_USERS_BOARDS = 'REQUEST_USERS_BOARDS';
 // when the request was successfull
 export const RECEIVED_USERS_BOARDS = 'RECEIVED_USERS_BOARDS';
 
+// board
+// when the user is interacting with a single board
+export const OPEN_BOARD = 'OPEN_BOARD';
+// when the user exists the board page
+export const CLOSE_BOARD = 'CLOSE_BOARD';
+// when the user clicks on a board form their dashboard or
+// if finished creating a new board.
+export const GET_BOARD_INFO = 'GET_BOARD_INFO';
+
 // boards
 // change when use clicks on the arrow in the navbar to create a new board.`
 export const CHANGE_CREATE_BOARD_FORM_STATUS =

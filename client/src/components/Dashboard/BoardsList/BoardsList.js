@@ -4,10 +4,15 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { changeCreateBoardFormStatus } from '../../../actions/boards';
+import { getBoardInfo } from '../../../actions/board';
 
 import './BoardsList.scss';
 
-const BoardsList = ({ usersBoards, changeBoardFormStatus }) => {
+const BoardsList = ({
+  usersBoards,
+  changeBoardFormStatus,
+  getBoardInformation,
+}) => {
   return (
     <section className="boards">
       <div className="boards__header">
@@ -32,7 +37,11 @@ const BoardsList = ({ usersBoards, changeBoardFormStatus }) => {
                   : { backgroundColor: board.background }
               }
             >
-              <Link to={`/board/${board.title}`} className="board__link">
+              <Link
+                to={`/board/${board.title.split(' ').join('-')}`}
+                className="board__link"
+                onClick={() => getBoardInformation(board)}
+              >
                 <span className="board__title">{board.title}</span>
               </Link>
             </li>
@@ -60,6 +69,7 @@ BoardsList.propTypes = {
     }).isRequired
   ),
   changeBoardFormStatus: PropTypes.func.isRequired,
+  getBoardInformation: PropTypes.func.isRequired,
 };
 
 BoardsList.defaultProps = {
@@ -73,6 +83,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeBoardFormStatus: (status) =>
     dispatch(changeCreateBoardFormStatus(status)),
+  getBoardInformation: (info) => dispatch(getBoardInfo(info)),
 });
 
 export default connect(
