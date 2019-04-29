@@ -38,7 +38,11 @@ const BoardsList = ({
               }
             >
               <Link
-                to={`/board/${board.title.split(' ').join('-')}`}
+                to={{
+                  pathname: `/board/${board.title.split(' ').join('-')}`,
+                  state: board,
+                }}
+                // to={`/board/${board.title.split(' ').join('-')}`}
                 className="board__link"
                 onClick={() => getBoardInformation(board)}
               >

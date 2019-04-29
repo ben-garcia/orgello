@@ -28,8 +28,6 @@ const Root = ({ board }) => {
         : { backgroundColor: board.background };
   }
 
-  console.log(styles);
-
   return (
     <div className="root-container" style={board.isOpen ? styles : {}}>
       <Navbar />

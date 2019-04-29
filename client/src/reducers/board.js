@@ -18,7 +18,11 @@ const boardReducer = (state = initialState, action) => {
     case GET_BOARD_INFO:
       return {
         isOpen: true,
-        ...action.info,
+        id: action.info.id,
+        title: action.info.title,
+        background: action.info.background,
+        createdAt: action.info.createdAt,
+        updatedAt: action.info.updatedAt,
       };
     default:
       return state;
