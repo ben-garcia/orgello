@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -66,7 +66,19 @@ const Board = ({
     history.replace('/login');
   }
 
-  const title = location.state ? location.state.title : board.title;
+  const currentTitle = location.state ? location.state.title : board.title;
+  const [title, changeTitle] = useState(currentTitle);
+  const [showTitleInput, toggleTitleInput] = useState(false);
+  // to be able to focus then the input is visible
+  const titleInputRef = useRef(null);
+  // get the width to set the input width
+  const titleButtonRef = useRef(null);
+
+  if (showTitleInput) {
+    console.log('called!');
+    // delay enough for the title input to be visible
+    setTimeout(() => titleInputRef.current.focus(), 100);
+  }
 
   return (
     <section className="board">
@@ -74,7 +86,31 @@ const Board = ({
         {isBackgroundOptionsOpen ? <BackgroundOptions /> : null}
       </div>
       <div className="board__header">
-        <input className="board__title" value={title} />
+        <button
+          className="board__title"
+          style={showTitleInput ? { display: 'none' } : {}}
+          ref={titleButtonRef}
+          type="button"
+          onClick={() => {
+            toggleTitleInput(true);
+          }}
+        >
+          {title}
+        </button>
+        <input
+          className="board__title"
+          style={showTitleInput ? {} : { display: 'none' }}
+          ref={titleInputRef}
+          value={title}
+          onChange={() => {
+            changeTitle(titleInputRef.current.value);
+          }}
+          onBlur={() => {
+            console.log(title);
+            toggleTitleInput(false);
+          }}
+        />
+
         <button
           className="header-button"
           type="button"
