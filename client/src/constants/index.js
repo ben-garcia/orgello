@@ -17,6 +17,8 @@ export const CLOSE_BOARD = 'CLOSE_BOARD';
 // when the user clicks on a board form their dashboard or
 // if finished creating a new board.
 export const GET_BOARD_INFO = 'GET_BOARD_INFO';
+// when user changes board background in Board component
+export const CHANGE_ACTIVE_BOARD_BACKGROUND = 'CHANGE_ACTIVE_BOARD_BACKGROUND';
 
 // boards
 // change when use clicks on the arrow in the navbar to create a new board.`

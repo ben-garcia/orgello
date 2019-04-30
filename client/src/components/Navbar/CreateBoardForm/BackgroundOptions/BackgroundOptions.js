@@ -13,6 +13,7 @@ import {
   requestQueryPhotos,
   removeQueryPhotos,
 } from '../../../../actions/boards';
+import { changeActiveBoardBackground } from '../../../../actions/board';
 
 import colors from '../../../../api/colors';
 
@@ -31,6 +32,8 @@ const BackgroundOptions = ({
   requestSearchPhotos,
   queryPhotos,
   removeQPhotos,
+  isBoardOpen,
+  changeActiveBackground,
 }) => {
   // keep track when the user clicks 'See more' button
   // to see more photos options
@@ -129,6 +132,12 @@ const BackgroundOptions = ({
   if (isPhotosOptionsOpen) {
     // set the title
     title = 'Photos by ';
+  }
+
+  // when the Board component is rendered and the user wants to
+  // change the background image/color
+  if (isBoardOpen && latestSixPhotos.length === 0) {
+    requestPhotos();
   }
 
   return (
@@ -287,14 +296,20 @@ const BackgroundOptions = ({
                   key={image.id}
                   className="item-list__item photos-item"
                   style={{ backgroundImage: `url(${image.urls.thumb})` }}
-                  onClick={() =>
-                    changeBoardBackground({
-                      backgroundImage: {
-                        thumbnail: `url(${image.urls.thumb})`,
-                        regular: `url(${image.urls.regular})`,
-                      },
-                    })
-                  }
+                  onClick={() => {
+                    // when the user is on the Board component and
+                    // wants to change the background image
+                    if (isBoardOpen) {
+                      changeActiveBackground(`url(${image.urls.regular})`);
+                    } else {
+                      changeBoardBackground({
+                        backgroundImage: {
+                          thumbnail: `url(${image.urls.thumb})`,
+                          regular: `url(${image.urls.regular})`,
+                        },
+                      });
+                    }
+                  }}
                 >
                   {/* render the checkmark if image and background match */}
                   {boardBackgroundKey === 'backgroundImage' &&
@@ -343,11 +358,17 @@ const BackgroundOptions = ({
                   key={color.id}
                   className="item-list__item colors-item"
                   style={{ backgroundColor: `${color.value}` }}
-                  onClick={() =>
-                    changeBoardBackground({
-                      backgroundColor: `${color.value}`,
-                    })
-                  }
+                  onClick={() => {
+                    // change the background when the user is in the
+                    // Board component
+                    if (isBoardOpen) {
+                      changeActiveBackground(`${color.value}`);
+                    } else {
+                      changeBoardBackground({
+                        backgroundColor: `${color.value}`,
+                      });
+                    }
+                  }}
                 >
                   {/* render checkmark if color matches background */}
                   {boardBackgroundKey === 'backgroundColor' &&
@@ -380,6 +401,11 @@ BackgroundOptions.propTypes = {
   requestSearchPhotos: PropTypes.func.isRequired,
   queryPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
   removeQPhotos: PropTypes.func.isRequired,
+  board: PropTypes.shape({
+    background: PropTypes.string.isRequired,
+  }).isRequired,
+  isBoardOpen: PropTypes.bool.isRequired,
+  changeActiveBackground: PropTypes.func.isRequired,
 };
 
 // object passed as props to component
@@ -390,6 +416,7 @@ const mapStateToProps = (state) => ({
   latestSixPhotos: state.createBoard.latestSixPhotos,
   latestPhotos: state.createBoard.latestPhotos.photos,
   queryPhotos: state.createBoard.queryPhotos.photos,
+  isBoardOpen: state.board.isOpen,
 });
 
 // object passed as props to component
@@ -405,6 +432,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changeQueryPhotosSearchTerm(searchTerm)),
   requestSearchPhotos: () => dispatch(requestQueryPhotos()),
   removeQPhotos: () => dispatch(removeQueryPhotos()),
+  changeActiveBackground: (newBackground) =>
+    dispatch(changeActiveBoardBackground(newBackground)),
 });
 
 export default connect(

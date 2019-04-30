@@ -1,4 +1,9 @@
-import { OPEN_BOARD, CLOSE_BOARD, GET_BOARD_INFO } from '../constants';
+import {
+  OPEN_BOARD,
+  CLOSE_BOARD,
+  GET_BOARD_INFO,
+  CHANGE_ACTIVE_BOARD_BACKGROUND,
+} from '../constants';
 
 const initialState = {
   isOpen: false,
@@ -23,6 +28,12 @@ const boardReducer = (state = initialState, action) => {
         background: action.info.background,
         createdAt: action.info.createdAt,
         updatedAt: action.info.updatedAt,
+      };
+    case CHANGE_ACTIVE_BOARD_BACKGROUND:
+      console.log(action);
+      return {
+        ...state,
+        background: action.newBackground,
       };
     default:
       return state;

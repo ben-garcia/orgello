@@ -1,0 +1,39 @@
+.board {
+  width: 100vw;
+  height: 100vh;
+
+  &__background-options {
+    width: 350px;
+    position: absolute;
+    right: 0;
+  }
+
+  &__header {
+    height: 3rem;
+    background: rgba(0, 0, 0, 0.24);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .board__title {
+      margin-left: 1rem;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+    }
+  }
+
+  .header-button {
+    background: transparent;
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 4px;
+    text-decoration: underline;
+    margin-right: 1rem;
+
+    &:hover {
+      background-color: #000;
+    }
+  }
+}

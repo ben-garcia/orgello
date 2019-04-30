@@ -2,7 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import BackgroundOptions from '../Navbar/CreateBoardForm/BackgroundOptions/BackgroundOptions';
+
 import { loginUser, requestUsersBoards } from '../../actions/users';
+import {
+  changeBackgroundOptions,
+  requestLatestSixPhotos,
+} from '../../actions/boards';
 import { getBoardInfo } from '../../actions/board';
 
 import './Board.scss';
@@ -18,6 +24,9 @@ const Board = ({
   isBoardOpen,
   getBoardInformation,
   board,
+  isBackgroundOptionsOpen,
+  changeBackOptions,
+  requestSixPhotos,
 }) => {
   let savedUser = localStorage.getItem('user');
 
@@ -61,8 +70,25 @@ const Board = ({
 
   return (
     <section className="board">
-      <div>
-        <div className="board__title">{title}</div>
+      <div className="board__background-options">
+        {isBackgroundOptionsOpen ? <BackgroundOptions /> : null}
+      </div>
+      <div className="board__header">
+        <input className="board__title" value={title} />
+        <button
+          className="header-button"
+          type="button"
+          onClick={() => {
+            // dispatch action to fetch latest six photos
+            // only if the user clicks the 'Change Background' button
+            // better to dispatch the action here then every time
+            // the Board renders for the first time
+            requestSixPhotos();
+            changeBackOptions(!isBackgroundOptionsOpen);
+          }}
+        >
+          Change Background
+        </button>
       </div>
       <div className="board-container" />
     </section>
@@ -106,6 +132,9 @@ Board.propTypes = {
     title: PropTypes.string,
     background: PropTypes.string,
   }),
+  isBackgroundOptionsOpen: PropTypes.bool.isRequired,
+  changeBackOptions: PropTypes.func.isRequired,
+  requestSixPhotos: PropTypes.func.isRequired,
 };
 
 Board.defaultProps = {
@@ -120,12 +149,15 @@ const mapStateToProps = (state) => ({
   usersBoards: state.user.boards,
   isBoardOpen: state.board.isOpen,
   board: state.board,
+  isBackgroundOptionsOpen: state.createBoard.isBackgroundOptionsOpen,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   login: (userInfo) => dispatch(loginUser(userInfo)),
   requestAllUsersBoards: () => dispatch(requestUsersBoards()),
   getBoardInformation: (info) => dispatch(getBoardInfo(info)),
+  changeBackOptions: (status) => dispatch(changeBackgroundOptions(status)),
+  requestSixPhotos: () => dispatch(requestLatestSixPhotos()),
 });
 
 export default connect(
