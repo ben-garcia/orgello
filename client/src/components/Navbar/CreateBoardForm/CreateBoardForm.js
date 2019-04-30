@@ -15,6 +15,7 @@ import {
   changeCreateBoardBackground,
   requestLatestSixPhotos,
 } from '../../../actions/boards';
+import { getBoardInfo } from '../../../actions/board';
 
 import colors from '../../../api/colors';
 import { submitNewBoard } from '../../../api';
@@ -24,6 +25,7 @@ import './CreateBoardForm.scss';
 const CreateBoardForm = ({
   history,
   userId,
+  usersBoards,
   newBoardTitle,
   changeBoardFormStatus,
   isCreateBoardFormOpen,
@@ -34,6 +36,7 @@ const CreateBoardForm = ({
   changeBoardBackground,
   requestSixPhotos,
   latestSixPhotos,
+  getBoardInformation,
 }) => {
   const [isDisabled, toggleDisabledButton] = useState(true);
 
@@ -201,6 +204,7 @@ const CreateBoardForm = ({
             onClick={(e) => {
               e.preventDefault();
               const newBoard = {
+                id: usersBoards.length + 1,
                 title: newBoardTitle,
                 background: currentCreateBoardBackground.backgroundImage
                   ? currentCreateBoardBackground.backgroundImage.regular
@@ -209,6 +213,8 @@ const CreateBoardForm = ({
               };
               // rend the request to the server api
               submitNewBoard(newBoard);
+              // add board info to the store
+              getBoardInformation(newBoard);
               // remove the create new board component
               changeBoardFormStatus(false);
               // remove the background options panel
@@ -233,6 +239,13 @@ CreateBoardForm.propTypes = {
     replace: PropTypes.func.isRequired,
   }).isRequired,
   userId: PropTypes.number.isRequired,
+  usersBoards: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      background: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   isCreateBoardFormOpen: PropTypes.bool.isRequired,
   isBackgroundOptionsOpen: PropTypes.bool.isRequired,
   changeBackOptions: PropTypes.func.isRequired,
@@ -243,10 +256,12 @@ CreateBoardForm.propTypes = {
   changeBoardBackground: PropTypes.func.isRequired,
   requestSixPhotos: PropTypes.func.isRequired,
   latestSixPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  getBoardInformation: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   userId: state.user.id,
+  usersBoards: state.user.boards,
   newBoardTitle: state.createBoard.title,
   isCreateBoardFormOpen: state.createBoard.isFormOpen,
   isBackgroundOptionsOpen: state.createBoard.isBackgroundOptionsOpen,
@@ -263,6 +278,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeBoardBackground: (newCreateBoardBackground) =>
     dispatch(changeCreateBoardBackground(newCreateBoardBackground)),
   requestSixPhotos: () => dispatch(requestLatestSixPhotos()),
+  getBoardInformation: (info) => dispatch(getBoardInfo(info)),
 });
 
 export default connect(
