@@ -32,16 +32,20 @@ const Board = ({
 
     if (usersBoards.length === 0) {
       requestAllUsersBoards();
-
-      if (location.state) {
-        getBoardInformation(location.state);
-      }
     }
 
+    // make sure that location.state exists
+    // when user clicks on board in the dashboard
     if (!isBoardOpen && location.state) {
       getBoardInformation(location.state);
     }
 
+    // if board has no background property
+    // then get the information from the board with the same title
+    // in the url
+    // NOTE: this will fail when there are two boards with the same title
+    // not sure is I should add a unique contraint on board model
+    // don't think that would make sense.
     if (usersBoards.length > 0 && !board.background) {
       const currentBoard = usersBoards.filter(
         (b) => b.title === match.params.boardTitle
