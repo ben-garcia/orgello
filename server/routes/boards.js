@@ -95,8 +95,9 @@ router.put(
         id: req.params.boardId,
       },
     })
-      .then((updatedBoard) => {
-        res.json({ message: 'board updated', updatedBoard });
+      .then(() => {
+        // res.json({ message: 'board updated', updatedBoard });
+        res.json({ title: req.body.title });
       })
       .catch((e) => next({ message: e.message }));
   },

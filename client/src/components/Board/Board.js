@@ -9,7 +9,7 @@ import {
   changeBackgroundOptions,
   requestLatestSixPhotos,
 } from '../../actions/boards';
-import { getBoardInfo } from '../../actions/board';
+import { getBoardInfo, requestBoardTitleChange } from '../../actions/board';
 
 import './Board.scss';
 
@@ -27,6 +27,7 @@ const Board = ({
   isBackgroundOptionsOpen,
   changeBackOptions,
   requestSixPhotos,
+  requestNewBoardTitle,
 }) => {
   let savedUser = localStorage.getItem('user');
 
@@ -106,8 +107,14 @@ const Board = ({
             changeTitle(titleInputRef.current.value);
           }}
           onBlur={() => {
-            console.log(title);
             toggleTitleInput(false);
+            if (titleInputRef.current.value.length === 0) {
+              // when the input is empty
+              // reset title to the board title.
+              changeTitle(board.title);
+            } else {
+              requestNewBoardTitle({ id: board.id, title });
+            }
           }}
         />
 
@@ -171,6 +178,7 @@ Board.propTypes = {
   isBackgroundOptionsOpen: PropTypes.bool.isRequired,
   changeBackOptions: PropTypes.func.isRequired,
   requestSixPhotos: PropTypes.func.isRequired,
+  requestNewBoardTitle: PropTypes.func.isRequired,
 };
 
 Board.defaultProps = {
@@ -194,6 +202,7 @@ const mapDispatchToProps = (dispatch) => ({
   getBoardInformation: (info) => dispatch(getBoardInfo(info)),
   changeBackOptions: (status) => dispatch(changeBackgroundOptions(status)),
   requestSixPhotos: () => dispatch(requestLatestSixPhotos()),
+  requestNewBoardTitle: (payload) => dispatch(requestBoardTitleChange(payload)),
 });
 
 export default connect(

@@ -63,3 +63,25 @@ export const getUsersBoards = async (ownerId) => {
 
   return responseJson;
 };
+
+export const updateResource = async (url, bodyContent) => {
+  let responseJson = null;
+
+  const { token } = JSON.parse(localStorage.getItem('user'));
+
+  try {
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(bodyContent),
+    });
+    responseJson = await response.json();
+  } catch (e) {
+    console.log('updateResource() error: ', e.message);
+  }
+
+  return responseJson;
+};

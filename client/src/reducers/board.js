@@ -3,6 +3,8 @@ import {
   CLOSE_BOARD,
   GET_BOARD_INFO,
   CHANGE_ACTIVE_BOARD_BACKGROUND,
+  RECEIVED_BOARD_TITLE_CHANGE,
+  RECEIVED_BOARD_BACKGROUND_CHANGE,
 } from '../constants';
 
 const initialState = {
@@ -30,7 +32,16 @@ const boardReducer = (state = initialState, action) => {
         updatedAt: action.info.updatedAt,
       };
     case CHANGE_ACTIVE_BOARD_BACKGROUND:
-      console.log(action);
+      return {
+        ...state,
+        background: action.newBackground,
+      };
+    case RECEIVED_BOARD_TITLE_CHANGE:
+      return {
+        ...state,
+        title: action.newTitle.title,
+      };
+    case RECEIVED_BOARD_BACKGROUND_CHANGE:
       return {
         ...state,
         background: action.newBackground,

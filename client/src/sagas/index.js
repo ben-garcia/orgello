@@ -5,9 +5,12 @@ import {
   REQUEST_LATEST_SIX_PHOTOS,
   REQUEST_LATEST_PHOTOS,
   REQUEST_QUERY_PHOTOS,
+  REQUEST_BOARD_TITLE_CHANGE,
+  REQUEST_BOARD_BACKGROUND_CHANGE,
 } from '../constants';
 import getAllUsersBoards from './users';
 import { getLatestSixPhotos, getLatestPhotos, getQueryPhotos } from './boards';
+import { updateBoardTitle, updateBoardBackground } from './board';
 
 export default function* rootSaga() {
   // takeLatest effect takes the latest action dispatched
@@ -17,4 +20,6 @@ export default function* rootSaga() {
   yield takeLatest(REQUEST_LATEST_SIX_PHOTOS, getLatestSixPhotos);
   yield takeLatest(REQUEST_LATEST_PHOTOS, getLatestPhotos);
   yield takeLatest(REQUEST_QUERY_PHOTOS, getQueryPhotos);
+  yield takeLatest(REQUEST_BOARD_TITLE_CHANGE, updateBoardTitle);
+  yield takeLatest(REQUEST_BOARD_BACKGROUND_CHANGE, updateBoardBackground);
 }

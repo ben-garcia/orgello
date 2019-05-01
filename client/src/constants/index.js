@@ -19,6 +19,14 @@ export const CLOSE_BOARD = 'CLOSE_BOARD';
 export const GET_BOARD_INFO = 'GET_BOARD_INFO';
 // when user changes board background in Board component
 export const CHANGE_ACTIVE_BOARD_BACKGROUND = 'CHANGE_ACTIVE_BOARD_BACKGROUND';
+// update board title the db
+export const REQUEST_BOARD_TITLE_CHANGE = 'REQUEST_BOARD_TITLE_CHANGE';
+export const RECEIVED_BOARD_TITLE_CHANGE = 'RECEIVED_BOARD_TITLE_CHANGE';
+// update board background to the db
+export const REQUEST_BOARD_BACKGROUND_CHANGE =
+  'REQUEST_BOARD_BACKGROUND_CHANGE';
+export const RECEIVED_BOARD_BACKGROUND_CHANGE =
+  'RECEIVED_BOARD_BACKGROUND_CHANGE';
 
 // boards
 // change when use clicks on the arrow in the navbar to create a new board.`
