@@ -39,7 +39,7 @@ const boardReducer = (state = initialState, action) => {
     case RECEIVED_BOARD_TITLE_CHANGE:
       return {
         ...state,
-        title: action.newTitle.title,
+        title: action.newTitle.board.title,
       };
     case RECEIVED_BOARD_BACKGROUND_CHANGE:
       return {

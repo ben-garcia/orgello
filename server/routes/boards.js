@@ -96,8 +96,7 @@ router.put(
       },
     })
       .then(() => {
-        // res.json({ message: 'board updated', updatedBoard });
-        res.json({ title: req.body.title });
+        res.json({ board: req.body });
       })
       .catch((e) => next({ message: e.message }));
   },

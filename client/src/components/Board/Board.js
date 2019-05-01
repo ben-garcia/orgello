@@ -76,7 +76,6 @@ const Board = ({
   const titleButtonRef = useRef(null);
 
   if (showTitleInput) {
-    console.log('called!');
     // delay enough for the title input to be visible
     setTimeout(() => titleInputRef.current.focus(), 100);
   }
