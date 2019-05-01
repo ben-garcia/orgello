@@ -13,7 +13,10 @@ import {
   requestQueryPhotos,
   removeQueryPhotos,
 } from '../../../../actions/boards';
-import { changeActiveBoardBackground } from '../../../../actions/board';
+import {
+  changeActiveBoardBackground,
+  requestBoardBackgroundChange,
+} from '../../../../actions/board';
 
 import colors from '../../../../api/colors';
 
@@ -34,6 +37,8 @@ const BackgroundOptions = ({
   removeQPhotos,
   isBoardOpen,
   changeActiveBackground,
+  requestNewBoardBackground,
+  boardId,
 }) => {
   // keep track when the user clicks 'See more' button
   // to see more photos options
@@ -301,6 +306,10 @@ const BackgroundOptions = ({
                     // wants to change the background image
                     if (isBoardOpen) {
                       changeActiveBackground(`url(${image.urls.regular})`);
+                      requestNewBoardBackground({
+                        id: boardId,
+                        background: `url(${image.urls.regular})`,
+                      });
                     } else {
                       changeBoardBackground({
                         backgroundImage: {
@@ -363,6 +372,10 @@ const BackgroundOptions = ({
                     // Board component
                     if (isBoardOpen) {
                       changeActiveBackground(`${color.value}`);
+                      requestNewBoardBackground({
+                        id: boardId,
+                        background: `${color.value}`,
+                      });
                     } else {
                       changeBoardBackground({
                         backgroundColor: `${color.value}`,
@@ -401,11 +414,10 @@ BackgroundOptions.propTypes = {
   requestSearchPhotos: PropTypes.func.isRequired,
   queryPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
   removeQPhotos: PropTypes.func.isRequired,
-  board: PropTypes.shape({
-    background: PropTypes.string.isRequired,
-  }).isRequired,
   isBoardOpen: PropTypes.bool.isRequired,
   changeActiveBackground: PropTypes.func.isRequired,
+  requestNewBoardBackground: PropTypes.func.isRequired,
+  boardId: PropTypes.number.isRequired,
 };
 
 // object passed as props to component
@@ -417,6 +429,7 @@ const mapStateToProps = (state) => ({
   latestPhotos: state.createBoard.latestPhotos.photos,
   queryPhotos: state.createBoard.queryPhotos.photos,
   isBoardOpen: state.board.isOpen,
+  boardId: state.board.id,
 });
 
 // object passed as props to component
@@ -434,6 +447,8 @@ const mapDispatchToProps = (dispatch) => ({
   removeQPhotos: () => dispatch(removeQueryPhotos()),
   changeActiveBackground: (newBackground) =>
     dispatch(changeActiveBoardBackground(newBackground)),
+  requestNewBoardBackground: (newBackground) =>
+    dispatch(requestBoardBackgroundChange(newBackground)),
 });
 
 export default connect(

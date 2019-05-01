@@ -37,8 +37,9 @@ export const receivedBoardTitleChange = (newTitle) => ({
   newTitle,
 });
 
-export const requestBoardBackgroundChange = () => ({
+export const requestBoardBackgroundChange = (payload) => ({
   type: REQUEST_BOARD_BACKGROUND_CHANGE,
+  payload,
 });
 
 export const receivedBoardBackgroundChange = (newBackground) => ({

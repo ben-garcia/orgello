@@ -44,7 +44,7 @@ const boardReducer = (state = initialState, action) => {
     case RECEIVED_BOARD_BACKGROUND_CHANGE:
       return {
         ...state,
-        background: action.newBackground,
+        background: action.newBackground.board.background,
       };
     default:
       return state;

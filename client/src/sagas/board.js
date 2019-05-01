@@ -23,14 +23,15 @@ export function* updateBoardTitle({ payload }) {
   }
 }
 
-export function* updateBoardBackground() {
+export function* updateBoardBackground({ payload }) {
   try {
     // call effect calls the function passed as first arguement.
     // any other arguments passed are the arguements of the function call passed
     // as the first, which is fetchData in this case
     const updatedBackground = yield call(
       updateResource,
-      'http://localhost:9000/boards'
+      `http://localhost:9000/boards/${payload.id}`,
+      { background: payload.background }
     );
     // dispatch an action to the store with put effect
     yield put(receivedBoardBackgroundChange(updatedBackground));
