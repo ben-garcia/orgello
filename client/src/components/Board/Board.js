@@ -87,7 +87,7 @@ const Board = ({
       </div>
       <div className="board__header">
         <button
-          className="board__title"
+          className="board__title board__title--button"
           style={showTitleInput ? { display: 'none' } : {}}
           ref={titleButtonRef}
           type="button"
@@ -98,7 +98,7 @@ const Board = ({
           {title}
         </button>
         <input
-          className="board__title"
+          className="board__title board__title--input"
           style={showTitleInput ? {} : { display: 'none' }}
           ref={titleInputRef}
           value={title}

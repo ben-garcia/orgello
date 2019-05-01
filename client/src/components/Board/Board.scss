@@ -24,9 +24,17 @@
       padding: 0.3rem 0.6rem;
       border-radius: 4px;
 
-      &:hover {
+      &--button:hover {
         cursor: pointer;
         background: rgba(0, 0, 0, 0.3);
+      }
+
+      &--input {
+        background: rgba(0, 0, 0, 0.3);
+
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
   }
