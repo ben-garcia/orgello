@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -34,6 +36,7 @@ const Board = ({
   const currentTitle = board.title;
   const [title, changeTitle] = useState(currentTitle);
   const [showTitleInput, toggleTitleInput] = useState(false);
+  const [isCreateListFormOpen, toggleCreateListForm] = useState(false);
   // to be able to focus then the input is visible
   const titleInputRef = useRef(null);
   // get the width to set the input width
@@ -119,7 +122,40 @@ const Board = ({
           Change Background
         </button>
       </div>
-      <div className="board-container" />
+      <div className="board-container">
+        {!isCreateListFormOpen ? (
+          <span
+            className="form-trigger"
+            onClick={() => toggleCreateListForm(!isCreateListFormOpen)}
+          >
+            <i className="fas fa-plus" />
+            Add a list
+          </span>
+        ) : (
+          <form className="list-form">
+            <input
+              className="list-form__input"
+              type="text"
+              placeholder="Enter list title"
+            />
+            <div className="list-form__inner">
+              <button
+                className="list-from__button list-form__button--submit"
+                type="submit"
+              >
+                Add List
+              </button>
+              <button
+                className="list-from__button list-form__button--close"
+                type="button"
+                onClick={() => toggleCreateListForm(!isCreateListFormOpen)}
+              >
+                <i className="fas fa-times" />
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
     </section>
   );
 };
@@ -133,15 +169,6 @@ Board.propTypes = {
   history: PropTypes.shape({
     replace: PropTypes.func.isRequired,
   }).isRequired,
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      background: PropTypes.string.isRequired,
-      createdAt: PropTypes.string.isRequired,
-      updatedAt: PropTypes.string.isRequired,
-    }),
-  }),
   login: PropTypes.func.isRequired,
   usersBoards: PropTypes.arrayOf(
     PropTypes.shape({
@@ -169,7 +196,6 @@ Board.propTypes = {
 Board.defaultProps = {
   isUserLoggedIn: false,
   board: [],
-  location: {},
   usersBoards: [],
 };
 

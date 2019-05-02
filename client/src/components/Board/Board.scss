@@ -2,6 +2,29 @@
   width: 100vw;
   height: 100vh;
 
+  // 'button' to trigger the form
+  .form-trigger {
+    width: 300px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.24);
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 4px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 1rem;
+    margin-left: 0.5rem;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.32);
+      cursor: pointer;
+    }
+
+    .fa-plus {
+      margin-right: 0.5rem;
+    }
+  }
+
   &__background-options {
     width: 350px;
     position: absolute;
@@ -49,6 +72,51 @@
 
     &:hover {
       background: rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  .board-container {
+    padding-top: 0.5rem;
+    display: flex;
+
+    .list-form {
+      width: 300px;
+      height: 90px;
+      display: flex;
+      flex-direction: column;
+      background: rgb(223, 225, 230);
+      border-radius: 4px;
+      padding: 0.3rem;
+      margin-left: 0.3rem;
+
+      &__inner {
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 0.2rem;
+        align-items: center;
+        margin-top: 0.3rem;
+
+        .list-form__button--submit {
+          background-color: rgb(90, 172, 68);
+          color: #fff;
+          padding: 0.5rem 1rem;
+          border-radius: 4px;
+        }
+
+        .list-form__button--close {
+          background: transparent;
+
+          .fa-times::before {
+            font-size: 1.2rem;
+            color: rgb(122, 134, 154);
+          }
+        }
+      }
+
+      &__input {
+        padding: 0.5rem;
+      }
     }
   }
 }
