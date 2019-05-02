@@ -27,6 +27,9 @@ export const REQUEST_BOARD_BACKGROUND_CHANGE =
   'REQUEST_BOARD_BACKGROUND_CHANGE';
 export const RECEIVED_BOARD_BACKGROUND_CHANGE =
   'RECEIVED_BOARD_BACKGROUND_CHANGE';
+// get board information when user refreshes Board component
+export const REQUEST_BOARD_INFORMATION = 'REQUEST_BOARD_INFORMATION';
+export const RECEIVED_BOARD_INFORMATION = 'RECEIVED_BOARD_INFORMATION';
 
 // boards
 // change when use clicks on the arrow in the navbar to create a new board.`

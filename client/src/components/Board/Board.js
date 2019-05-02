@@ -9,27 +9,35 @@ import {
   changeBackgroundOptions,
   requestLatestSixPhotos,
 } from '../../actions/boards';
-import { getBoardInfo, requestBoardTitleChange } from '../../actions/board';
+import {
+  getBoardInfo,
+  requestBoardTitleChange,
+  requestBoardInformation,
+} from '../../actions/board';
 
 import './Board.scss';
 
 const Board = ({
-  match,
   history,
-  location,
   login,
   usersBoards,
   isUserLoggedIn,
   requestAllUsersBoards,
-  isBoardOpen,
-  getBoardInformation,
   board,
   isBackgroundOptionsOpen,
   changeBackOptions,
   requestSixPhotos,
   requestNewBoardTitle,
+  requestBoardInfo,
 }) => {
   let savedUser = localStorage.getItem('user');
+  const currentTitle = board.title;
+  const [title, changeTitle] = useState(currentTitle);
+  const [showTitleInput, toggleTitleInput] = useState(false);
+  // to be able to focus then the input is visible
+  const titleInputRef = useRef(null);
+  // get the width to set the input width
+  const titleButtonRef = useRef(null);
 
   if (savedUser) {
     // parse the user object
@@ -41,40 +49,20 @@ const Board = ({
     }
 
     if (usersBoards.length === 0) {
+      // fetch all boards that are associated with the current user
       requestAllUsersBoards();
-    }
-
-    // make sure that location.state exists
-    // when user clicks on board in the dashboard
-    if (!isBoardOpen && location.state) {
-      getBoardInformation(location.state);
-    }
-
-    // if board has no background property
-    // then get the information from the board with the same title
-    // in the url
-    // NOTE: this will fail when there are two boards with the same title
-    // not sure is I should add a unique contraint on board model
-    // don't think that would make sense.
-    if (usersBoards.length > 0 && !board.background) {
-      const currentBoard = usersBoards.filter(
-        (b) => b.title === match.params.boardTitle
-      )[0];
-
-      getBoardInformation(currentBoard);
     }
   } else {
     history.replace('/login');
   }
 
-  const currentTitle = location.state ? location.state.title : board.title;
-  const [title, changeTitle] = useState(currentTitle);
-  const [showTitleInput, toggleTitleInput] = useState(false);
-  // to be able to focus then the input is visible
-  const titleInputRef = useRef(null);
-  // get the width to set the input width
-  const titleButtonRef = useRef(null);
+  if (localStorage.getItem('board') && !board.background) {
+    const currentBoard = JSON.parse(localStorage.getItem('board'));
 
+    requestBoardInfo(currentBoard.id);
+  }
+
+  // const currentTitle = currentBoard ? currentBoard.title : board.title;
   if (showTitleInput) {
     // delay enough for the title input to be visible
     setTimeout(() => titleInputRef.current.focus(), 100);
@@ -95,13 +83,12 @@ const Board = ({
             toggleTitleInput(true);
           }}
         >
-          {title}
+          {board.title ? board.title : title}
         </button>
         <input
           className="board__title board__title--input"
           style={showTitleInput ? {} : { display: 'none' }}
           ref={titleInputRef}
-          value={title}
           onChange={() => {
             changeTitle(titleInputRef.current.value);
           }}
@@ -167,8 +154,6 @@ Board.propTypes = {
   ),
   isUserLoggedIn: PropTypes.bool,
   requestAllUsersBoards: PropTypes.func.isRequired,
-  isBoardOpen: PropTypes.bool.isRequired,
-  getBoardInformation: PropTypes.func.isRequired,
   board: PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,
@@ -178,6 +163,7 @@ Board.propTypes = {
   changeBackOptions: PropTypes.func.isRequired,
   requestSixPhotos: PropTypes.func.isRequired,
   requestNewBoardTitle: PropTypes.func.isRequired,
+  requestBoardInfo: PropTypes.func.isRequired,
 };
 
 Board.defaultProps = {
@@ -190,7 +176,6 @@ Board.defaultProps = {
 const mapStateToProps = (state) => ({
   isUserLoggedIn: state.user.isLoggedIn,
   usersBoards: state.user.boards,
-  isBoardOpen: state.board.isOpen,
   board: state.board,
   isBackgroundOptionsOpen: state.createBoard.isBackgroundOptionsOpen,
 });
@@ -202,6 +187,7 @@ const mapDispatchToProps = (dispatch) => ({
   changeBackOptions: (status) => dispatch(changeBackgroundOptions(status)),
   requestSixPhotos: () => dispatch(requestLatestSixPhotos()),
   requestNewBoardTitle: (payload) => dispatch(requestBoardTitleChange(payload)),
+  requestBoardInfo: (board) => dispatch(requestBoardInformation(board)),
 });
 
 export default connect(

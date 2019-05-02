@@ -85,3 +85,24 @@ export const updateResource = async (url, bodyContent) => {
 
   return responseJson;
 };
+
+export const getBoard = async (url) => {
+  let responseJson = null;
+
+  const { token } = JSON.parse(localStorage.getItem('user'));
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    responseJson = await response.json();
+  } catch (e) {
+    console.log('getBoard() error: ', e.message);
+  }
+
+  return responseJson;
+};

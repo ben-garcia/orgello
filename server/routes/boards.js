@@ -4,6 +4,8 @@ const Joi = require('joi');
 const router = express.Router();
 
 const Board = require('../db/models').board;
+const List = require('../db/models').list;
+const Card = require('../db/models').card;
 
 const {
   validateParam,
@@ -44,6 +46,38 @@ router.get(
     })
       .then((boards) => {
         res.json(boards);
+      })
+      .catch((e) => next({ message: e.message }));
+  },
+);
+
+// get a single board
+router.get(
+  '/:boardId',
+  validateParam,
+  isTokenPresent,
+  verifyToken,
+  (req, res, next) => {
+    Board.findOne({
+      where: {
+        id: req.params.boardId,
+      },
+      include: [
+        {
+          model: List,
+          as: 'lists',
+          include: [
+            {
+              model: Card,
+              as: 'cards',
+            },
+          ],
+        },
+      ],
+    })
+      .then((board) => {
+        res.status(200);
+        res.json(board);
       })
       .catch((e) => next({ message: e.message }));
   },

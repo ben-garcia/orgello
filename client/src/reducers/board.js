@@ -5,6 +5,7 @@ import {
   CHANGE_ACTIVE_BOARD_BACKGROUND,
   RECEIVED_BOARD_TITLE_CHANGE,
   RECEIVED_BOARD_BACKGROUND_CHANGE,
+  RECEIVED_BOARD_INFORMATION,
 } from '../constants';
 
 const initialState = {
@@ -45,6 +46,11 @@ const boardReducer = (state = initialState, action) => {
       return {
         ...state,
         background: action.newBackground.board.background,
+      };
+    case RECEIVED_BOARD_INFORMATION:
+      return {
+        isOpen: true,
+        ...action.boardInfo,
       };
     default:
       return state;

@@ -42,9 +42,13 @@ const BoardsList = ({
                   pathname: `/board/${board.title.split(' ').join('-')}`,
                   state: board,
                 }}
-                // to={`/board/${board.title.split(' ').join('-')}`}
                 className="board__link"
-                onClick={() => getBoardInformation(board)}
+                onClick={() => {
+                  // store the clicked on board in localStorage to have access to it
+                  // on page refresh
+                  localStorage.setItem('board', JSON.stringify(board));
+                  getBoardInformation(board);
+                }}
               >
                 <span className="board__title">{board.title}</span>
               </Link>

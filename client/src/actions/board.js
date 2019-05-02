@@ -7,6 +7,8 @@ import {
   RECEIVED_BOARD_TITLE_CHANGE,
   REQUEST_BOARD_BACKGROUND_CHANGE,
   RECEIVED_BOARD_BACKGROUND_CHANGE,
+  REQUEST_BOARD_INFORMATION,
+  RECEIVED_BOARD_INFORMATION,
 } from '../constants';
 
 export const openBoard = () => ({
@@ -45,4 +47,14 @@ export const requestBoardBackgroundChange = (payload) => ({
 export const receivedBoardBackgroundChange = (newBackground) => ({
   type: RECEIVED_BOARD_BACKGROUND_CHANGE,
   newBackground,
+});
+
+export const requestBoardInformation = (board) => ({
+  type: REQUEST_BOARD_INFORMATION,
+  board,
+});
+
+export const receivedBoardInformation = (boardInfo) => ({
+  type: RECEIVED_BOARD_INFORMATION,
+  boardInfo,
 });
