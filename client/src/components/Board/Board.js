@@ -134,9 +134,7 @@ const Board = ({
       <div className="board-container">
         <section className="lists">
           {board.lists &&
-            board.lists.map((list) => (
-              <List key={list.id} title={list.title} />
-            ))}
+            board.lists.map((list) => <List key={list.id} list={list} />)}
         </section>
         {!isCreateListFormOpen ? (
           <span

@@ -9,6 +9,7 @@ import {
   REQUEST_BOARD_BACKGROUND_CHANGE,
   REQUEST_BOARD_INFORMATION,
   REQUEST_CREATE_LIST,
+  REQUEST_LIST_UPDATE,
 } from '../constants';
 import getAllUsersBoards from './users';
 import { getLatestSixPhotos, getLatestPhotos, getQueryPhotos } from './boards';
@@ -17,7 +18,7 @@ import {
   updateBoardBackground,
   getBoardInformation,
 } from './board';
-import { createList } from './lists';
+import { createList, updateList } from './lists';
 
 export default function* rootSaga() {
   // takeLatest effect takes the latest action dispatched
@@ -31,4 +32,5 @@ export default function* rootSaga() {
   yield takeLatest(REQUEST_BOARD_BACKGROUND_CHANGE, updateBoardBackground);
   yield takeLatest(REQUEST_BOARD_INFORMATION, getBoardInformation);
   yield takeLatest(REQUEST_CREATE_LIST, createList);
+  yield takeLatest(REQUEST_LIST_UPDATE, updateList);
 }

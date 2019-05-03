@@ -11,6 +11,10 @@
     height: 50%;
     padding-left: 1rem;
     padding-top: 0.6rem;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   &__button {
