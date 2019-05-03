@@ -68,3 +68,8 @@ export const CHANGE_QUERY_PHOTOS_SEARCH_TERM =
   'CHANGE_QUERY_PHOTOS_SEARCH_TERM';
 // empty the query photos when user hits left arrow button
 export const REMOVE_QUERY_PHOTOS = 'REMOVE_QUERY_PHOTOS';
+
+// lists
+// create new list
+export const REQUEST_CREATE_LIST = 'REQUEST_CREATE_LIST';
+export const RECEIVED_CREATE_LIST = 'RECEIVED_CREATE_LIST';

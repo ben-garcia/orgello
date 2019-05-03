@@ -33,14 +33,16 @@ const Board = ({
   requestBoardInfo,
 }) => {
   let savedUser = localStorage.getItem('user');
-  const currentTitle = board.title;
-  const [title, changeTitle] = useState(currentTitle);
+  const [title, changeTitle] = useState(board.title);
   const [showTitleInput, toggleTitleInput] = useState(false);
   const [isCreateListFormOpen, toggleCreateListForm] = useState(false);
+  const [listTitle, changeListTitle] = useState('');
   // to be able to focus then the input is visible
   const titleInputRef = useRef(null);
   // get the width to set the input width
   const titleButtonRef = useRef(null);
+  // focus the list title input
+  const listTitleRef = useRef(null);
 
   if (savedUser) {
     // parse the user object
@@ -65,10 +67,14 @@ const Board = ({
     requestBoardInfo(currentBoard.id);
   }
 
-  // const currentTitle = currentBoard ? currentBoard.title : board.title;
   if (showTitleInput) {
     // delay enough for the title input to be visible
     setTimeout(() => titleInputRef.current.focus(), 100);
+  }
+
+  // when the create list for is rendered
+  if (isCreateListFormOpen) {
+    setTimeout(() => listTitleRef.current.focus(), 100);
   }
 
   return (
@@ -137,11 +143,25 @@ const Board = ({
               className="list-form__input"
               type="text"
               placeholder="Enter list title"
+              ref={listTitleRef}
+              onChange={(e) => changeListTitle(e.target.value)}
             />
             <div className="list-form__inner">
               <button
                 className="list-from__button list-form__button--submit"
                 type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+
+                  const list = {
+                    title: listTitle,
+                    order: 1,
+                    boardId: board.id,
+                  };
+
+                  console.log('creating... ', list);
+                  listTitleRef.current.value = '';
+                }}
               >
                 Add List
               </button>
