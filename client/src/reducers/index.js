@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import reduceReducers from 'reduce-reducers';
 
 import usersReducer from './users';
 import boardsReducer from './boards';
@@ -8,5 +9,6 @@ import listReducer from './lists';
 export default combineReducers({
   user: usersReducer,
   createBoard: boardsReducer,
-  board: boardReducer,
+  // board is modified by either reducer
+  board: reduceReducers(boardReducer, listReducer),
 });

@@ -6134,6 +6134,11 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
+reduce-reducers@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/reduce-reducers/-/reduce-reducers-1.0.2.tgz#f936f4158d4ec8c39ee6b5953afa98a53c02b27c"
+  integrity sha512-MdjFwpApWW87XP89bZ4jQbeaHJfAU6N8uo7AJmjIZnLImjVHspsIfu5pYfUTx9xFjXsyv9wb4GVfMmVs0jZj6Q==
+
 redux-saga@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-1.0.2.tgz#0599703f975438f1b2f9d2b9a965ec58f0fdfcd7"

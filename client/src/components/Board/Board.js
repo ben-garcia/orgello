@@ -16,6 +16,7 @@ import {
   requestBoardTitleChange,
   requestBoardInformation,
 } from '../../actions/board';
+import { requestCreateList } from '../../actions/lists';
 
 import './Board.scss';
 
@@ -31,6 +32,7 @@ const Board = ({
   requestSixPhotos,
   requestNewBoardTitle,
   requestBoardInfo,
+  requestCreateNewList,
 }) => {
   let savedUser = localStorage.getItem('user');
   const [title, changeTitle] = useState(board.title);
@@ -158,8 +160,10 @@ const Board = ({
                     order: 1,
                     boardId: board.id,
                   };
-
-                  console.log('creating... ', list);
+                  // dispatch action to create new list
+                  // and add it to board.lists
+                  requestCreateNewList(list);
+                  // reset the list title
                   listTitleRef.current.value = '';
                 }}
               >
@@ -211,6 +215,7 @@ Board.propTypes = {
   requestSixPhotos: PropTypes.func.isRequired,
   requestNewBoardTitle: PropTypes.func.isRequired,
   requestBoardInfo: PropTypes.func.isRequired,
+  requestCreateNewList: PropTypes.func.isRequired,
 };
 
 Board.defaultProps = {
@@ -234,6 +239,7 @@ const mapDispatchToProps = (dispatch) => ({
   requestSixPhotos: () => dispatch(requestLatestSixPhotos()),
   requestNewBoardTitle: (payload) => dispatch(requestBoardTitleChange(payload)),
   requestBoardInfo: (board) => dispatch(requestBoardInformation(board)),
+  requestCreateNewList: (list) => dispatch(requestCreateList(list)),
 });
 
 export default connect(

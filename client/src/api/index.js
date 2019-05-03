@@ -19,7 +19,6 @@ export const fetchData = async (baseUrl, query, page, perPage) => {
 
 export const submitNewBoard = async ({ title, background, ownerId }) => {
   let responseJson = null;
-
   const { token } = JSON.parse(localStorage.getItem('user'));
 
   try {
@@ -45,7 +44,6 @@ export const submitNewBoard = async ({ title, background, ownerId }) => {
 
 export const getUsersBoards = async (ownerId) => {
   let responseJson = null;
-
   const { token } = JSON.parse(localStorage.getItem('user'));
 
   try {
@@ -66,7 +64,6 @@ export const getUsersBoards = async (ownerId) => {
 
 export const updateResource = async (url, bodyContent) => {
   let responseJson = null;
-
   const { token } = JSON.parse(localStorage.getItem('user'));
 
   try {
@@ -86,9 +83,29 @@ export const updateResource = async (url, bodyContent) => {
   return responseJson;
 };
 
+export const createResource = async (url, bodyContent) => {
+  let responseJson = null;
+  const { token } = JSON.parse(localStorage.getItem('user'));
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(bodyContent),
+    });
+    responseJson = await response.json();
+  } catch (e) {
+    console.log('updateResource() error: ', e.message);
+  }
+
+  return responseJson;
+};
+
 export const getBoard = async (url) => {
   let responseJson = null;
-
   const { token } = JSON.parse(localStorage.getItem('user'));
 
   try {
