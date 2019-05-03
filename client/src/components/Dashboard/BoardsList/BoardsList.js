@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { changeCreateBoardFormStatus } from '../../../actions/boards';
-import { getBoardInfo } from '../../../actions/board';
+import { requestBoardInformation } from '../../../actions/board';
 
 import './BoardsList.scss';
 
 const BoardsList = ({
   usersBoards,
   changeBoardFormStatus,
-  getBoardInformation,
+  requestBoardInfo,
 }) => {
   return (
     <section className="boards">
@@ -47,7 +47,8 @@ const BoardsList = ({
                   // store the clicked on board in localStorage to have access to it
                   // on page refresh
                   localStorage.setItem('board', JSON.stringify(board));
-                  getBoardInformation(board);
+                  requestBoardInfo(board.id);
+                  // getBoardInformation(board);
                 }}
               >
                 <span className="board__title">{board.title}</span>
@@ -77,7 +78,7 @@ BoardsList.propTypes = {
     }).isRequired
   ),
   changeBoardFormStatus: PropTypes.func.isRequired,
-  getBoardInformation: PropTypes.func.isRequired,
+  requestBoardInfo: PropTypes.func.isRequired,
 };
 
 BoardsList.defaultProps = {
@@ -91,7 +92,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   changeBoardFormStatus: (status) =>
     dispatch(changeCreateBoardFormStatus(status)),
-  getBoardInformation: (info) => dispatch(getBoardInfo(info)),
+  requestBoardInfo: (boardId) => dispatch(requestBoardInformation(boardId)),
 });
 
 export default connect(

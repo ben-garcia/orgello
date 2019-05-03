@@ -79,7 +79,11 @@
     padding-top: 0.5rem;
     display: flex;
 
-    .list-form {
+    .lists {
+      display: flex;
+    }
+
+    .board-list-form {
       width: 300px;
       height: 90px;
       display: flex;
@@ -97,14 +101,14 @@
         align-items: center;
         margin-top: 0.3rem;
 
-        .list-form__button--submit {
+        .board-list-form__button--submit {
           background-color: rgb(90, 172, 68);
           color: #fff;
           padding: 0.5rem 1rem;
           border-radius: 4px;
         }
 
-        .list-form__button--close {
+        .board-list-form__button--close {
           background: transparent;
 
           .fa-times::before {

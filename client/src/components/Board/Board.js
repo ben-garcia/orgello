@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import BackgroundOptions from '../Navbar/CreateBoardForm/BackgroundOptions/BackgroundOptions';
+import List from './List/List';
 
 import { loginUser, requestUsersBoards } from '../../actions/users';
 import {
@@ -131,6 +132,12 @@ const Board = ({
         </button>
       </div>
       <div className="board-container">
+        <section className="lists">
+          {board.lists &&
+            board.lists.map((list) => (
+              <List key={list.id} title={list.title} />
+            ))}
+        </section>
         {!isCreateListFormOpen ? (
           <span
             className="form-trigger"
@@ -140,17 +147,17 @@ const Board = ({
             Add a list
           </span>
         ) : (
-          <form className="list-form">
+          <form className="board-list-form">
             <input
-              className="list-form__input"
+              className="board-list-form__input"
               type="text"
               placeholder="Enter list title"
               ref={listTitleRef}
               onChange={(e) => changeListTitle(e.target.value)}
             />
-            <div className="list-form__inner">
+            <div className="board-list-form__inner">
               <button
-                className="list-from__button list-form__button--submit"
+                className="board-list-from__button board-list-form__button--submit"
                 type="submit"
                 onClick={(e) => {
                   e.preventDefault();
@@ -170,7 +177,7 @@ const Board = ({
                 Add List
               </button>
               <button
-                className="list-from__button list-form__button--close"
+                className="board-list-from__button board-list-form__button--close"
                 type="button"
                 onClick={() => toggleCreateListForm(!isCreateListFormOpen)}
               >
