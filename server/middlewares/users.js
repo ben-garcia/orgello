@@ -53,11 +53,21 @@ function verifyToken(req, res, next) {
         // if requesting a board resource
         // pass it along the middleware stack
         next();
-      } else if (req.params.listId) {
+      } else if (
+        req.params.listId ||
+        // if req.body contains the necessary properties to create a new list
+        // then it checks out
+        (req.body.title && req.body.boardId && req.body.order)
+      ) {
         // if requesting a list
         // call the next middleware in the stack
         next();
-      } else if (req.params.cardId) {
+      } else if (
+        req.params.cardId ||
+        // if req.body contains the neccessary properties to create a new card
+        // then move the request along the middleware stack
+        (req.body.title && req.body.listId && req.body.order)
+      ) {
         // if requesting a card
         next();
       } else {

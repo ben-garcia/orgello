@@ -47,29 +47,35 @@ router.get('/', (req, res, next) => {
 });
 
 // create a new card that MUST match the schema
-router.post('/', (req, res, next) => {
-  const result = Joi.validate(req.body, schema);
+router.post(
+  '/',
+  validateParam,
+  isTokenPresent,
+  verifyToken,
+  (req, res, next) => {
+    const result = Joi.validate(req.body, schema);
 
-  // if req.body is not valid.
-  if (result.error !== null) {
-    res.status(422);
-    next({ message: result.error.message });
-  } else {
-    // new Card
-    const newCard = {
-      ...req.body,
-    };
-    // insert list into the database.
-    Card.create(newCard)
-      // send to newly created list to the client.
-      .then((card) => {
-        res.status(201); // created
-        res.json(card);
-      })
-      // if the list failed to be created.
-      .catch((e) => next({ message: e.message }));
-  }
-});
+    // if req.body is not valid.
+    if (result.error !== null) {
+      res.status(422);
+      next({ message: result.error.message });
+    } else {
+      // new Card
+      const newCard = {
+        ...req.body,
+      };
+      // insert list into the database.
+      Card.create(newCard)
+        // send to newly created list to the client.
+        .then((card) => {
+          res.status(201); // created
+          res.json(card);
+        })
+        // if the list failed to be created.
+        .catch((e) => next({ message: e.message }));
+    }
+  },
+);
 
 // update the card with properties in req.body
 router.put(

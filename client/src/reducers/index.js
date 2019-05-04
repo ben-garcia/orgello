@@ -5,10 +5,11 @@ import usersReducer from './users';
 import boardsReducer from './boards';
 import boardReducer from './board';
 import listReducer from './lists';
+import cardReducer from './cards';
 
 export default combineReducers({
   user: usersReducer,
   createBoard: boardsReducer,
-  // board is modified by either reducer
-  board: reduceReducers(boardReducer, listReducer),
+  // board can be modified by all reducers
+  board: reduceReducers(boardReducer, listReducer, cardReducer),
 });

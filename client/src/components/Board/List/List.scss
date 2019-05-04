@@ -1,14 +1,13 @@
 .list {
   width: 300px;
+  height: max-content;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   background: rgb(223, 225, 230);
   border-radius: 4px;
   margin-left: 0.3rem;
 
   &__header {
-    height: 50%;
     padding-left: 1rem;
     padding-top: 0.6rem;
 
@@ -19,9 +18,9 @@
 
   &__button {
     background: transparent;
-    height: 50%;
-    padding-left: 1rem;
+    padding: 0.7rem 1rem;
     text-align: start;
+    color: #6b778c;
 
     .fa-plus::before {
       margin-right: 0.3rem;

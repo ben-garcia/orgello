@@ -52,29 +52,35 @@ router.get('/', (req, res, next) => {
 });
 
 // create a list and add it to the db
-router.post('/', (req, res, next) => {
-  const result = Joi.validate(req.body, schema);
+router.post(
+  '/',
+  validateParam,
+  isTokenPresent,
+  verifyToken,
+  (req, res, next) => {
+    const result = Joi.validate(req.body, schema);
 
-  // if req.body is not valid.
-  if (result.error !== null) {
-    res.status(422);
-    next({ message: result.error.message });
-  } else {
-    // new List
-    const newList = {
-      ...req.body,
-    };
-    // insert list into the database.
-    List.create(newList)
-      // send to newly created list to the client.
-      .then((list) => {
-        res.status(201); // created
-        res.json(list);
-      })
-      // if the list failed to be created.
-      .catch((e) => next({ message: e.message }));
-  }
-});
+    // if req.body is not valid.
+    if (result.error !== null) {
+      res.status(422);
+      next({ message: result.error.message });
+    } else {
+      // new List
+      const newList = {
+        ...req.body,
+      };
+      // insert list into the database.
+      List.create(newList)
+        // send to newly created list to the client.
+        .then((list) => {
+          res.status(201); // created
+          res.json(list);
+        })
+        // if the list failed to be created.
+        .catch((e) => next({ message: e.message }));
+    }
+  },
+);
 
 // update the list with the given id using property/properties
 // in req.body
