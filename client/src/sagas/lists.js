@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 
-import { receivedCreateList } from '../actions/lists';
+import { receivedCreateList, receivedUpdateListTitle } from '../actions/lists';
 import { createResource, updateResource } from '../api';
 
 export function* createList({ list }) {
@@ -36,7 +36,7 @@ export function* updateList({ list }) {
       title: newList.title,
     };
     // dispatch an action to the store with the put effect
-    yield put(receivedCreateList(updatedList));
+    yield put(receivedUpdateListTitle(updatedList));
   } catch (e) {
     console.error('updateList() error: ', e.message);
   }

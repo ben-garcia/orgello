@@ -9,7 +9,7 @@ import {
   REQUEST_BOARD_BACKGROUND_CHANGE,
   REQUEST_BOARD_INFORMATION,
   REQUEST_CREATE_LIST,
-  REQUEST_LIST_UPDATE,
+  REQUEST_UPDATE_LIST_TITLE,
 } from '../constants';
 import getAllUsersBoards from './users';
 import { getLatestSixPhotos, getLatestPhotos, getQueryPhotos } from './boards';
@@ -32,5 +32,5 @@ export default function* rootSaga() {
   yield takeLatest(REQUEST_BOARD_BACKGROUND_CHANGE, updateBoardBackground);
   yield takeLatest(REQUEST_BOARD_INFORMATION, getBoardInformation);
   yield takeLatest(REQUEST_CREATE_LIST, createList);
-  yield takeLatest(REQUEST_LIST_UPDATE, updateList);
+  yield takeLatest(REQUEST_UPDATE_LIST_TITLE, updateList);
 }

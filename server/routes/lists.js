@@ -91,8 +91,9 @@ router.put(
         id: req.params.listId,
       },
     })
-      .then((updatedList) => {
-        res.json({ message: 'list updated', updatedList });
+      .then(() => {
+        res.json({ id: req.params.listId, ...req.body });
+        // res.json({ message: 'list updated', updatedList });
       })
       .catch((e) => next({ message: e.message }));
   },

@@ -1,8 +1,8 @@
 import {
   REQUEST_CREATE_LIST,
   RECEIVED_CREATE_LIST,
-  REQUEST_LIST_UPDATE,
-  RECEIVED_LIST_UPDATE,
+  REQUEST_UPDATE_LIST_TITLE,
+  RECEIVED_UPDATE_LIST_TITLE,
 } from '../constants';
 
 export const requestCreateList = (list) => ({
@@ -15,12 +15,12 @@ export const receivedCreateList = (newList) => ({
   newList,
 });
 
-export const requestListUpdate = (list) => ({
-  type: REQUEST_LIST_UPDATE,
+export const requestUpdateListTitle = (list) => ({
+  type: REQUEST_UPDATE_LIST_TITLE,
   list,
 });
 
-export const receivedListUpdate = (updatedList) => ({
-  type: RECEIVED_LIST_UPDATE,
+export const receivedUpdateListTitle = (updatedList) => ({
+  type: RECEIVED_UPDATE_LIST_TITLE,
   updatedList,
 });

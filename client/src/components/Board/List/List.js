@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { requestListUpdate } from '../../../actions/lists';
+import { requestUpdateListTitle } from '../../../actions/lists';
 
 import './List.scss';
 
@@ -102,7 +102,7 @@ List.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  requestUpdateList: (list) => dispatch(requestListUpdate(list)),
+  requestUpdateList: (list) => dispatch(requestUpdateListTitle(list)),
 });
 
 export default connect(
