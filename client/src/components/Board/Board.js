@@ -160,16 +160,20 @@ const Board = ({
                 onClick={(e) => {
                   e.preventDefault();
 
-                  const list = {
-                    title: listTitle,
-                    order: 1,
-                    boardId: board.id,
-                  };
-                  // dispatch action to create new list
-                  // and add it to board.lists
-                  requestCreateNewList(list);
-                  // reset the list title
-                  listTitleRef.current.value = '';
+                  // make sure that title input is not empty
+                  // before sending calling api
+                  if (listTitleRef.current.value) {
+                    const list = {
+                      title: listTitle,
+                      order: 1,
+                      boardId: board.id,
+                    };
+                    // dispatch action to create new list
+                    // and add it to board.lists
+                    requestCreateNewList(list);
+                    // reset the list title
+                    listTitleRef.current.value = '';
+                  }
                 }}
               >
                 Add List

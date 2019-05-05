@@ -11,7 +11,11 @@ import { requestCreateCard } from '../../../actions/cards';
 
 import './List.scss';
 
-const List = ({ list, requestUpdateList, requestCreateNewCard }) => {
+const List = ({ list, lists, requestUpdateList, requestCreateNewCard }) => {
+  // the UI wasn't updating with only the list prop
+  // so lists prop returns ALL lists of a board.
+  // find the current list which should contain up to date number of cards
+  const currentList = lists.find((l) => l.id === list.id);
   const [isCardFormOpen, toggleCardForm] = useState(false);
   const [listTitle, changeListTitle] = useState(list.title);
   const [cardTitle, changeCardTitle] = useState('');
@@ -27,8 +31,6 @@ const List = ({ list, requestUpdateList, requestCreateNewCard }) => {
   if (isListTitleInputOpen) {
     setTimeout(() => listTitleRef.current.focus(), 100);
   }
-
-  console.log(`${list.title} `, list.cards.length, '  ', list.cards);
 
   return (
     <article className="list">
@@ -61,9 +63,12 @@ const List = ({ list, requestUpdateList, requestCreateNewCard }) => {
           </h3>
         )}
       </div>
-      <div className="list-cards" style={list.cards ? {} : { display: 'none' }}>
-        {list.cards &&
-          list.cards.map((card) => <Card key={card.id} card={card} />)}
+      <div
+        className="list-cards"
+        style={currentList.cards ? {} : { display: 'none' }}
+      >
+        {currentList.cards &&
+          currentList.cards.map((card) => <Card key={card.id} card={card} />)}
       </div>
       {isCardFormOpen ? (
         <form className="list-form">
@@ -73,6 +78,20 @@ const List = ({ list, requestUpdateList, requestCreateNewCard }) => {
             placeholder="Enter a title for this card"
             ref={cardTitleAreaRef}
             onChange={() => changeCardTitle(cardTitleAreaRef.current.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                // when user pressed 'Enter'
+                // then submit
+                const newCard = {
+                  title: cardTitle,
+                  order: 1,
+                  listId: list.id,
+                };
+                requestCreateNewCard(newCard);
+                changeCardTitle('');
+                cardTitleAreaRef.current.value = '';
+              }
+            }}
           />
           <div className="list-form__inner">
             <button
@@ -134,7 +153,29 @@ List.propTypes = {
   }).isRequired,
   requestUpdateList: PropTypes.func.isRequired,
   requestCreateNewCard: PropTypes.func.isRequired,
+  lists: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      cards: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          title: PropTypes.string.isRequired,
+          order: PropTypes.number.isRequired,
+          listId: PropTypes.number.isRequired,
+          createdAt: PropTypes.string.isRequired,
+          updatedAt: PropTypes.string.isRequired,
+        })
+      ),
+      createdAt: PropTypes.string.isRequired,
+      updatedAt: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  lists: state.board.lists,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   requestUpdateList: (list) => dispatch(requestUpdateListTitle(list)),
@@ -142,6 +183,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(List);
