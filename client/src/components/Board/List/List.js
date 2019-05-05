@@ -28,7 +28,7 @@ const List = ({ list, requestUpdateList, requestCreateNewCard }) => {
     setTimeout(() => listTitleRef.current.focus(), 100);
   }
 
-  console.log(`list-${list.id}---- `, list.cards.length);
+  console.log(`${list.title} `, list.cards.length, '  ', list.cards);
 
   return (
     <article className="list">
@@ -63,7 +63,7 @@ const List = ({ list, requestUpdateList, requestCreateNewCard }) => {
       </div>
       <div className="list-cards" style={list.cards ? {} : { display: 'none' }}>
         {list.cards &&
-          list.cards.map((card) => <Card key={card.id} title={card.title} />)}
+          list.cards.map((card) => <Card key={card.id} card={card} />)}
       </div>
       {isCardFormOpen ? (
         <form className="list-form">
@@ -124,10 +124,13 @@ List.propTypes = {
         id: PropTypes.number.isRequired,
         title: PropTypes.string.isRequired,
         order: PropTypes.number.isRequired,
+        listId: PropTypes.number.isRequired,
         createdAt: PropTypes.string.isRequired,
         updatedAt: PropTypes.string.isRequired,
       })
-    ).isRequired,
+    ),
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
   }).isRequired,
   requestUpdateList: PropTypes.func.isRequired,
   requestCreateNewCard: PropTypes.func.isRequired,
