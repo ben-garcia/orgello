@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Draggable } from 'react-beautiful-dnd';
 
 import Card from './Card/Card';
 
@@ -33,104 +34,115 @@ const List = ({ list, lists, requestUpdateList, requestCreateNewCard }) => {
   }
 
   return (
-    <article className="list">
-      <div className="list__header">
-        {isListTitleInputOpen ? (
-          <input
-            type="text"
-            ref={listTitleRef}
-            value={listTitle}
-            onChange={(e) => changeListTitle(e.target.value)}
-            onBlur={() => {
-              if (!listTitleRef.current.value) {
-                changeListTitle(list.title);
-              }
+    <Draggable draggableId={list.title} index={list.id}>
+      {(provided) => (
+        <article
+          className="list"
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <div className="list__header">
+            {isListTitleInputOpen ? (
+              <input
+                type="text"
+                ref={listTitleRef}
+                value={listTitle}
+                onChange={(e) => changeListTitle(e.target.value)}
+                onBlur={() => {
+                  if (!listTitleRef.current.value) {
+                    changeListTitle(list.title);
+                  }
 
-              const newList = {
-                id: list.id,
-                title: listTitleRef.current.value,
-              };
-              requestUpdateList(newList);
-              toggleListTitleInput(!isListTitleInputOpen);
-            }}
-          />
-        ) : (
-          <h3
-            className="list__title"
-            onClick={() => toggleListTitleInput(!isListTitleInputOpen)}
+                  const newList = {
+                    id: list.id,
+                    title: listTitleRef.current.value,
+                  };
+                  requestUpdateList(newList);
+                  toggleListTitleInput(!isListTitleInputOpen);
+                }}
+              />
+            ) : (
+              <h3
+                className="list__title"
+                onClick={() => toggleListTitleInput(!isListTitleInputOpen)}
+              >
+                {listTitle}
+              </h3>
+            )}
+          </div>
+          <div
+            className="list-cards"
+            style={currentList.cards ? {} : { display: 'none' }}
           >
-            {listTitle}
-          </h3>
-        )}
-      </div>
-      <div
-        className="list-cards"
-        style={currentList.cards ? {} : { display: 'none' }}
-      >
-        {currentList.cards &&
-          currentList.cards.map((card) => <Card key={card.id} card={card} />)}
-      </div>
-      {isCardFormOpen ? (
-        <form className="list-form">
-          <textarea
-            className="list-form__textarea"
-            type="text"
-            placeholder="Enter a title for this card"
-            ref={cardTitleAreaRef}
-            onChange={() => changeCardTitle(cardTitleAreaRef.current.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                // when user pressed 'Enter'
-                // then submit
-                const newCard = {
-                  title: cardTitle,
-                  order: 1,
-                  listId: list.id,
-                };
-                requestCreateNewCard(newCard);
-                changeCardTitle('');
-                cardTitleAreaRef.current.value = '';
-              }
-            }}
-          />
-          <div className="list-form__inner">
+            {currentList.cards &&
+              currentList.cards.map((card) => (
+                <Card key={card.id} card={card} />
+              ))}
+          </div>
+          {isCardFormOpen ? (
+            <form className="list-form">
+              <textarea
+                className="list-form__textarea"
+                type="text"
+                placeholder="Enter a title for this card"
+                ref={cardTitleAreaRef}
+                onChange={() => changeCardTitle(cardTitleAreaRef.current.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    // when user pressed 'Enter'
+                    // then submit
+                    const newCard = {
+                      title: cardTitle,
+                      order: 1,
+                      listId: list.id,
+                    };
+                    requestCreateNewCard(newCard);
+                    changeCardTitle('');
+                    cardTitleAreaRef.current.value = '';
+                  }
+                }}
+              />
+              <div className="list-form__inner">
+                <button
+                  className="list-from__button list-form__button--submit"
+                  type="submit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const newCard = {
+                      title: cardTitle,
+                      order: 1,
+                      listId: list.id,
+                    };
+                    requestCreateNewCard(newCard);
+                    changeCardTitle('');
+                    cardTitleAreaRef.current.value = '';
+                  }}
+                >
+                  Add a card
+                </button>
+                <button
+                  className="list-from__button list-form__button--close"
+                  type="button"
+                  onClick={() => toggleCardForm(!isCardFormOpen)}
+                >
+                  <i className="fas fa-times" />
+                </button>
+              </div>
+            </form>
+          ) : (
             <button
-              className="list-from__button list-form__button--submit"
-              type="submit"
-              onClick={(e) => {
-                e.preventDefault();
-                const newCard = {
-                  title: cardTitle,
-                  order: 1,
-                  listId: list.id,
-                };
-                requestCreateNewCard(newCard);
-                changeCardTitle('');
-                cardTitleAreaRef.current.value = '';
-              }}
-            >
-              Add a card
-            </button>
-            <button
-              className="list-from__button list-form__button--close"
+              className="list__button"
               type="button"
               onClick={() => toggleCardForm(!isCardFormOpen)}
             >
-              <i className="fas fa-times" />
+              <i className="fas fa-plus" />
+              <span className="list__text">Add a Card</span>
             </button>
-          </div>
-        </form>
-      ) : (
-        <button
-          className="list__button"
-          type="button"
-          onClick={() => toggleCardForm(!isCardFormOpen)}
-        >
-          <i className="fas fa-plus" />
-          <span className="list__text">Add a Card</span>
-        </button>
+          )}
+        </article>
       )}
-    </article>
+    </Draggable>
   );
 };
 

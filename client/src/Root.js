@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import LandingPage from './components/LandingPage/LandingPage';
 import Navbar from './components/Navbar/Navbar';
@@ -29,20 +30,26 @@ const Root = ({ board }) => {
   }
 
   return (
-    <div className="root-container" style={board.isOpen ? styles : {}}>
-      <Navbar />
-      <main className="main">
-        <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route exact path="/signup" component={Signup} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/:username/dashboard" component={Dashboard} />
-          <Route path="/board/:boardTitle" component={Board} />
-          <Route component={NotFound} />
-        </Switch>
-      </main>
-      <Footer />
-    </div>
+    <DragDropContext
+      onDragEnd={(result) => {
+        console.log(result);
+      }}
+    >
+      <div className="root-container" style={board.isOpen ? styles : {}}>
+        <Navbar />
+        <main className="main">
+          <Switch>
+            <Route exact path="/" component={LandingPage} />
+            <Route exact path="/signup" component={Signup} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/:username/dashboard" component={Dashboard} />
+            <Route path="/board/:boardTitle" component={Board} />
+            <Route component={NotFound} />
+          </Switch>
+        </main>
+        <Footer />
+      </div>
+    </DragDropContext>
   );
 };
 

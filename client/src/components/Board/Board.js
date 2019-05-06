@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Droppable } from 'react-beautiful-dnd';
 
 import BackgroundOptions from '../Navbar/CreateBoardForm/BackgroundOptions/BackgroundOptions';
 import List from './List/List';
@@ -115,7 +116,6 @@ const Board = ({
             }
           }}
         />
-
         <button
           className="header-button"
           type="button"
@@ -132,10 +132,15 @@ const Board = ({
         </button>
       </div>
       <div className="board-container">
-        <section className="lists">
-          {board.lists &&
-            board.lists.map((list) => <List key={list.id} list={list} />)}
-        </section>
+        <Droppable droppableId="board-container" direction="horizontal">
+          {(provided) => (
+            <section className="lists" ref={provided.innerRef}>
+              {board.lists &&
+                board.lists.map((list) => <List key={list.id} list={list} />)}
+              {provided.placeholder}
+            </section>
+          )}
+        </Droppable>
         {!isCreateListFormOpen ? (
           <span
             className="form-trigger"
