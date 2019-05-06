@@ -11,6 +11,7 @@ import {
   REQUEST_CREATE_LIST,
   REQUEST_UPDATE_LIST_TITLE,
   REQUEST_CREATE_CARD,
+  REQUEST_UPDATE_CARD_TITLE,
 } from '../constants';
 import getAllUsersBoards from './users';
 import { getLatestSixPhotos, getLatestPhotos, getQueryPhotos } from './boards';
@@ -20,7 +21,7 @@ import {
   getBoardInformation,
 } from './board';
 import { createList, updateList } from './lists';
-import { createCard } from './cards';
+import { createCard, updateCard } from './cards';
 
 export default function* rootSaga() {
   // takeLatest effect takes the latest action dispatched
@@ -36,4 +37,5 @@ export default function* rootSaga() {
   yield takeLatest(REQUEST_CREATE_LIST, createList);
   yield takeLatest(REQUEST_UPDATE_LIST_TITLE, updateList);
   yield takeLatest(REQUEST_CREATE_CARD, createCard);
+  yield takeLatest(REQUEST_UPDATE_CARD_TITLE, updateCard);
 }

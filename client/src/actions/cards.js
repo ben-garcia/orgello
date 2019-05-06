@@ -1,4 +1,9 @@
-import { REQUEST_CREATE_CARD, RECEIVED_CREATE_CARD } from '../constants';
+import {
+  REQUEST_CREATE_CARD,
+  RECEIVED_CREATE_CARD,
+  REQUEST_UPDATE_CARD_TITLE,
+  RECEIVED_UPDATE_CARD_TITLE,
+} from '../constants';
 
 export const requestCreateCard = (card) => ({
   type: REQUEST_CREATE_CARD,
@@ -10,12 +15,12 @@ export const receivedCreateCard = (newCard) => ({
   newCard,
 });
 
-// export const requestUpdateCardTitle = (card) => ({
-//   type: REQUEST_UPDATE_CARD_TITLE,
-//   card,
-// });
+export const requestUpdateCardTitle = (card) => ({
+  type: REQUEST_UPDATE_CARD_TITLE,
+  card,
+});
 
-// export const receivedUpdateListTitle = (updatedCard) => ({
-//   type: RECEIVED_UPDATE_CARD_TITLE,
-//   updatedCard,
-// });
+export const receivedUpdateCardTitle = (updatedCard) => ({
+  type: RECEIVED_UPDATE_CARD_TITLE,
+  updatedCard,
+});

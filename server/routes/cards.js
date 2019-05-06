@@ -86,13 +86,16 @@ router.put(
   validateCardHasCorrectBodyContents,
   checkCardOwnerIdMatchesUserId,
   (req, res, next) => {
-    Card.update(req.body, {
-      where: {
-        id: req.params.cardId,
+    Card.update(
+      { title: req.body.title },
+      {
+        where: {
+          id: req.params.cardId,
+        },
       },
-    })
-      .then((updatedCard) => {
-        res.json({ message: 'card updated', updatedCard });
+    )
+      .then(() => {
+        res.json({ id: Number(req.params.cardId), ...req.body });
       })
       .catch((e) => next({ message: e.message }));
   },
