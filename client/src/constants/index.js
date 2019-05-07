@@ -73,9 +73,12 @@ export const REMOVE_QUERY_PHOTOS = 'REMOVE_QUERY_PHOTOS';
 // create new list
 export const REQUEST_CREATE_LIST = 'REQUEST_CREATE_LIST';
 export const RECEIVED_CREATE_LIST = 'RECEIVED_CREATE_LIST';
-// update a list
+// update a list title
 export const REQUEST_UPDATE_LIST_TITLE = 'REQUEST_UPDATE_LIST_TITLE';
 export const RECEIVED_UPDATE_LIST_TITLE = 'RECEIVED_UPDATE_LIST_TITLE';
+// updated list order
+export const REQUEST_UPDATE_LIST_ORDER = 'REQUEST_UPDATE_LIST_ORDER';
+export const RECEIVED_UPDATE_LIST_ORDER = 'RECEIVED_UPDATE_LIST_ORDER';
 
 // cards
 // create new card

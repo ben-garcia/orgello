@@ -1,5 +1,9 @@
 /* eslint-disable no-case-declarations */
-import { RECEIVED_CREATE_LIST, RECEIVED_UPDATE_LIST_TITLE } from '../constants';
+import {
+  RECEIVED_CREATE_LIST,
+  RECEIVED_UPDATE_LIST_TITLE,
+  RECEIVED_UPDATE_LIST_ORDER,
+} from '../constants';
 
 const listReducer = (state, action) => {
   switch (action.type) {
@@ -18,6 +22,16 @@ const listReducer = (state, action) => {
       return {
         ...state,
         lists: updatedLists,
+      };
+    case RECEIVED_UPDATE_LIST_ORDER:
+      const stateWithOrderUpdated = [...state.lists];
+      const oldList = stateWithOrderUpdated.find(
+        (l) => l.id === action.updatedList.id
+      );
+      oldList.order = action.updatedList.order;
+      return {
+        ...state,
+        lists: stateWithOrderUpdated,
       };
     default:
       return state;

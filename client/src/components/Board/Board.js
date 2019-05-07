@@ -136,7 +136,11 @@ const Board = ({
           {(provided) => (
             <section className="lists" ref={provided.innerRef}>
               {board.lists &&
-                board.lists.map((list) => <List key={list.id} list={list} />)}
+                board.lists
+                  .sort((a, b) => a.order - b.order)
+                  .map((list, index) => (
+                    <List key={list.id} list={list} listIndex={index} />
+                  ))}
               {provided.placeholder}
             </section>
           )}
@@ -168,9 +172,18 @@ const Board = ({
                   // make sure that title input is not empty
                   // before sending calling api
                   if (listTitleRef.current.value) {
+                    let order = null;
+                    if (board.lists.length === 0) {
+                      order = 10000;
+                    } else if (board.lists.length === 1) {
+                      order = 20000;
+                    } else {
+                      order = 20000 * board.lists.length;
+                    }
+
                     const list = {
                       title: listTitle,
-                      order: 1,
+                      order,
                       boardId: board.id,
                     };
                     // dispatch action to create new list

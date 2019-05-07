@@ -1,4 +1,4 @@
-import { takeLatest } from 'redux-saga/effects';
+import { takeLatest, takeEvery } from 'redux-saga/effects';
 
 import {
   REQUEST_USERS_BOARDS,
@@ -10,6 +10,7 @@ import {
   REQUEST_BOARD_INFORMATION,
   REQUEST_CREATE_LIST,
   REQUEST_UPDATE_LIST_TITLE,
+  REQUEST_UPDATE_LIST_ORDER,
   REQUEST_CREATE_CARD,
   REQUEST_UPDATE_CARD_TITLE,
 } from '../constants';
@@ -20,7 +21,7 @@ import {
   updateBoardBackground,
   getBoardInformation,
 } from './board';
-import { createList, updateList } from './lists';
+import { createList, updateList, updateListOrder } from './lists';
 import { createCard, updateCard } from './cards';
 
 export default function* rootSaga() {
@@ -36,6 +37,7 @@ export default function* rootSaga() {
   yield takeLatest(REQUEST_BOARD_INFORMATION, getBoardInformation);
   yield takeLatest(REQUEST_CREATE_LIST, createList);
   yield takeLatest(REQUEST_UPDATE_LIST_TITLE, updateList);
+  yield takeEvery(REQUEST_UPDATE_LIST_ORDER, updateListOrder);
   yield takeLatest(REQUEST_CREATE_CARD, createCard);
   yield takeLatest(REQUEST_UPDATE_CARD_TITLE, updateCard);
 }

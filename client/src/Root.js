@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -13,7 +13,9 @@ import Footer from './components/Footer/Footer';
 import NotFound from './components/NotFound/NotFound';
 import Board from './components/Board/Board';
 
-const Root = ({ board }) => {
+import { requestUpdateListOrder } from './actions/lists';
+
+const Root = ({ board, requestUpdateNewListOrder }) => {
   let styles = null;
 
   if (board.background) {
@@ -29,12 +31,27 @@ const Root = ({ board }) => {
         : { backgroundColor: board.background };
   }
 
+  const onDragEnd = useCallback((result) => {
+    const { source, destination } = result;
+    if (destination) {
+      // console.log('source; ', board.lists[source.index]);
+      // console.log('destination; ', board.lists[destination.index]);
+      // first request if for the source
+      requestUpdateNewListOrder({
+        ...board.lists[source.index],
+        newOrder: board.lists[destination.index].order,
+      });
+      // second request is for the destination
+      requestUpdateNewListOrder({
+        ...board.lists[destination.index],
+        newOrder: board.lists[source.index].order,
+      });
+    }
+    //console.log('result: ', result);
+  });
+
   return (
-    <DragDropContext
-      onDragEnd={(result) => {
-        console.log(result);
-      }}
-    >
+    <DragDropContext onDragEnd={onDragEnd}>
       <div className="root-container" style={board.isOpen ? styles : {}}>
         <Navbar />
         <main className="main">
@@ -63,10 +80,18 @@ Root.propTypes = {
     createdAt: PropTypes.string,
     updatedAt: PropTypes.string,
   }).isRequired,
+  requestUpdateNewListOrder: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   board: state.board,
 });
 
-export default connect(mapStateToProps)(Root);
+const mapDispatchToProps = (dispatch) => ({
+  requestUpdateNewListOrder: (list) => dispatch(requestUpdateListOrder(list)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Root);

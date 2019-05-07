@@ -12,7 +12,13 @@ import { requestCreateCard } from '../../../actions/cards';
 
 import './List.scss';
 
-const List = ({ list, lists, requestUpdateList, requestCreateNewCard }) => {
+const List = ({
+  list,
+  lists,
+  listIndex,
+  requestUpdateList,
+  requestCreateNewCard,
+}) => {
   // the UI wasn't updating with only the list prop
   // so lists prop returns ALL lists of a board.
   // find the current list which should contain up to date number of cards
@@ -34,7 +40,7 @@ const List = ({ list, lists, requestUpdateList, requestCreateNewCard }) => {
   }
 
   return (
-    <Draggable draggableId={list.title} index={list.id}>
+    <Draggable draggableId={list.title} index={listIndex}>
       {(provided) => (
         <article
           className="list"
@@ -163,6 +169,7 @@ List.propTypes = {
     createdAt: PropTypes.string.isRequired,
     updatedAt: PropTypes.string.isRequired,
   }).isRequired,
+  listIndex: PropTypes.number.isRequired,
   requestUpdateList: PropTypes.func.isRequired,
   requestCreateNewCard: PropTypes.func.isRequired,
   lists: PropTypes.arrayOf(
