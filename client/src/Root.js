@@ -40,27 +40,28 @@ const Root = ({ board, updateListsOrder }) => {
         ? 'http://localhost:9000/lists'
         : 'http://localhost:9000/cards';
 
-    if (destination && type === 'LIST') {
+    if (destination && type === 'LIST' && source.id !== destination.id) {
       updateListsOrder(
         board.lists[source.index],
         board.lists[destination.index]
       );
+      // send requests to update the lists order in the db
+      // NOTE: it's a better user experience to update the UI, as a reponse to
+      // use input, and then send the request.
+      // Having the request handled by a saga makes for bad UI, as there is a
+      // noticable period when the user moves a list to when the UI changes
+
+      // request for the source
+      updateResource(`${baseUrl}/${board.lists[source.index].id}`, {
+        order: board.lists[source.index].order,
+      });
+      // requets for the destination
+      updateResource(`${baseUrl}/${board.lists[destination.index].id}`, {
+        order: board.lists[destination.index].order,
+      });
+    } else if (destination && type === 'CARD') {
+      console.log(result);
     }
-
-    // send requests to update the lists order in the db
-    // NOTE: it's a better user experience to update the UI, as a reponse to
-    // use input, and then send the request.
-    // Having the request handled by a saga makes for bad UI, as there is a
-    // noticable period when the user moves a list to when the UI changes
-
-    // request for the source
-    updateResource(`${baseUrl}/${board.lists[source.index].id}`, {
-      order: board.lists[source.index].order,
-    });
-    // requets for the destination
-    updateResource(`${baseUrl}/${board.lists[destination.index].id}`, {
-      order: board.lists[destination.index].order,
-    });
   });
 
   return (

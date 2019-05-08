@@ -1,5 +1,9 @@
 /* eslint-disable no-case-declarations */
-import { RECEIVED_CREATE_CARD, RECEIVED_UPDATE_CARD_TITLE } from '../constants';
+import {
+  RECEIVED_CREATE_CARD,
+  RECEIVED_UPDATE_CARD_TITLE,
+  REORDER_CARDS,
+} from '../constants';
 
 const cardReducer = (state, action) => {
   switch (action.type) {
@@ -31,6 +35,12 @@ const cardReducer = (state, action) => {
       return {
         ...state,
         lists: temporaryState,
+      };
+    case REORDER_CARDS:
+      console.log('reducer source: ', action.source);
+      console.log('reducer destination: ', action.destination);
+      return {
+        ...state,
       };
     default:
       return state;

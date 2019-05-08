@@ -186,7 +186,7 @@ const Board = ({
                     }
 
                     const list = {
-                      title: listTitle,
+                      title: listTitle.trim(),
                       order,
                       boardId: board.id,
                     };

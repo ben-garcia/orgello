@@ -86,3 +86,5 @@ export const RECEIVED_CREATE_CARD = 'RECEIVED_CREATE_CARD';
 // update a cards title
 export const REQUEST_UPDATE_CARD_TITLE = 'REQUEST_UPDATE_CARD_TITLE';
 export const RECEIVED_UPDATE_CARD_TITLE = 'RECEIVED_UPDATE_CARD_TITLE';
+// updated card order
+export const REORDER_CARDS = 'REORDER_CARDS';

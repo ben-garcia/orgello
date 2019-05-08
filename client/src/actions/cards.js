@@ -3,6 +3,7 @@ import {
   RECEIVED_CREATE_CARD,
   REQUEST_UPDATE_CARD_TITLE,
   RECEIVED_UPDATE_CARD_TITLE,
+  REORDER_CARDS,
 } from '../constants';
 
 export const requestCreateCard = (card) => ({
@@ -23,4 +24,10 @@ export const requestUpdateCardTitle = (card) => ({
 export const receivedUpdateCardTitle = (updatedCard) => ({
   type: RECEIVED_UPDATE_CARD_TITLE,
   updatedCard,
+});
+
+export const reorderCards = (source, destination) => ({
+  type: REORDER_CARDS,
+  source,
+  destination,
 });

@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 import Card from './Card/Card';
 
@@ -77,15 +77,25 @@ const List = ({
               </h3>
             )}
           </div>
-          <div
-            className="list-cards"
-            style={currentList.cards ? {} : { display: 'none' }}
+          <Droppable
+            droppableId={`${list.title}-${list.id}`}
+            direction="vertical"
+            type="CARD"
           >
-            {currentList.cards &&
-              currentList.cards.map((card) => (
-                <Card key={card.id} card={card} />
-              ))}
-          </div>
+            {(droppableProvided) => (
+              <div
+                className="list-cards"
+                style={currentList.cards ? {} : { display: 'none' }}
+                ref={droppableProvided.innerRef}
+              >
+                {currentList.cards &&
+                  currentList.cards.map((card, index) => (
+                    <Card key={card.id} card={card} cardIndex={index} />
+                  ))}
+                {droppableProvided.placeholder}
+              </div>
+            )}
+          </Droppable>
           {isCardFormOpen ? (
             <form className="list-form">
               <textarea
@@ -95,15 +105,31 @@ const List = ({
                 ref={cardTitleAreaRef}
                 onChange={() => changeCardTitle(cardTitleAreaRef.current.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
+                  // when the user presses the enter key and
+                  // card title isn't empty
+                  if (
+                    e.key === 'Enter' &&
+                    cardTitleAreaRef.current.value.length > 0
+                  ) {
+                    let order = null;
+                    if (list.cards.length === 0) {
+                      order = 10000;
+                    } else if (list.cards.length === 1) {
+                      order = 20000;
+                    } else {
+                      order = 20000 * list.cards.length;
+                    }
+
                     // when user pressed 'Enter'
                     // then submit
                     const newCard = {
-                      title: cardTitle,
-                      order: 1,
+                      title: cardTitle.trim(),
+                      order,
                       listId: list.id,
                     };
-                    requestCreateNewCard(newCard);
+                    if (newCard.title) {
+                      requestCreateNewCard(newCard);
+                    }
                     changeCardTitle('');
                     cardTitleAreaRef.current.value = '';
                   }
@@ -115,12 +141,24 @@ const List = ({
                   type="submit"
                   onClick={(e) => {
                     e.preventDefault();
+
+                    let order = null;
+                    if (list.cards.length === 0) {
+                      order = 10000;
+                    } else if (list.cards.length === 1) {
+                      order = 20000;
+                    } else {
+                      order = 20000 * list.cards.length;
+                    }
+
                     const newCard = {
-                      title: cardTitle,
-                      order: 1,
+                      title: cardTitle.trim(),
+                      order,
                       listId: list.id,
                     };
-                    requestCreateNewCard(newCard);
+                    if (newCard.title) {
+                      requestCreateNewCard(newCard);
+                    }
                     changeCardTitle('');
                     cardTitleAreaRef.current.value = '';
                   }}
