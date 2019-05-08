@@ -13,9 +13,10 @@ import Footer from './components/Footer/Footer';
 import NotFound from './components/NotFound/NotFound';
 import Board from './components/Board/Board';
 
-import { requestUpdateListOrder } from './actions/lists';
+import { reorderLists } from './actions/lists';
+import { updateResource } from './api';
 
-const Root = ({ board, requestUpdateNewListOrder }) => {
+const Root = ({ board, updateListsOrder }) => {
   let styles = null;
 
   if (board.background) {
@@ -32,22 +33,34 @@ const Root = ({ board, requestUpdateNewListOrder }) => {
   }
 
   const onDragEnd = useCallback((result) => {
-    const { source, destination } = result;
-    if (destination) {
-      // console.log('source; ', board.lists[source.index]);
-      // console.log('destination; ', board.lists[destination.index]);
-      // first request if for the source
-      requestUpdateNewListOrder({
-        ...board.lists[source.index],
-        newOrder: board.lists[destination.index].order,
-      });
-      // second request is for the destination
-      requestUpdateNewListOrder({
-        ...board.lists[destination.index],
-        newOrder: board.lists[source.index].order,
-      });
+    const { source, destination, type } = result;
+    // baseUrl is based on what resource type is being updated
+    const baseUrl =
+      type === 'LIST'
+        ? 'http://localhost:9000/lists'
+        : 'http://localhost:9000/cards';
+
+    if (destination && type === 'LIST') {
+      updateListsOrder(
+        board.lists[source.index],
+        board.lists[destination.index]
+      );
     }
-    //console.log('result: ', result);
+
+    // send requests to update the lists order in the db
+    // NOTE: it's a better user experience to update the UI, as a reponse to
+    // use input, and then send the request.
+    // Having the request handled by a saga makes for bad UI, as there is a
+    // noticable period when the user moves a list to when the UI changes
+
+    // request for the source
+    updateResource(`${baseUrl}/${board.lists[source.index].id}`, {
+      order: board.lists[source.index].order,
+    });
+    // requets for the destination
+    updateResource(`${baseUrl}/${board.lists[destination.index].id}`, {
+      order: board.lists[destination.index].order,
+    });
   });
 
   return (
@@ -80,7 +93,7 @@ Root.propTypes = {
     createdAt: PropTypes.string,
     updatedAt: PropTypes.string,
   }).isRequired,
-  requestUpdateNewListOrder: PropTypes.func.isRequired,
+  updateListsOrder: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -88,7 +101,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  requestUpdateNewListOrder: (list) => dispatch(requestUpdateListOrder(list)),
+  updateListsOrder: (source, destination) =>
+    dispatch(reorderLists(source, destination)),
 });
 
 export default connect(

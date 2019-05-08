@@ -1,10 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 
-import {
-  receivedCreateList,
-  receivedUpdateListTitle,
-  receivedUpdateListOrder,
-} from '../actions/lists';
+import { receivedCreateList, receivedUpdateListTitle } from '../actions/lists';
 import { createResource, updateResource } from '../api';
 
 export function* createList({ list }) {
@@ -41,24 +37,6 @@ export function* updateList({ list }) {
     };
     // dispatch an action to the store with the put effect
     yield put(receivedUpdateListTitle(updatedList));
-  } catch (e) {
-    console.error('updateList() error: ', e.message);
-  }
-}
-
-export function* updateListOrder({ list }) {
-  try {
-    // call effect calls the function passed as first arguement.
-    // any other arguments passed are the arguements of the function call passed
-    // as the first, which is updateListOrder in this case
-    const newList = yield call(
-      updateResource,
-      `http://localhost:9000/lists/${list.id}`,
-      { order: list.newOrder }
-    );
-
-    // dispatch an action to the store with the put effect
-    yield put(receivedUpdateListOrder(newList));
   } catch (e) {
     console.error('updateList() error: ', e.message);
   }

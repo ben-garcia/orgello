@@ -3,8 +3,7 @@ import {
   RECEIVED_CREATE_LIST,
   REQUEST_UPDATE_LIST_TITLE,
   RECEIVED_UPDATE_LIST_TITLE,
-  REQUEST_UPDATE_LIST_ORDER,
-  RECEIVED_UPDATE_LIST_ORDER,
+  REORDER_LISTS,
 } from '../constants';
 
 export const requestCreateList = (list) => ({
@@ -27,12 +26,8 @@ export const receivedUpdateListTitle = (updatedList) => ({
   updatedList,
 });
 
-export const requestUpdateListOrder = (list) => ({
-  type: REQUEST_UPDATE_LIST_ORDER,
-  list,
-});
-
-export const receivedUpdateListOrder = (updatedList) => ({
-  type: RECEIVED_UPDATE_LIST_ORDER,
-  updatedList,
+export const reorderLists = (source, destination) => ({
+  type: REORDER_LISTS,
+  source,
+  destination,
 });

@@ -132,7 +132,11 @@ const Board = ({
         </button>
       </div>
       <div className="board-container">
-        <Droppable droppableId="board-container" direction="horizontal">
+        <Droppable
+          droppableId="board-container"
+          direction="horizontal"
+          type="LIST"
+        >
           {(provided) => (
             <section className="lists" ref={provided.innerRef}>
               {board.lists &&

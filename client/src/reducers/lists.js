@@ -2,7 +2,7 @@
 import {
   RECEIVED_CREATE_LIST,
   RECEIVED_UPDATE_LIST_TITLE,
-  RECEIVED_UPDATE_LIST_ORDER,
+  REORDER_LISTS,
 } from '../constants';
 
 const listReducer = (state, action) => {
@@ -23,15 +23,18 @@ const listReducer = (state, action) => {
         ...state,
         lists: updatedLists,
       };
-    case RECEIVED_UPDATE_LIST_ORDER:
-      const stateWithOrderUpdated = [...state.lists];
-      const oldList = stateWithOrderUpdated.find(
-        (l) => l.id === action.updatedList.id
-      );
-      oldList.order = action.updatedList.order;
+    case REORDER_LISTS:
+      // don't mutate the state
+      const newState = [...state.lists];
+      const source = newState.find((l) => l.id === action.source.id);
+      // keep a reference to the order of the source
+      const sourceOrder = source.order;
+      source.order = action.destination.order;
+      const destination = newState.find((l) => l.id === action.destination.id);
+      destination.order = sourceOrder;
       return {
         ...state,
-        lists: stateWithOrderUpdated,
+        lists: newState,
       };
     default:
       return state;
