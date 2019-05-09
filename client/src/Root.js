@@ -14,9 +14,10 @@ import NotFound from './components/NotFound/NotFound';
 import Board from './components/Board/Board';
 
 import { reorderLists } from './actions/lists';
+import { reorderCards } from './actions/cards';
 import { updateResource } from './api';
 
-const Root = ({ board, updateListsOrder }) => {
+const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
   let styles = null;
 
   if (board.background) {
@@ -33,14 +34,14 @@ const Root = ({ board, updateListsOrder }) => {
   }
 
   const onDragEnd = useCallback((result) => {
-    const { source, destination, type } = result;
+    const { source, destination, type, draggableId } = result;
     // baseUrl is based on what resource type is being updated
     const baseUrl =
       type === 'LIST'
         ? 'http://localhost:9000/lists'
         : 'http://localhost:9000/cards';
 
-    if (destination && type === 'LIST' && source.id !== destination.id) {
+    if (destination && type === 'LIST' && source.index !== destination.index) {
       updateListsOrder(
         board.lists[source.index],
         board.lists[destination.index]
@@ -59,8 +60,31 @@ const Root = ({ board, updateListsOrder }) => {
       updateResource(`${baseUrl}/${board.lists[destination.index].id}`, {
         order: board.lists[destination.index].order,
       });
-    } else if (destination && type === 'CARD') {
-      console.log(result);
+    } else if (
+      destination &&
+      type === 'CARD' &&
+      // card shouldn't be dragged to its original index in the same list.
+      (source.droppableId !== destination.droppableId ||
+        source.index !== destination.index)
+    ) {
+      // console.log('source: ', source);
+      // console.log('destination: ', destination);
+      // console.log('draggableId: ', draggableId);
+      const sourceList = board.lists.find(
+        (l) => l.id === Number(source.droppableId.split('-')[1])
+      );
+      // console.log('sourceList ', sourceList);
+      const destinationList = board.lists.find(
+        (l) => l.id === Number(destination.droppableId.split('-')[1])
+      );
+      // console.log('destinationList ', destinationList);
+      const card = sourceList.cards[source.index];
+      // console.log('sourceCard ', card);
+
+      updateCardsOrder(
+        { list: sourceList, index: source.index },
+        { list: destinationList, index: destination.index }
+      );
     }
   });
 
@@ -95,6 +119,7 @@ Root.propTypes = {
     updatedAt: PropTypes.string,
   }).isRequired,
   updateListsOrder: PropTypes.func.isRequired,
+  updateCardsOrder: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -104,6 +129,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   updateListsOrder: (source, destination) =>
     dispatch(reorderLists(source, destination)),
+  updateCardsOrder: (source, destination, draggableId) =>
+    dispatch(reorderCards(source, destination, draggableId)),
 });
 
 export default connect(

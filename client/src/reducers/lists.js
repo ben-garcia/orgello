@@ -27,7 +27,7 @@ const listReducer = (state, action) => {
       // don't mutate the state
       const newState = [...state.lists];
       const source = newState.find((l) => l.id === action.source.id);
-      // keep a reference to the order of the source
+      // keep a reference of the order of the source
       const sourceOrder = source.order;
       source.order = action.destination.order;
       const destination = newState.find((l) => l.id === action.destination.id);

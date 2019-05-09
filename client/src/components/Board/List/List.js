@@ -89,9 +89,11 @@ const List = ({
                 ref={droppableProvided.innerRef}
               >
                 {currentList.cards &&
-                  currentList.cards.map((card, index) => (
-                    <Card key={card.id} card={card} cardIndex={index} />
-                  ))}
+                  currentList.cards
+                    .sort((a, b) => a.order - b.order)
+                    .map((card, index) => (
+                      <Card key={card.id} card={card} cardIndex={index} />
+                    ))}
                 {droppableProvided.placeholder}
               </div>
             )}
