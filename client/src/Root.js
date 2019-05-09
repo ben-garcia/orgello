@@ -33,6 +33,11 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
         : { backgroundColor: board.background };
   }
 
+  // send requests to update the lists order in the db
+  // NOTE: it's a better user experience to update the UI, as a reponse to
+  // use input, and then send the request.
+  // Having the request handled by a saga makes for bad UI, as there is a
+  // noticable period when the user moves a list to when the UI changes
   const onDragEnd = useCallback((result) => {
     const { source, destination, type } = result;
     // baseUrl is based on what resource type is being updated
@@ -42,23 +47,25 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
         : 'http://localhost:9000/cards';
 
     if (destination && type === 'LIST' && source.index !== destination.index) {
-      updateListsOrder(
-        board.lists[source.index],
-        board.lists[destination.index]
-      );
-      // send requests to update the lists order in the db
-      // NOTE: it's a better user experience to update the UI, as a reponse to
-      // use input, and then send the request.
-      // Having the request handled by a saga makes for bad UI, as there is a
-      // noticable period when the user moves a list to when the UI changes
+      const newState = [...board.lists];
+      const sourceList = newState[source.index];
+      const randomMultiplier = Math.floor(Math.random() * 1000);
+      const randomNumber = Math.floor(Math.random() * randomMultiplier);
+      if (source.index < destination.index) {
+        // when the list being dragged is on the left
+        // and the destination is on the right
+        sourceList.order = newState[destination.index].order + randomNumber;
+      } else {
+        sourceList.order = newState[destination.index].order - randomNumber;
+      }
 
-      // request for the source
-      updateResource(`${baseUrl}/${board.lists[source.index].id}`, {
-        order: board.lists[source.index].order,
-      });
-      // requets for the destination
-      updateResource(`${baseUrl}/${board.lists[destination.index].id}`, {
-        order: board.lists[destination.index].order,
+      newState.splice(source.index, 1);
+      newState.splice(destination.index, 0, sourceList);
+
+      updateListsOrder(newState);
+      // update the list in the db
+      updateResource(`${baseUrl}/${sourceList.id}`, {
+        order: sourceList.order,
       });
     } else if (
       destination &&

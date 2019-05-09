@@ -26,8 +26,7 @@ export const receivedUpdateListTitle = (updatedList) => ({
   updatedList,
 });
 
-export const reorderLists = (source, destination) => ({
+export const reorderLists = (newState) => ({
   type: REORDER_LISTS,
-  source,
-  destination,
+  newState,
 });

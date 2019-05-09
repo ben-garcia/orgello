@@ -24,17 +24,9 @@ const listReducer = (state, action) => {
         lists: updatedLists,
       };
     case REORDER_LISTS:
-      // don't mutate the state
-      const newState = [...state.lists];
-      const source = newState.find((l) => l.id === action.source.id);
-      // keep a reference of the order of the source
-      const sourceOrder = source.order;
-      source.order = action.destination.order;
-      const destination = newState.find((l) => l.id === action.destination.id);
-      destination.order = sourceOrder;
       return {
         ...state,
-        lists: newState,
+        lists: action.newState,
       };
     default:
       return state;
