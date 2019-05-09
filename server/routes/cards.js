@@ -87,7 +87,7 @@ router.put(
   checkCardOwnerIdMatchesUserId,
   (req, res, next) => {
     Card.update(
-      { title: req.body.title },
+      { ...req.body },
       {
         where: {
           id: req.params.cardId,

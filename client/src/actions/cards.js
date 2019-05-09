@@ -26,8 +26,7 @@ export const receivedUpdateCardTitle = (updatedCard) => ({
   updatedCard,
 });
 
-export const reorderCards = (source, destination) => ({
+export const reorderCards = (newState) => ({
   type: REORDER_CARDS,
-  source,
-  destination,
+  newState,
 });

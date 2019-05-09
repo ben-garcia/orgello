@@ -34,7 +34,7 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
   }
 
   const onDragEnd = useCallback((result) => {
-    const { source, destination, type, draggableId } = result;
+    const { source, destination, type } = result;
     // baseUrl is based on what resource type is being updated
     const baseUrl =
       type === 'LIST'
@@ -67,24 +67,69 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
       (source.droppableId !== destination.droppableId ||
         source.index !== destination.index)
     ) {
-      // console.log('source: ', source);
-      // console.log('destination: ', destination);
-      // console.log('draggableId: ', draggableId);
-      const sourceList = board.lists.find(
+      const newState = [...board.lists];
+      const sourceList = newState.find(
         (l) => l.id === Number(source.droppableId.split('-')[1])
       );
-      // console.log('sourceList ', sourceList);
-      const destinationList = board.lists.find(
+      const destinationList = newState.find(
         (l) => l.id === Number(destination.droppableId.split('-')[1])
       );
-      // console.log('destinationList ', destinationList);
-      const card = sourceList.cards[source.index];
-      // console.log('sourceCard ', card);
 
-      updateCardsOrder(
-        { list: sourceList, index: source.index },
-        { list: destinationList, index: destination.index }
-      );
+      const newCard = {};
+
+      if (sourceList.id === destinationList.id) {
+        // source card and destination card are in the same list
+        const activeList = [...board.lists].find((l) => l.id === sourceList.id);
+        const destinationCard = activeList.cards[destination.index];
+        const activeCard = activeList.cards.splice(source.index, 1)[0];
+        if (source.index < destination.index) {
+          // when destination index is greater then
+          // card order must be greater than destination
+          activeCard.order = destinationCard.order + 100;
+        } else {
+          // otherwise it's less
+          activeCard.order = destination.order - 100;
+        }
+        // add the card in it's new place
+        activeList.cards.splice(destination.index, 0, activeCard);
+        // card object that will be used to update the card in the db
+        newCard.id = activeCard.id;
+        // since the card was moved inside the same list
+        // there is not need to include the listId
+        newCard.card = {
+          order: activeCard.order,
+        };
+      } else {
+        const destinationCard = destinationList.cards[destination.index];
+        // remove from the source list
+        const activeCard = sourceList.cards.splice(source.index, 1)[0];
+        if (destinationList.cards.length > destination.index) {
+          // index of destination cannot be greater than the length of cards in
+          // the list - 1
+          activeCard.order = destinationCard.order - 100;
+        } else if (destinationList.cards.length === destination.index) {
+          // make sure that the destination lists has at least one card
+          if (destinationList.cards.length > 0) {
+            // card should be placed at the end on the list
+            activeCard.order =
+              destinationList.cards[destinationList.cards.length - 1].order +
+              100;
+          }
+        }
+        // add the card to the proper list
+        destinationList.cards.splice(destination.index, 0, activeCard);
+        // card object that will be used to update the card in the db
+        newCard.id = activeCard.id;
+        newCard.card = {
+          order: activeCard.order,
+          listId: destinationCard.listId,
+        };
+      }
+      // dipatch the action with the new state
+      // creating the new state here to make the api call
+      updateCardsOrder(newState);
+      // call the api
+      updateResource(`${baseUrl}/${newCard.id}`, { ...newCard.card });
     }
   });
 
