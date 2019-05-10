@@ -40,7 +40,7 @@ const List = ({
   }
 
   return (
-    <Draggable draggableId={list.title} index={listIndex}>
+    <Draggable draggableId={`${list.title}-${list.id}`} index={listIndex}>
       {(provided) => (
         <article
           className="list"

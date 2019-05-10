@@ -174,15 +174,13 @@ const Board = ({
                   e.preventDefault();
 
                   // make sure that title input is not empty
-                  // before sending calling api
+                  // before calling api
                   if (listTitleRef.current.value) {
                     let order = null;
                     if (board.lists.length === 0) {
-                      order = 10000;
-                    } else if (board.lists.length === 1) {
-                      order = 20000;
+                      order = 100000;
                     } else {
-                      order = 20000 * board.lists.length;
+                      order = 200000 * board.lists.length;
                     }
 
                     const list = {

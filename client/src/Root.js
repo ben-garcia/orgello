@@ -48,21 +48,54 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
 
     if (destination && type === 'LIST' && source.index !== destination.index) {
       const newState = [...board.lists];
+      // get a reference of the list in the array
       const sourceList = newState[source.index];
-      const randomMultiplier = Math.floor(Math.random() * 1000);
-      const randomNumber = Math.floor(Math.random() * randomMultiplier);
+      // order must be between these two numbers
+      let minNumber = null;
+      let maxNumber = null;
+
+      // if the user drags a list to the right
       if (source.index < destination.index) {
-        // when the list being dragged is on the left
-        // and the destination is on the right
-        sourceList.order = newState[destination.index].order + randomNumber;
+        // check if there is a list before the sourceList
+        if (newState[destination.index]) {
+          minNumber = newState[destination.index].order + 1;
+        } else {
+          // if the list has been place at index 0
+          minNumber = newState[0].order - 100000;
+        }
+
+        // check if there is a list after the sourceList
+        if (newState[destination.index + 1]) {
+          maxNumber = newState[destination.index + 1].order - 1;
+        } else {
+          // if the new order number of sourceList is equal to board.lists.length - 1
+          maxNumber = newState[newState.length - 1].order + 200000;
+        }
       } else {
-        sourceList.order = newState[destination.index].order - randomNumber;
+        console.log('before ', newState[destination.index - 1]);
+        console.log('after ', newState[destination.index]);
+        // dragging a list to the left
+        if (newState[destination.index - 1]) {
+          // there is a list before the destination index
+          minNumber = newState[destination.index - 1].order + 1;
+        }
+
+        if (newState[destination.index]) {
+          // there is a list after the destination index
+          maxNumber = newState[destination.index].order - 1;
+        }
       }
 
+      sourceList.order =
+        Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+
+      // remove from the array
       newState.splice(source.index, 1);
+      // insert the list into its new position
       newState.splice(destination.index, 0, sourceList);
 
       updateListsOrder(newState);
+
       // update the list in the db
       updateResource(`${baseUrl}/${sourceList.id}`, {
         order: sourceList.order,
