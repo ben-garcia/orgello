@@ -115,11 +115,9 @@ const List = ({
                   ) {
                     let order = null;
                     if (list.cards.length === 0) {
-                      order = 10000;
-                    } else if (list.cards.length === 1) {
-                      order = 20000;
+                      order = 100000;
                     } else {
-                      order = 20000 * list.cards.length;
+                      order = 200000 * list.cards.length;
                     }
 
                     // when user pressed 'Enter'
@@ -146,11 +144,9 @@ const List = ({
 
                     let order = null;
                     if (list.cards.length === 0) {
-                      order = 10000;
-                    } else if (list.cards.length === 1) {
-                      order = 20000;
+                      order = 100000;
                     } else {
-                      order = 20000 * list.cards.length;
+                      order = 200000 * list.cards.length;
                     }
 
                     const newCard = {

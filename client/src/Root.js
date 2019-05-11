@@ -61,7 +61,7 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
           minNumber = newState[destination.index].order + 1;
         } else {
           // if the list has been place at index 0
-          minNumber = newState[0].order - 100000;
+          minNumber = newState[0].order - 200000;
         }
 
         // check if there is a list after the sourceList
@@ -72,17 +72,19 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
           maxNumber = newState[newState.length - 1].order + 200000;
         }
       } else {
-        console.log('before ', newState[destination.index - 1]);
-        console.log('after ', newState[destination.index]);
         // dragging a list to the left
         if (newState[destination.index - 1]) {
           // there is a list before the destination index
           minNumber = newState[destination.index - 1].order + 1;
+        } else {
+          minNumber = newState[0].order - 200000;
         }
 
         if (newState[destination.index]) {
           // there is a list after the destination index
           maxNumber = newState[destination.index].order - 1;
+        } else {
+          maxNumber = newState[newState.legnth - 1].order + 200000;
         }
       }
 
@@ -94,8 +96,8 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
       // insert the list into its new position
       newState.splice(destination.index, 0, sourceList);
 
+      // dispatch actino to the store
       updateListsOrder(newState);
-
       // update the list in the db
       updateResource(`${baseUrl}/${sourceList.id}`, {
         order: sourceList.order,
@@ -115,61 +117,73 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
         (l) => l.id === Number(destination.droppableId.split('-')[1])
       );
 
+      // store the neccessary properties to send to the server
       const newCard = {};
+      // order must be between these two numbers
+      let minNumber = null;
+      let maxNumber = null;
 
+      // source card and destination card are in the same list
       if (sourceList.id === destinationList.id) {
-        // source card and destination card are in the same list
-        const activeList = [...board.lists].find((l) => l.id === sourceList.id);
-        const destinationCard = activeList.cards[destination.index];
-        const activeCard = activeList.cards.splice(source.index, 1)[0];
+        const sourceCard = sourceList.cards[source.index];
+        console.log('sourceCard: ', sourceCard);
+
+        // if the user drags a card to the bottom
         if (source.index < destination.index) {
-          // when destination index is greater then
-          // card order must be greater than destination
-          activeCard.order = destinationCard.order + 100;
+          // check if there is a card before the sourceCard
+          if (sourceList.cards[destination.index]) {
+            minNumber = sourceList.cards[destination.index].order + 1;
+          } else {
+            // if the list has been place at index 0
+            minNumber = sourceList.cards[0].order - 200000;
+          }
+
+          // check if there is a card after the sourceCard
+          if (sourceList.cards[destination.index + 1]) {
+            maxNumber = sourceList.cards[destination.index + 1].order - 1;
+          } else {
+            // if the new order number of sourceList is equal to board.lists.length - 1
+            maxNumber =
+              sourceList.cards[sourceList.cards.length - 1].order + 200000;
+          }
         } else {
-          // otherwise it's less
-          activeCard.order = destination.order - 100;
-        }
-        // add the card in it's new place
-        activeList.cards.splice(destination.index, 0, activeCard);
-        // card object that will be used to update the card in the db
-        newCard.id = activeCard.id;
-        // since the card was moved inside the same list
-        // there is not need to include the listId
-        newCard.card = {
-          order: activeCard.order,
-        };
-      } else {
-        const destinationCard = destinationList.cards[destination.index];
-        // remove from the source list
-        const activeCard = sourceList.cards.splice(source.index, 1)[0];
-        if (destinationList.cards.length > destination.index) {
-          // index of destination cannot be greater than the length of cards in
-          // the list - 1
-          activeCard.order = destinationCard.order - 100;
-        } else if (destinationList.cards.length === destination.index) {
-          // make sure that the destination lists has at least one card
-          if (destinationList.cards.length > 0) {
-            // card should be placed at the end on the list
-            activeCard.order =
-              destinationList.cards[destinationList.cards.length - 1].order +
-              100;
+          // dragging a card to the top
+          if (sourceList.cards[destination.index - 1]) {
+            console.log('before: ', sourceList.cards[destination.index - 1]);
+            // there is a list before the destination index
+            minNumber = sourceList.cards[destination.index - 1].order + 1;
+          } else {
+            minNumber = sourceList.cards[0].order - 200000;
+          }
+
+          if (sourceList.cards[destination.index]) {
+            console.log('after: ', sourceList.cards[destination.index]);
+            // there is a list after the destination index
+            maxNumber = sourceList.cards[destination.index].order - 1;
+          } else {
+            maxNumber =
+              sourceList.cards[sourceList.cards.length - 1].order + 200000;
           }
         }
-        // add the card to the proper list
-        destinationList.cards.splice(destination.index, 0, activeCard);
-        // card object that will be used to update the card in the db
-        newCard.id = activeCard.id;
-        newCard.card = {
-          order: activeCard.order,
-          listId: destinationCard.listId,
-        };
+
+        sourceCard.order =
+          Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+
+        // get the id of the card that was dragged
+        newCard.id = sourceCard.id;
+        // only the order property needs to be updated
+        newCard.card = { order: sourceCard.order };
+
+        // remove from the array
+        sourceList.cards.splice(source.index, 1);
+        // insert the list into its new position
+        sourceList.cards.splice(destination.index, 0, sourceCard);
+
+        updateCardsOrder(newState);
+        updateResource(`${baseUrl}/${newCard.id}`, { ...newCard.card });
+      } else {
+        // card was dragged to a different list
       }
-      // dipatch the action with the new state
-      // creating the new state here to make the api call
-      updateCardsOrder(newState);
-      // call the api
-      updateResource(`${baseUrl}/${newCard.id}`, { ...newCard.card });
     }
   });
 
