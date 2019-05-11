@@ -116,6 +116,8 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
       const destinationList = newState.find(
         (l) => l.id === Number(destination.droppableId.split('-')[1])
       );
+      // the card that was dragged
+      const sourceCard = sourceList.cards[source.index];
 
       // store the neccessary properties to send to the server
       const newCard = {};
@@ -125,9 +127,6 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
 
       // source card and destination card are in the same list
       if (sourceList.id === destinationList.id) {
-        const sourceCard = sourceList.cards[source.index];
-        console.log('sourceCard: ', sourceCard);
-
         // if the user drags a card to the bottom
         if (source.index < destination.index) {
           // check if there is a card before the sourceCard
@@ -149,7 +148,6 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
         } else {
           // dragging a card to the top
           if (sourceList.cards[destination.index - 1]) {
-            console.log('before: ', sourceList.cards[destination.index - 1]);
             // there is a list before the destination index
             minNumber = sourceList.cards[destination.index - 1].order + 1;
           } else {
@@ -157,7 +155,6 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
           }
 
           if (sourceList.cards[destination.index]) {
-            console.log('after: ', sourceList.cards[destination.index]);
             // there is a list after the destination index
             maxNumber = sourceList.cards[destination.index].order - 1;
           } else {
@@ -178,12 +175,42 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
         sourceList.cards.splice(source.index, 1);
         // insert the list into its new position
         sourceList.cards.splice(destination.index, 0, sourceCard);
-
-        updateCardsOrder(newState);
-        updateResource(`${baseUrl}/${newCard.id}`, { ...newCard.card });
       } else {
         // card was dragged to a different list
+        // remove the card from its original list
+        sourceList.cards.splice(source.index, 1);
+        // get a reference to the cards before and after the new cards order
+        if (destinationList.cards[destination.index - 1]) {
+          // there is a list before the new card order
+          minNumber = destinationList.cards[destination.index - 1].order + 1;
+        } else {
+          // new card was dragged to the 0th index
+          minNumber = destinationList.cards[0].order - 100000;
+        }
+
+        if (destinationList.cards[destination.index]) {
+          // there is a card after the new cards order
+          maxNumber = destinationList.cards[destination.index].order - 1;
+        } else {
+          // card was dragged to the very end of the list
+          maxNumber =
+            destinationList.cards[destinationList.cards.length - 1].order +
+            200000;
+        }
+        // add the dragged card to its new list
+        destinationList.cards.splice(destination.index, 0, sourceCard);
       }
+
+      sourceCard.order =
+        Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+
+      newCard.id = sourceCard.id;
+      newCard.card = { listId: destinationList.id, order: sourceCard.order };
+
+      // send dispatch to the store
+      updateCardsOrder(newState);
+      // send update card info to update it in the db
+      updateResource(`${baseUrl}/${newCard.id}`, { ...newCard.card });
     }
   });
 
