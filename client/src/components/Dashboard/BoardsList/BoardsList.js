@@ -48,7 +48,6 @@ const BoardsList = ({
                   // on page refresh
                   localStorage.setItem('board', JSON.stringify(board));
                   requestBoardInfo(board.id);
-                  // getBoardInformation(board);
                 }}
               >
                 <span className="board__title">{board.title}</span>
