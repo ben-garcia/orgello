@@ -149,65 +149,68 @@ const Board = ({
             </section>
           )}
         </Droppable>
-        {!isCreateListFormOpen ? (
-          <span
-            className="form-trigger"
-            onClick={() => toggleCreateListForm(!isCreateListFormOpen)}
-          >
-            <i className="fas fa-plus" />
-            Add a list
-          </span>
-        ) : (
-          <form className="board-list-form">
-            <input
-              className="board-list-form__input"
-              type="text"
-              placeholder="Enter list title"
-              ref={listTitleRef}
-              onChange={(e) => changeListTitle(e.target.value)}
-            />
-            <div className="board-list-form__inner">
-              <button
-                className="board-list-from__button board-list-form__button--submit"
-                type="submit"
-                onClick={(e) => {
-                  e.preventDefault();
 
-                  // make sure that title input is not empty
-                  // before calling api
-                  if (listTitleRef.current.value) {
-                    let order = null;
-                    if (board.lists.length === 0) {
-                      order = 100000;
-                    } else {
-                      order = 200000 * board.lists.length;
-                    }
-
-                    const list = {
-                      title: listTitle.trim(),
-                      order,
-                      boardId: board.id,
-                    };
-                    // dispatch action to create new list
-                    // and add it to board.lists
-                    requestCreateNewList(list);
-                    // reset the list title
-                    listTitleRef.current.value = '';
-                  }
-                }}
-              >
-                Add List
-              </button>
-              <button
-                className="board-list-from__button board-list-form__button--close"
-                type="button"
-                onClick={() => toggleCreateListForm(!isCreateListFormOpen)}
-              >
-                <i className="fas fa-times" />
-              </button>
+        <form className="form-container">
+          {!isCreateListFormOpen ? (
+            <div
+              className="form-trigger"
+              onClick={() => toggleCreateListForm(!isCreateListFormOpen)}
+            >
+              <i className="fas fa-plus" />
+              <span className="form-trigger__text">Add a list</span>
             </div>
-          </form>
-        )}
+          ) : (
+            <div className="board-list-form">
+              <input
+                className="board-list-form__input"
+                type="text"
+                placeholder="Enter list title"
+                ref={listTitleRef}
+                onChange={(e) => changeListTitle(e.target.value)}
+              />
+              <div className="board-list-form__inner">
+                <button
+                  className="board-list-from__button board-list-form__button--submit"
+                  type="submit"
+                  onClick={(e) => {
+                    e.preventDefault();
+
+                    // make sure that title input is not empty
+                    // before calling api
+                    if (listTitleRef.current.value) {
+                      let order = null;
+                      if (board.lists.length === 0) {
+                        order = 100000;
+                      } else {
+                        order = 200000 * board.lists.length;
+                      }
+
+                      const list = {
+                        title: listTitle.trim(),
+                        order,
+                        boardId: board.id,
+                      };
+                      // dispatch action to create new list
+                      // and add it to board.lists
+                      requestCreateNewList(list);
+                      // reset the list title
+                      listTitleRef.current.value = '';
+                    }
+                  }}
+                >
+                  Add List
+                </button>
+                <button
+                  className="board-list-from__button board-list-form__button--close"
+                  type="button"
+                  onClick={() => toggleCreateListForm(!isCreateListFormOpen)}
+                >
+                  <i className="fas fa-times" />
+                </button>
+              </div>
+            </div>
+          )}
+        </form>
       </div>
     </section>
   );
