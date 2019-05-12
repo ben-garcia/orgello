@@ -19,6 +19,8 @@ export const CLOSE_BOARD = 'CLOSE_BOARD';
 export const GET_BOARD_INFO = 'GET_BOARD_INFO';
 // when user changes board background in Board component
 export const CHANGE_ACTIVE_BOARD_BACKGROUND = 'CHANGE_ACTIVE_BOARD_BACKGROUND';
+// when user leaves a board
+export const CLEAR_BOARD_INFORMATION = 'CLEAR_BOARD_INFORMATION';
 // update board title the db
 export const REQUEST_BOARD_TITLE_CHANGE = 'REQUEST_BOARD_TITLE_CHANGE';
 export const RECEIVED_BOARD_TITLE_CHANGE = 'RECEIVED_BOARD_TITLE_CHANGE';

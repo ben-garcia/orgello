@@ -4,13 +4,20 @@ import PropTypes from 'prop-types';
 
 import BoardsList from './BoardsList/BoardsList';
 
+import { clearBoardInformation } from '../../actions/board';
+
 import './Dashboard.scss';
 
-const Dashboard = ({ history, user }) => {
+const Dashboard = ({ history, user, board, clearBoard }) => {
   if (!user.isLoggedIn) {
     // if user isn't logged in then
     // redirect them to the landing page
     history.replace('/');
+  }
+
+  // clear the background if there is one
+  if (board.background) {
+    clearBoard();
   }
 
   return (
@@ -48,6 +55,10 @@ Dashboard.propTypes = {
     email: PropTypes.string,
     createdAt: PropTypes.string,
   }),
+  board: PropTypes.shape({
+    isOpen: PropTypes.bool.isRequired,
+  }).isRequired,
+  clearBoard: PropTypes.func.isRequired,
 };
 
 Dashboard.defaultProps = {
@@ -58,6 +69,14 @@ Dashboard.defaultProps = {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  board: state.board,
 });
 
-export default connect(mapStateToProps)(Dashboard);
+const mapDispatchToProps = (dispatch) => ({
+  clearBoard: () => dispatch(clearBoardInformation()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard);

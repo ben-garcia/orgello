@@ -90,85 +90,88 @@ const List = ({
                     .map((card, index) => (
                       <Card key={card.id} card={card} cardIndex={index} />
                     ))}
+                {isCardFormOpen && (
+                  <form className="list-form">
+                    <textarea
+                      className="list-form__textarea"
+                      type="text"
+                      placeholder="Enter a title for this card"
+                      ref={cardTitleAreaRef}
+                      onChange={() =>
+                        changeCardTitle(cardTitleAreaRef.current.value)
+                      }
+                      onKeyDown={(e) => {
+                        // when the user presses the enter key and
+                        // card title isn't empty
+                        if (
+                          e.key === 'Enter' &&
+                          cardTitleAreaRef.current.value.length > 0
+                        ) {
+                          let order = null;
+                          if (list.cards.length === 0) {
+                            order = 100000;
+                          } else {
+                            order = 200000 * list.cards.length;
+                          }
+
+                          // when user pressed 'Enter'
+                          // then submit
+                          const newCard = {
+                            title: cardTitle.trim(),
+                            order,
+                            listId: list.id,
+                          };
+                          if (newCard.title) {
+                            requestCreateNewCard(newCard);
+                          }
+                          changeCardTitle('');
+                          cardTitleAreaRef.current.value = '';
+                        }
+                      }}
+                    />
+                    <div className="list-form__inner">
+                      <button
+                        className="list-from__button list-form__button--submit"
+                        type="submit"
+                        onClick={(e) => {
+                          e.preventDefault();
+
+                          let order = null;
+                          if (list.cards.length === 0) {
+                            order = 100000;
+                          } else {
+                            order = 200000 * list.cards.length;
+                          }
+
+                          const newCard = {
+                            title: cardTitle.trim(),
+                            order,
+                            listId: list.id,
+                          };
+                          if (newCard.title) {
+                            requestCreateNewCard(newCard);
+                          }
+                          changeCardTitle('');
+                          cardTitleAreaRef.current.value = '';
+                        }}
+                      >
+                        Add a card
+                      </button>
+                      <button
+                        className="list-from__button list-form__button--close"
+                        type="button"
+                        onClick={() => toggleCardForm(!isCardFormOpen)}
+                      >
+                        <i className="fas fa-times" />
+                      </button>
+                    </div>
+                  </form>
+                )}
                 {droppableProvided.placeholder}
               </div>
             )}
           </Droppable>
-          {isCardFormOpen ? (
-            <form className="list-form">
-              <textarea
-                className="list-form__textarea"
-                type="text"
-                placeholder="Enter a title for this card"
-                ref={cardTitleAreaRef}
-                onChange={() => changeCardTitle(cardTitleAreaRef.current.value)}
-                onKeyDown={(e) => {
-                  // when the user presses the enter key and
-                  // card title isn't empty
-                  if (
-                    e.key === 'Enter' &&
-                    cardTitleAreaRef.current.value.length > 0
-                  ) {
-                    let order = null;
-                    if (list.cards.length === 0) {
-                      order = 100000;
-                    } else {
-                      order = 200000 * list.cards.length;
-                    }
-
-                    // when user pressed 'Enter'
-                    // then submit
-                    const newCard = {
-                      title: cardTitle.trim(),
-                      order,
-                      listId: list.id,
-                    };
-                    if (newCard.title) {
-                      requestCreateNewCard(newCard);
-                    }
-                    changeCardTitle('');
-                    cardTitleAreaRef.current.value = '';
-                  }
-                }}
-              />
-              <div className="list-form__inner">
-                <button
-                  className="list-from__button list-form__button--submit"
-                  type="submit"
-                  onClick={(e) => {
-                    e.preventDefault();
-
-                    let order = null;
-                    if (list.cards.length === 0) {
-                      order = 100000;
-                    } else {
-                      order = 200000 * list.cards.length;
-                    }
-
-                    const newCard = {
-                      title: cardTitle.trim(),
-                      order,
-                      listId: list.id,
-                    };
-                    if (newCard.title) {
-                      requestCreateNewCard(newCard);
-                    }
-                    changeCardTitle('');
-                    cardTitleAreaRef.current.value = '';
-                  }}
-                >
-                  Add a card
-                </button>
-                <button
-                  className="list-from__button list-form__button--close"
-                  type="button"
-                  onClick={() => toggleCardForm(!isCardFormOpen)}
-                >
-                  <i className="fas fa-times" />
-                </button>
-              </div>
-            </form>
-          ) : (
+          {!isCardFormOpen && (
             <button
               className="list__button"
               type="button"

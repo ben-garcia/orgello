@@ -9,6 +9,8 @@
 
   &-cards {
     min-height: 1rem;
+    max-height: 80vh;
+    overflow: hidden scroll;
   }
 
   &__header {

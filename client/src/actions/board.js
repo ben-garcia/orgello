@@ -3,6 +3,7 @@ import {
   CLOSE_BOARD,
   GET_BOARD_INFO,
   CHANGE_ACTIVE_BOARD_BACKGROUND,
+  CLEAR_BOARD_INFORMATION,
   REQUEST_BOARD_TITLE_CHANGE,
   RECEIVED_BOARD_TITLE_CHANGE,
   REQUEST_BOARD_BACKGROUND_CHANGE,
@@ -27,6 +28,10 @@ export const getBoardInfo = (info) => ({
 export const changeActiveBoardBackground = (newBackground) => ({
   type: CHANGE_ACTIVE_BOARD_BACKGROUND,
   newBackground,
+});
+
+export const clearBoardInformation = () => ({
+  type: CLEAR_BOARD_INFORMATION,
 });
 
 export const requestBoardTitleChange = (payload) => ({

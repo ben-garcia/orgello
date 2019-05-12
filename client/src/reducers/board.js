@@ -3,6 +3,7 @@ import {
   CLOSE_BOARD,
   GET_BOARD_INFO,
   CHANGE_ACTIVE_BOARD_BACKGROUND,
+  CLEAR_BOARD_INFORMATION,
   RECEIVED_BOARD_TITLE_CHANGE,
   RECEIVED_BOARD_BACKGROUND_CHANGE,
   RECEIVED_BOARD_INFORMATION,
@@ -36,6 +37,10 @@ const boardReducer = (state = initialState, action) => {
       return {
         ...state,
         background: action.newBackground,
+      };
+    case CLEAR_BOARD_INFORMATION:
+      return {
+        isOpen: false,
       };
     case RECEIVED_BOARD_TITLE_CHANGE:
       return {
