@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useCallback } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -15,9 +17,19 @@ import Board from './components/Board/Board';
 
 import { reorderLists } from './actions/lists';
 import { reorderCards } from './actions/cards';
+import { closeBoardsDrawer } from './actions/boardsDrawer';
+import { closeUserDrawer } from './actions/userDrawer';
 import { updateResource } from './api';
 
-const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
+const Root = ({
+  board,
+  updateListsOrder,
+  updateCardsOrder,
+  boardDrawerIsOpen,
+  usersDrawerIsOpen,
+  closeBoardDrawer,
+  closeUsersDrawer,
+}) => {
   let styles = null;
 
   if (board.background) {
@@ -216,7 +228,29 @@ const Root = ({ board, updateListsOrder, updateCardsOrder }) => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="root-container" style={board.isOpen ? styles : {}}>
+      <div
+        className="root-container"
+        style={board.isOpen ? styles : {}}
+        onClick={(e) => {
+          if (
+            e.target.className !== 'boards-drawer' &&
+            e.target.className !== 'boards-drawer__title' &&
+            (boardDrawerIsOpen || usersDrawerIsOpen)
+          ) {
+            // if boards drawer is open
+            if (boardDrawerIsOpen) {
+              // should be closed
+              closeBoardDrawer();
+            }
+
+            // if users drawer is open
+            if (usersDrawerIsOpen) {
+              // should be closed
+              closeUsersDrawer();
+            }
+          }
+        }}
+      >
         <Navbar />
         <main className="main">
           <Switch>
@@ -246,10 +280,16 @@ Root.propTypes = {
   }).isRequired,
   updateListsOrder: PropTypes.func.isRequired,
   updateCardsOrder: PropTypes.func.isRequired,
+  boardDrawerIsOpen: PropTypes.bool.isRequired,
+  usersDrawerIsOpen: PropTypes.bool.isRequired,
+  closeBoardDrawer: PropTypes.func.isRequired,
+  closeUsersDrawer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   board: state.board,
+  boardDrawerIsOpen: state.boardsDrawer.isOpen,
+  usersDrawerIsOpen: state.userDrawer.isOpen,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -257,6 +297,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(reorderLists(source, destination)),
   updateCardsOrder: (source, destination, draggableId) =>
     dispatch(reorderCards(source, destination, draggableId)),
+  closeBoardDrawer: () => dispatch(closeBoardsDrawer()),
+  closeUsersDrawer: () => dispatch(closeUserDrawer()),
 });
 
 export default connect(
