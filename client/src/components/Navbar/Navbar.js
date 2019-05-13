@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -8,6 +8,11 @@ import CreateBoardForm from './CreateBoardForm/CreateBoardForm';
 import UserDrawer from './UserDrawer/UserDrawer';
 import { changeCreateBoardFormStatus } from '../../actions/boards';
 import { closeBoard } from '../../actions/board';
+import {
+  openBoardsDrawer,
+  closeBoardsDrawer,
+} from '../../actions/boardsDrawer';
+import { openUserDrawer, closeUserDrawer } from '../../actions/userDrawer';
 
 import './Navbar.scss';
 
@@ -17,10 +22,13 @@ const Navbar = ({
   changeBoardFormStatus,
   isBoardOpen,
   closeBoardPage,
+  boardsDrawerIsOpen,
+  openBoardDrawer,
+  closeBoardDrawer,
+  userDrawerIsOpen,
+  openUsersDrawer,
+  closeUsersDrawer,
 }) => {
-  const [boardsDrawerIsOpen, toggleBoardsDrawer] = useState(false);
-  const [userDrawerIsOpen, toggleUserDrawer] = useState(false);
-
   return (
     <header
       className="header"
@@ -55,7 +63,13 @@ const Navbar = ({
             <li className="nav__item nav__item--border">
               <button
                 className="nav__button"
-                onClick={() => toggleBoardsDrawer(!boardsDrawerIsOpen)}
+                onClick={() => {
+                  if (boardsDrawerIsOpen) {
+                    closeBoardDrawer();
+                  } else {
+                    openBoardDrawer();
+                  }
+                }}
                 type="button"
               >
                 <i className="fab fa-trello" />
@@ -79,7 +93,13 @@ const Navbar = ({
             <li className="nav__item user-icon">
               <button
                 className="nav__button"
-                onClick={() => toggleUserDrawer(!userDrawerIsOpen)}
+                onClick={() => {
+                  if (userDrawerIsOpen) {
+                    closeUsersDrawer();
+                  } else {
+                    openUsersDrawer();
+                  }
+                }}
                 type="button"
               >
                 <i className="far fa-user" />
@@ -101,6 +121,12 @@ Navbar.propTypes = {
   changeBoardFormStatus: PropTypes.func.isRequired,
   isBoardOpen: PropTypes.bool.isRequired,
   closeBoardPage: PropTypes.func.isRequired,
+  boardsDrawerIsOpen: PropTypes.bool.isRequired,
+  openBoardDrawer: PropTypes.func.isRequired,
+  closeBoardDrawer: PropTypes.func.isRequired,
+  userDrawerIsOpen: PropTypes.bool.isRequired,
+  openUsersDrawer: PropTypes.func.isRequired,
+  closeUsersDrawer: PropTypes.func.isRequired,
 };
 
 // getting a 'isUserLoggedIn' is initially 'undefined'
@@ -115,6 +141,8 @@ const mapStateToProps = (state) => ({
   isUserLoggedIn: state.user.isLoggedIn,
   isCreateBoardFormOpen: state.createBoard.isFormOpen,
   isBoardOpen: state.board.isOpen,
+  boardsDrawerIsOpen: state.boardsDrawer.isOpen,
+  userDrawerIsOpen: state.userDrawer.isOpen,
 });
 
 // function that takes dispatch(method that redux uses to
@@ -125,6 +153,10 @@ const mapDispatchToProps = (dispatch) => ({
   changeBoardFormStatus: (status) =>
     dispatch(changeCreateBoardFormStatus(status)),
   closeBoardPage: () => dispatch(closeBoard()),
+  openBoardDrawer: () => dispatch(openBoardsDrawer()),
+  closeBoardDrawer: () => dispatch(closeBoardsDrawer()),
+  openUsersDrawer: () => dispatch(openUserDrawer()),
+  closeUsersDrawer: () => dispatch(closeUserDrawer()),
 });
 
 export default connect(
