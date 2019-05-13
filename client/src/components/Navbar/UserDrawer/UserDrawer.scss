@@ -6,6 +6,7 @@
   padding: 0.6rem;
   box-shadow: 1px 1px 15px 1px rgba(9, 45, 66, 0.25);
   border-radius: 0 3px 3px 0;
+  background-color: #fff;
 
   &__name {
     color: #6b808c;
@@ -15,19 +16,22 @@
     line-height: 1rem;
     text-transform: uppercase;
     text-align: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.3rem;
   }
 
   .logout-button {
-    margin-top: 0.6rem;
-    text-align: center;
+    margin-top: 0.5rem;
+    text-align: left;
+    padding: 0.5rem 0 0.5rem 0.3rem;
+    width: 100%;
+    background: transparent;
+    border: none;
 
-    &::before {
-      content: '';
-      display: block;
-      width: inherit;
-      height: 1px;
-      background: rgba(9, 45, 66, 0.13);
-      margin-bottom: 0.3rem;
+    &:hover {
+      background-color: rgb(41, 143, 202);
+      cursor: pointer;
+      color: #fff;
     }
   }
 }

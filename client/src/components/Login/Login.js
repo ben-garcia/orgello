@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { loginUser } from '../../actions/users';
+import { loginUser, requestUsersBoards } from '../../actions/users';
 import { authUrl } from '../../api';
 
 import '../Signup/Signup.scss';
 import './Login.scss';
 
 class Login extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       emailUsername: '',
@@ -96,7 +96,7 @@ class Login extends Component {
     // prevent a refresh
     e.preventDefault();
 
-    const { history, login } = this.props;
+    const { history, login, requestUserBoards } = this.props;
     const { password } = this.state;
 
     const result = this.inputValidation();
@@ -139,6 +139,8 @@ class Login extends Component {
             localStorage.setItem('user', JSON.stringify(data));
             // dispatch 'changeUserLoggedInStatus' to change user.loggedIn to true
             login({ ...data, isLoggedIn: true });
+            // fetch user boards
+            requestUserBoards(data.id);
             // redirect to the users dashboard
             history.push(`/${data.username}/dashboard`);
           } else {
@@ -202,8 +204,17 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  user: PropTypes.shape.isRequired,
+  user: PropTypes.shape({
+    isLoggedIn: PropTypes.bool.isRequired,
+  }),
   login: PropTypes.func.isRequired,
+  requestUserBoards: PropTypes.func.isRequired,
+};
+
+Login.defaultProps = {
+  user: {
+    isLoggedIn: false,
+  },
 };
 
 const mapStateToProps = (state) => ({
@@ -212,6 +223,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   login: (userInfo) => dispatch(loginUser(userInfo)),
+  requestUserBoards: (userId) => dispatch(requestUsersBoards(userId)),
 });
 
 export default connect(
