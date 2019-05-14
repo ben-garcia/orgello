@@ -108,7 +108,7 @@ const Root = ({
       // insert the list into its new position
       newState.splice(destination.index, 0, sourceList);
 
-      // dispatch actino to the store
+      // dispatch action to the store
       updateListsOrder(newState);
       // update the list in the db
       updateResource(`${baseUrl}/${sourceList.id}`, {
@@ -191,30 +191,37 @@ const Root = ({
         // card was dragged to a different list
         // remove the card from its original list
         sourceList.cards.splice(source.index, 1);
-        // get a reference to the cards before and after the new cards order
-        if (destinationList.cards[destination.index - 1]) {
-          // there is a list before the new card order
-          minNumber = destinationList.cards[destination.index - 1].order + 1;
+        // if the destinationList doesn't have any cards
+        if (destinationList.cards.length === 0) {
+          sourceCard.order = 100000;
+          // add the card to the cards array of the destinationList.
+          destinationList.cards.push(sourceCard);
         } else {
-          // new card was dragged to the 0th index
-          minNumber = destinationList.cards[0].order - 100000;
-        }
+          // the destinationList cards at least one card
+          // get a reference to the cards before and after the new cards order
+          if (destinationList.cards[destination.index - 1]) {
+            // there is a list before the new card order
+            minNumber = destinationList.cards[destination.index - 1].order + 1;
+          } else {
+            // new card was dragged to the 0th index
+            minNumber = destinationList.cards[0].order - 100000;
+          }
 
-        if (destinationList.cards[destination.index]) {
-          // there is a card after the new cards order
-          maxNumber = destinationList.cards[destination.index].order - 1;
-        } else {
-          // card was dragged to the very end of the list
-          maxNumber =
-            destinationList.cards[destinationList.cards.length - 1].order +
-            200000;
+          if (destinationList.cards[destination.index]) {
+            // there is a card after the new cards order
+            maxNumber = destinationList.cards[destination.index].order - 1;
+          } else {
+            // card was dragged to the very end of the list
+            maxNumber =
+              destinationList.cards[destinationList.cards.length - 1].order +
+              200000;
+          }
+          // add the dragged card to its new list
+          destinationList.cards.splice(destination.index, 0, sourceCard);
+          sourceCard.order =
+            Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
         }
-        // add the dragged card to its new list
-        destinationList.cards.splice(destination.index, 0, sourceCard);
       }
-
-      sourceCard.order =
-        Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
 
       newCard.id = sourceCard.id;
       newCard.card = { listId: destinationList.id, order: sourceCard.order };
