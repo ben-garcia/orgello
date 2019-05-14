@@ -22,9 +22,9 @@ const Dashboard = ({ history, user, board, clearBoard }) => {
 
   return (
     <div className="dashboard">
-      <section className="container">
+      <div className="container">
         <BoardsList />
-      </section>
+      </div>
     </div>
   );
 };
