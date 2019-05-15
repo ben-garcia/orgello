@@ -75,3 +75,30 @@
     border-color: #ff0000;
   }
 }
+
+@media screen and (orientation: landscape) {
+  .signup {
+    height: calc(80vh - 1rem);
+    overflow: scroll;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .signup {
+    height: calc(80vh - 1rem);
+    overflow: hidden scroll;
+    width: 100vw;
+
+    .error {
+      width: 100%;
+    }
+
+    .title {
+      font-size: 2rem;
+    }
+    .form {
+      width: 100vw;
+      margin: 0 5rem;
+    }
+  }
+}

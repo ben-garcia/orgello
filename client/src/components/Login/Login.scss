@@ -4,3 +4,29 @@
   flex-direction: column;
   align-items: center;
 }
+
+@media screen and (orientation: landscape) {
+  .login {
+    height: calc(80vh - 1rem);
+    overflow: scroll;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .login {
+    width: 100vw;
+
+    .error {
+      width: 100%;
+    }
+
+    .title {
+      font-size: 2rem;
+    }
+
+    .form {
+      width: 100vw;
+      margin: 0 5rem;
+    }
+  }
+}

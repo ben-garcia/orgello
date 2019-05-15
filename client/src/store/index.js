@@ -11,6 +11,7 @@ const store = createStore(
   compose(
     applyMiddleware(sagaMiddleware),
     // redux dev tools
+    // NOTE: remove when building static files for production
     // eslint-disable-next-line
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
