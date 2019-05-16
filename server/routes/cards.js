@@ -3,7 +3,6 @@ const Joi = require('joi');
 
 const router = express.Router();
 
-const List = require('../db/models').list;
 const Card = require('../db/models').card;
 
 const {
@@ -28,22 +27,6 @@ const schema = Joi.object().keys({
   listId: Joi.number()
     .integer()
     .required(),
-});
-
-// send all the cards and the list associated with each.
-router.get('/', (req, res, next) => {
-  Card.findAll({
-    include: [
-      {
-        model: List,
-        as: 'list', // card.list
-      },
-    ],
-  })
-    .then((cards) => {
-      res.json(cards);
-    })
-    .catch((e) => next({ message: e.message }));
 });
 
 // create a new card that MUST match the schema

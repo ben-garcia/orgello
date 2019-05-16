@@ -46,16 +46,12 @@ function validateQueryParams(req, res, next) {
 }
 
 // get 6 newly added photos
-router.get('/', validateQueryParams, (req, res, next) => {
+router.get('/', validateQueryParams, (req, res) => {
   const { page, perPage } = req.query;
 
   unsplash.photos
     .listPhotos(page, perPage)
-    .then((resp) => {
-      console.log(resp.headers);
-
-      return toJson(resp);
-    })
+    .then(toJson)
     .then((photos) => {
       res.status(200).json(photos);
     })
@@ -69,11 +65,7 @@ router.get('/search', validateQueryParams, (req, res) => {
 
   unsplash.search
     .photos(query, page, perPage)
-    .then((resp) => {
-      console.log(resp.headers);
-
-      return toJson(resp);
-    })
+    .then(toJson)
     .then((photos) => res.status(200).json(photos.results))
     .catch((e) => console.log('/search error: ', e.message));
 });

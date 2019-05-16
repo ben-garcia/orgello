@@ -3,9 +3,7 @@ const Joi = require('joi');
 
 const router = express.Router();
 
-const Board = require('../db/models').board;
 const List = require('../db/models').list;
-const Card = require('../db/models').card;
 
 const {
   validateParam,
@@ -29,26 +27,6 @@ const schema = Joi.object().keys({
   boardId: Joi.number()
     .integer()
     .required(),
-});
-
-// get all lists along with its board and cards
-router.get('/', (req, res, next) => {
-  List.findAll({
-    include: [
-      {
-        model: Board,
-        as: 'board', // list.board
-      },
-      {
-        model: Card,
-        as: 'cards', // list.cards
-      },
-    ],
-  })
-    .then((lists) => {
-      res.json(lists);
-    })
-    .catch((e) => next({ message: e.message }));
 });
 
 // create a list and add it to the db

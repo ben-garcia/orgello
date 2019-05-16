@@ -16,10 +16,6 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true,
         },
       },
-      archived: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
       listId: {
         allowNull: false,
         type: DataTypes.INTEGER,
