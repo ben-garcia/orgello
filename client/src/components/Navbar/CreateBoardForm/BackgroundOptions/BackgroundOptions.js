@@ -417,7 +417,11 @@ BackgroundOptions.propTypes = {
   isBoardOpen: PropTypes.bool.isRequired,
   changeActiveBackground: PropTypes.func.isRequired,
   requestNewBoardBackground: PropTypes.func.isRequired,
-  boardId: PropTypes.number.isRequired,
+  boardId: PropTypes.number,
+};
+
+BackgroundOptions.defaultProps = {
+  boardId: 0,
 };
 
 // object passed as props to component

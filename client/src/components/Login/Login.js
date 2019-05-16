@@ -163,7 +163,7 @@ class Login extends Component {
     return (
       <section className="login">
         {error ? <span className="error">{error}</span> : ''}
-        <h1 className="title">Login In</h1>
+        <h1 className="title">Log In</h1>
         <form onSubmit={this.handleSubmit} className="form">
           <label className="form__item" htmlFor="email-username">
             Email or Username
