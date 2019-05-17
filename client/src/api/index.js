@@ -1,5 +1,6 @@
 // server api endpoints
 
+// NOTE: remember to update when server is deployed
 export const authUrl = 'http://localhost:9000/auth';
 const boardUrl = 'http://localhost:9000/boards';
 
