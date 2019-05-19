@@ -15,7 +15,7 @@ import {
   changeCreateBoardBackground,
   requestLatestSixPhotos,
 } from '../../../actions/boards';
-import { getBoardInfo } from '../../../actions/board';
+import { getBoardInfo, requestBoardInformation } from '../../../actions/board';
 
 import colors from '../../../api/colors';
 import { submitNewBoard } from '../../../api';
@@ -37,6 +37,7 @@ const CreateBoardForm = ({
   requestSixPhotos,
   latestSixPhotos,
   getBoardInformation,
+  requestBoardInfo,
 }) => {
   const [isDisabled, toggleDisabledButton] = useState(true);
 
@@ -210,11 +211,18 @@ const CreateBoardForm = ({
                   ? currentCreateBoardBackground.backgroundImage.regular
                   : currentCreateBoardBackground.backgroundColor,
                 ownerId: userId,
+                lists: [],
               };
+              // save to local storage
+              localStorage.setItem('board', JSON.stringify(newBoard));
               // rend the request to the server api
               submitNewBoard(newBoard);
               // add board info to the store
               getBoardInformation(newBoard);
+              // update the last info on the board from the server
+              // more specifically the empty lists array
+              // so that there is no error when creating the first list
+              requestBoardInfo(newBoard);
               // remove the create new board component
               changeBoardFormStatus(false);
               // remove the background options panel
@@ -257,6 +265,7 @@ CreateBoardForm.propTypes = {
   requestSixPhotos: PropTypes.func.isRequired,
   latestSixPhotos: PropTypes.arrayOf(PropTypes.object).isRequired,
   getBoardInformation: PropTypes.func.isRequired,
+  requestBoardInfo: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -279,6 +288,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changeCreateBoardBackground(newCreateBoardBackground)),
   requestSixPhotos: () => dispatch(requestLatestSixPhotos()),
   getBoardInformation: (info) => dispatch(getBoardInfo(info)),
+  requestBoardInfo: (board) => dispatch(requestBoardInformation(board)),
 });
 
 export default connect(

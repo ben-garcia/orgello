@@ -8,9 +8,11 @@ import {
 const listReducer = (state, action) => {
   switch (action.type) {
     case RECEIVED_CREATE_LIST:
+      const { newList } = action;
+      newList.cards = [];
       return {
         ...state,
-        lists: [...state.lists, action.newList],
+        lists: [...state.lists, newList],
       };
     case RECEIVED_UPDATE_LIST_TITLE:
       // state is immutable
