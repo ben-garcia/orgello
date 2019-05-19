@@ -83,7 +83,11 @@ const List = ({
             type="CARD"
           >
             {(droppableProvided) => (
-              <div className="list-cards" ref={droppableProvided.innerRef}>
+              <div
+                className="list-cards"
+                ref={droppableProvided.innerRef}
+                style={list.cards.length === 0 ? { overflow: 'visible' } : {}}
+              >
                 {currentList.cards &&
                   currentList.cards
                     .sort((a, b) => a.order - b.order)
