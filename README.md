@@ -21,29 +21,30 @@
 
   - **Components**
 
-    - create Navbar component
+    - ~~create Navbar component~~
     - ~~create Footer component~~
     - ~~create Login component~~
     - ~~create Signup component~~
-    - create Dashboard component
-    - create Board component
-    - create List component
-    - create Card component
+    - ~~create Dashboard component~~
+    - ~~create Board component~~
+    - ~~create List component~~
+    - ~~create Card component~~
 
   - **Router**
 
-    - if the user isn't logged in, redirect to the 'Login'
-    - when the user clicks 'Login' it should load the 'Login' component.
-      - when the user is logged in they should be redirected to their 'Dashboard'
-    - when the user clicks 'Signup' it should load the 'Signup' component.
-      - after the user signs up they should be redirected to their 'Dashboard'
+  - ~~if the user isn't logged in, redirect to the 'Login'~~
+
+    - ~~when the user clicks 'Login' it should load the 'Login' component.~~
+      - ~~when the user is logged in they should be redirected to their 'Dashboard'~~
+    - ~~when the user clicks 'Signup' it should load the 'Signup' component.~~
+      - ~~after the user signs up they should be redirected to their 'Dashboard'~~
 
   - **Redux**
-    - async actions using redux-thunk or redux-saga
-    - isUserLoggedIn - boolean
-    - users boards
-    - users lists
-    - users cards
+    - ~~async actions using redux-thunk or redux-saga~~
+    - ~~isUserLoggedIn - boolean~~
+    - ~~users boards~~
+    - ~~users lists~~
+    - ~~users cards~~
 
 - Server
 
@@ -112,7 +113,7 @@
           - ~~modify the board~~
           - ~~protected route. user needs authorization~~
 
-    - _/lists_
+    - ~~_/lists_~~
 
       - ~~POST~~
         - ~~create a list associated with a board~~
@@ -121,7 +122,7 @@
           - ~~modify a board with :id in the db~~
           - ~~protected route. user needs authorization~~
 
-    - _/cards_
+    - ~~_/cards_~~
 
       - ~~POST~~
         - ~~create a card associatad with a list~~
