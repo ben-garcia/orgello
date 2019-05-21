@@ -35,6 +35,7 @@ const Board = ({
   requestNewBoardTitle,
   requestBoardInfo,
   requestCreateNewList,
+  isCreateBoardFormOpen,
 }) => {
   let savedUser = localStorage.getItem('user');
   const [title, changeTitle] = useState(board.title);
@@ -84,7 +85,10 @@ const Board = ({
   return (
     <section className="board">
       <div className="board__background-options">
-        {isBackgroundOptionsOpen ? <BackgroundOptions /> : null}
+        {/* dont render when the user is creating a new board */}
+        {isBackgroundOptionsOpen && !isCreateBoardFormOpen ? (
+          <BackgroundOptions />
+        ) : null}
       </div>
       <div className="board__header">
         <button
@@ -248,6 +252,7 @@ Board.propTypes = {
   requestNewBoardTitle: PropTypes.func.isRequired,
   requestBoardInfo: PropTypes.func.isRequired,
   requestCreateNewList: PropTypes.func.isRequired,
+  isCreateBoardFormOpen: PropTypes.bool.isRequired,
 };
 
 Board.defaultProps = {
@@ -261,6 +266,7 @@ const mapStateToProps = (state) => ({
   usersBoards: state.user.boards,
   board: state.board,
   isBackgroundOptionsOpen: state.createBoard.isBackgroundOptionsOpen,
+  isCreateBoardFormOpen: state.createBoard.isFormOpen,
 });
 
 const mapDispatchToProps = (dispatch) => ({

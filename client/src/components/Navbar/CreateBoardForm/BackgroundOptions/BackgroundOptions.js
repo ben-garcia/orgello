@@ -39,6 +39,7 @@ const BackgroundOptions = ({
   changeActiveBackground,
   requestNewBoardBackground,
   boardId,
+  isCreateBoardFormOpen,
 }) => {
   // keep track when the user clicks 'See more' button
   // to see more photos options
@@ -304,7 +305,9 @@ const BackgroundOptions = ({
                   onClick={() => {
                     // when the user is on the Board component and
                     // wants to change the background image
-                    if (isBoardOpen) {
+                    // make sure not to change the board background when
+                    // the user is creating a new board.
+                    if (isBoardOpen && !isCreateBoardFormOpen) {
                       changeActiveBackground(`url(${image.urls.regular})`);
                       requestNewBoardBackground({
                         id: boardId,
@@ -418,6 +421,7 @@ BackgroundOptions.propTypes = {
   changeActiveBackground: PropTypes.func.isRequired,
   requestNewBoardBackground: PropTypes.func.isRequired,
   boardId: PropTypes.number,
+  isCreateBoardFormOpen: PropTypes.bool.isRequired,
 };
 
 BackgroundOptions.defaultProps = {
@@ -434,6 +438,7 @@ const mapStateToProps = (state) => ({
   queryPhotos: state.createBoard.queryPhotos.photos,
   isBoardOpen: state.board.isOpen,
   boardId: state.board.id,
+  isCreateBoardFormOpen: state.createBoard.isFormOpen,
 });
 
 // object passed as props to component
