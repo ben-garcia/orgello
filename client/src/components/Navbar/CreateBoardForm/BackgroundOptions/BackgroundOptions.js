@@ -373,7 +373,7 @@ const BackgroundOptions = ({
                   onClick={() => {
                     // change the background when the user is in the
                     // Board component
-                    if (isBoardOpen) {
+                    if (isBoardOpen && !isCreateBoardFormOpen) {
                       changeActiveBackground(`${color.value}`);
                       requestNewBoardBackground({
                         id: boardId,
