@@ -18,7 +18,7 @@ import {
 import { getBoardInfo, requestBoardInformation } from '../../../actions/board';
 
 import colors from '../../../api/colors';
-import { submitNewBoard } from '../../../api';
+import { submitNewBoard, triggerPhotoDownload } from '../../../api';
 
 import './CreateBoardForm.scss';
 
@@ -40,6 +40,9 @@ const CreateBoardForm = ({
   requestBoardInfo,
 }) => {
   const [isDisabled, toggleDisabledButton] = useState(true);
+  // will hold a reference to the id of a photo the user
+  // chose as the background image.
+  const [photoId, changePhotoId] = useState('');
 
   // make api request to get latest six photos when component is mounted.
   useEffect(() => {
@@ -127,34 +130,43 @@ const CreateBoardForm = ({
               <ul className="background__list">
                 {latestSixPhotos
                   .filter((image, i) => i < 4)
-                  .map((image) => (
-                    <li key={image.id} className="background__item">
-                      <button
-                        className={
-                          boardBackgroundValue === `url(${image.urls.thumb})`
-                            ? 'background__button background__button--active'
-                            : 'background__button'
-                        }
-                        type="button"
-                        style={{ backgroundImage: `url(${image.urls.thumb})` }}
-                        onClick={() =>
-                          changeBoardBackground({
-                            backgroundImage: {
-                              thumbnail: `url(${image.urls.thumb})`,
-                              regular: `url(${image.urls.regular})`,
-                            },
-                          })
-                        }
-                      >
-                        {/* if background matches image then render white
+                  .map((image) => {
+                    if (!photoId) {
+                      changePhotoId(image.id);
+                    }
+                    return (
+                      <li key={image.id} className="background__item">
+                        <button
+                          className={
+                            boardBackgroundValue === `url(${image.urls.thumb})`
+                              ? 'background__button background__button--active'
+                              : 'background__button'
+                          }
+                          type="button"
+                          style={{
+                            backgroundImage: `url(${image.urls.thumb})`,
+                          }}
+                          onClick={() => {
+                            changePhotoId(image.id);
+                            changeBoardBackground({
+                              backgroundImage: {
+                                thumbnail: `url(${image.urls.thumb})`,
+                                regular: `url(${image.urls.regular})`,
+                              },
+                            });
+                          }}
+                        >
+                          {/* if background matches image then render white
                             checkmark */}
-                        {boardBackgroundKey === 'backgroundImage' &&
-                        boardBackgroundValue === `url(${image.urls.thumb})` ? (
-                          <i className="fas fa-check" />
-                        ) : null}
-                      </button>
-                    </li>
-                  ))}
+                          {boardBackgroundKey === 'backgroundImage' &&
+                          boardBackgroundValue ===
+                            `url(${image.urls.thumb})` ? (
+                            <i className="fas fa-check" />
+                          ) : null}
+                        </button>
+                      </li>
+                    );
+                  })}
                 {colors
                   .filter((c, i) => i < 4)
                   .map((color) => (
@@ -227,6 +239,8 @@ const CreateBoardForm = ({
               changeBoardFormStatus(false);
               // remove the background options panel
               changeBackOptions(false);
+              // trigger a download
+              triggerPhotoDownload(photoId);
               // replace the url
               // with /board/:boardTitle
               // to prevent url having spaces(because of the board title)

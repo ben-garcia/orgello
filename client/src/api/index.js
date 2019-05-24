@@ -124,3 +124,17 @@ export const getBoard = async (url) => {
 
   return responseJson;
 };
+
+export const triggerPhotoDownload = async (photoId) => {
+  const url = `http://localhost:9000/photos/download?id=${photoId}`;
+  let responseJson = null;
+
+  try {
+    const response = await fetch(url);
+    responseJson = await response.json();
+  } catch (e) {
+    console.log('triggerPhotoDownload() error: ', e.message);
+  }
+
+  return responseJson;
+};

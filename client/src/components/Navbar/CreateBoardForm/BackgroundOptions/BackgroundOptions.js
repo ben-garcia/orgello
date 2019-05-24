@@ -21,6 +21,7 @@ import {
 import colors from '../../../../api/colors';
 
 import './BackgroundOptions.scss';
+import { triggerPhotoDownload } from '../../../../api';
 
 const BackgroundOptions = ({
   isBackgroundOptionsOpen,
@@ -53,6 +54,9 @@ const BackgroundOptions = ({
   const scrollRef = useRef(null);
   // reference for the search input field in the photos options
   const searchRef = useRef(null);
+  // will hold a reference to the id of a photo the user
+  // chose as the background image.
+  const [photoId, changePhotoId] = useState('');
 
   // check the height of the grid container
   // at present this effect is called every render
@@ -297,50 +301,58 @@ const BackgroundOptions = ({
               className="item-list"
               style={isPhotosOptionsOpen ? { marginTop: '1rem' } : {}}
             >
-              {photosToRender.map((image) => (
-                <li
-                  key={image.id}
-                  className="item-list__item photos-item"
-                  style={{ backgroundImage: `url(${image.urls.thumb})` }}
-                  onClick={() => {
-                    // when the user is on the Board component and
-                    // wants to change the background image
-                    // make sure not to change the board background when
-                    // the user is creating a new board.
-                    if (isBoardOpen && !isCreateBoardFormOpen) {
-                      changeActiveBackground(`url(${image.urls.regular})`);
-                      requestNewBoardBackground({
-                        id: boardId,
-                        background: `url(${image.urls.regular})`,
-                      });
-                    } else {
-                      changeBoardBackground({
-                        backgroundImage: {
-                          thumbnail: `url(${image.urls.thumb})`,
-                          regular: `url(${image.urls.regular})`,
-                        },
-                      });
-                    }
-                  }}
-                >
-                  {/* render the checkmark if image and background match */}
-                  {boardBackgroundKey === 'backgroundImage' &&
-                  boardBackgroundValue === `url(${image.urls.thumb})` ? (
-                    <i className="fas fa-check" />
-                  ) : null}
-                  <a
-                    className="list-item__link"
-                    href={`${
-                      image.user.links.html
-                    }?utm_source=orgello&utm_medium=referral&utm_campaign=api-credit`}
-                    title={`${image.user.name}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+              {photosToRender.map((image) => {
+                if (!photoId) {
+                  changePhotoId(image.id);
+                }
+                return (
+                  <li
+                    key={image.id}
+                    className="item-list__item photos-item"
+                    style={{ backgroundImage: `url(${image.urls.thumb})` }}
+                    onClick={() => {
+                      // when the user is on the Board component and
+                      // wants to change the background image
+                      // make sure not to change the board background when
+                      // the user is creating a new board.
+                      if (isBoardOpen && !isCreateBoardFormOpen) {
+                        changeActiveBackground(`url(${image.urls.regular})`);
+                        requestNewBoardBackground({
+                          id: boardId,
+                          background: `url(${image.urls.regular})`,
+                        });
+                        // trigger a download when the user changes
+                        // the board backgroud image
+                        triggerPhotoDownload(photoId);
+                      } else {
+                        changeBoardBackground({
+                          backgroundImage: {
+                            thumbnail: `url(${image.urls.thumb})`,
+                            regular: `url(${image.urls.regular})`,
+                          },
+                        });
+                      }
+                    }}
                   >
-                    {image.user.name}
-                  </a>
-                </li>
-              ))}
+                    {/* render the checkmark if image and background match */}
+                    {boardBackgroundKey === 'backgroundImage' &&
+                    boardBackgroundValue === `url(${image.urls.thumb})` ? (
+                      <i className="fas fa-check" />
+                    ) : null}
+                    <a
+                      className="list-item__link"
+                      href={`${
+                        image.user.links.html
+                      }?utm_source=orgello&utm_medium=referral&utm_campaign=api-credit`}
+                      title={`${image.user.name}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {image.user.name}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </section>
         ) : null}
