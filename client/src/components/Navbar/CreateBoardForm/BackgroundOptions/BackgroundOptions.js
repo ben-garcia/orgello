@@ -65,7 +65,7 @@ const BackgroundOptions = ({
       isPhotosOptionsOpen &&
       scrollRef.current.offsetHeight >= 502 &&
       latestPhotos.length > 0 &&
-      latestPhotos.length < 18
+      latestPhotos.length < 32
     ) {
       requestPhotos();
     }
@@ -78,7 +78,7 @@ const BackgroundOptions = ({
       isPhotosOptionsOpen &&
       scrollRef.current.offsetHeight >= 502 &&
       queryPhotos.length > 0 &&
-      queryPhotos.length < 18
+      queryPhotos.length < 32
     ) {
       requestSearchPhotos();
     }
@@ -234,12 +234,10 @@ const BackgroundOptions = ({
             // when the user scrolls down enough then
             // dispatch action to get more photos and render
             // them on the page.
-            // - keep queryPhoto and latestPhoto to a maximum of 54
-            // - so as to not make more than 50 requests per hour(unslash api guidelines)
-            if (queryPhotos.length > 0 && queryPhotos.length < 36) {
-              requestQueryPhotos();
+            if (queryPhotos.length > 0) {
+              requestSearchPhotos();
               // same as above for latestPhotos
-            } else if (latestPhotos.length > 0 && latestPhotos.length < 36) {
+            } else if (latestPhotos.length > 0) {
               requestPhotos();
             }
           }
