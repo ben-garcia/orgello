@@ -32,7 +32,7 @@ const Navbar = ({
   return (
     <header
       className="header"
-      style={isBoardOpen ? { background: 'transparent' } : {}}
+      style={isBoardOpen && isUserLoggedIn ? { background: 'transparent' } : {}}
     >
       {!isUserLoggedIn ? (
         <nav className="nav nav--logged-out">

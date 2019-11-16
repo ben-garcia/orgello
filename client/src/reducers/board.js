@@ -7,6 +7,7 @@ import {
   RECEIVED_BOARD_TITLE_CHANGE,
   RECEIVED_BOARD_BACKGROUND_CHANGE,
   RECEIVED_BOARD_INFORMATION,
+  LOGOUT_USER,
 } from '../constants';
 
 const initialState = {
@@ -56,6 +57,11 @@ const boardReducer = (state = initialState, action) => {
       return {
         isOpen: true,
         ...action.boardInfo,
+      };
+    case LOGOUT_USER:
+      return {
+        ...state,
+        background: '',
       };
     default:
       return state;
