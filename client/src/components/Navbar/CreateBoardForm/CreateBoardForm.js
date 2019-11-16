@@ -161,7 +161,7 @@ const CreateBoardForm = ({
                           {boardBackgroundKey === 'backgroundImage' &&
                           boardBackgroundValue ===
                             `url(${image.urls.thumb})` ? (
-                            <i className="fas fa-check" />
+                              <i className="fas fa-check" />
                           ) : null}
                         </button>
                       </li>
@@ -214,10 +214,10 @@ const CreateBoardForm = ({
             }
             type="submit"
             disabled={isDisabled}
-            onClick={(e) => {
+            onClick={async (e) => {
               e.preventDefault();
+
               const newBoard = {
-                id: usersBoards.length + 1,
                 title: newBoardTitle,
                 background: currentCreateBoardBackground.backgroundImage
                   ? currentCreateBoardBackground.backgroundImage.regular
@@ -225,16 +225,23 @@ const CreateBoardForm = ({
                 ownerId: userId,
                 lists: [],
               };
+
+              // the newly created board.
+              const response = await submitNewBoard(newBoard);
+              // add the id given by the server to the newly created board.
+              newBoard.id = response.id;
+
               // save to local storage
               localStorage.setItem('board', JSON.stringify(newBoard));
-              // rend the request to the server api
-              submitNewBoard(newBoard);
+              // send the request to the server api
               // add board info to the store
               getBoardInformation(newBoard);
               // update the last info on the board from the server
               // more specifically the empty lists array
               // so that there is no error when creating the first list
+
               requestBoardInfo(newBoard);
+
               // remove the create new board component
               changeBoardFormStatus(false);
               // remove the background options panel
