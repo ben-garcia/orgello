@@ -8,7 +8,7 @@
 @media screen and (orientation: landscape) {
   .login {
     height: calc(80vh - 1rem);
-    overflow: scroll;
+    overflow: hidden;
   }
 }
 

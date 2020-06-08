@@ -79,7 +79,7 @@
 @media screen and (orientation: landscape) {
   .signup {
     height: calc(80vh - 1rem);
-    overflow: scroll;
+    overflow: hidden;
   }
 }
 
