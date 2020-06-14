@@ -5,12 +5,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 
-import Card from './Card/Card';
+import { Card } from '..';
 
-import { requestUpdateListTitle } from '../../../actions/lists';
-import { requestCreateCard } from '../../../actions/cards';
-
-import './List.scss';
+import { requestUpdateListTitle } from '../../actions/lists';
+import { requestCreateCard } from '../../actions/cards';
+import './styles.scss';
 
 const List = ({
   list,

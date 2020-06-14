@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import BoardsDrawer from './BoardsDrawer/BoardsDrawer';
-import CreateBoardForm from './CreateBoardForm/CreateBoardForm';
-import UserDrawer from './UserDrawer/UserDrawer';
+import { BoardsDrawer, CreateBoardForm, UserDrawer } from '..';
 import { changeCreateBoardFormStatus } from '../../actions/boards';
 import { closeBoard } from '../../actions/board';
 import {
@@ -13,8 +11,7 @@ import {
   closeBoardsDrawer,
 } from '../../actions/boardsDrawer';
 import { openUserDrawer, closeUserDrawer } from '../../actions/userDrawer';
-
-import './Navbar.scss';
+import './styles.scss';
 
 const Navbar = ({
   isUserLoggedIn,

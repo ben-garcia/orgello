@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import { loginUser, requestUsersBoards } from '../../actions/users';
 import { authUrl } from '../../api';
 
-import '../Signup/Signup.scss';
-import './Login.scss';
+import '../Signup/styles.scss';
+import './styles.scss';
 
 class Login extends Component {
   constructor(props) {
@@ -206,6 +206,7 @@ Login.propTypes = {
   }).isRequired,
   user: PropTypes.shape({
     isLoggedIn: PropTypes.bool.isRequired,
+    username: PropTypes.string,
   }),
   login: PropTypes.func.isRequired,
   requestUserBoards: PropTypes.func.isRequired,

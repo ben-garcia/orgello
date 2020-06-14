@@ -5,9 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Droppable } from 'react-beautiful-dnd';
 
-import BackgroundOptions from '../Navbar/CreateBoardForm/BackgroundOptions/BackgroundOptions';
-import List from './List/List';
-
+import { BackgroundOptions, List } from '..';
 import { loginUser, requestUsersBoards } from '../../actions/users';
 import {
   changeBackgroundOptions,
@@ -20,7 +18,7 @@ import {
 } from '../../actions/board';
 import { requestCreateList } from '../../actions/lists';
 
-import './Board.scss';
+import './styles.scss';
 
 const Board = ({
   history,

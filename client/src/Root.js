@@ -6,15 +6,16 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
 
-import LandingPage from './components/LandingPage/LandingPage';
-import Navbar from './components/Navbar/Navbar';
-import Signup from './components/Signup/Signup';
-import Login from './components/Login/Login';
-import Dashboard from './components/Dashboard/Dashboard';
-import Footer from './components/Footer/Footer';
-import NotFound from './components/NotFound/NotFound';
-import Board from './components/Board/Board';
-
+import {
+  Board,
+  Dashboard,
+  Footer,
+  LandingPage,
+  Login,
+  Navbar,
+  NotFound,
+  Signup,
+} from './components';
 import { reorderLists } from './actions/lists';
 import { reorderCards } from './actions/cards';
 import { closeBoardsDrawer } from './actions/boardsDrawer';

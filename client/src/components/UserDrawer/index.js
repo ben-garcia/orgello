@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { logoutUser } from '../../../actions/users';
-
-import './UserDrawer.scss';
+import { logoutUser } from '../../actions/users';
+import './styles.scss';
 
 const UserDrawer = ({ history, username, logUserOut }) => {
   const logout = () => {

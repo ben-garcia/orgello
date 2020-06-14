@@ -3,6 +3,9 @@
 // NOTE: remember to update when server is deployed
 export const authUrl = 'http://localhost:9000/auth';
 const boardUrl = 'http://localhost:9000/boards';
+// production
+// export const authUrl = 'https://orgello.herokuapp.com/auth';
+// const boardUrl = 'https://orgello.herokuapp.com/boards';
 
 export const fetchData = async (baseUrl, query, page, perPage) => {
   let photos = null;
@@ -12,6 +15,7 @@ export const fetchData = async (baseUrl, query, page, perPage) => {
     const response = await fetch(url);
     photos = await response.json();
   } catch (e) {
+    // eslint-disable-next-line
     console.log('fetchPhotos error: ', e.message);
   }
 

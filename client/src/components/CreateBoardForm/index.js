@@ -6,26 +6,22 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import BackgroundOptions from './BackgroundOptions/BackgroundOptions';
-
+import { BackgroundOptions } from '..';
 import {
   changeCreateBoardFormStatus,
   changeBackgroundOptions,
   changeCreateBoardTitle,
   changeCreateBoardBackground,
   requestLatestSixPhotos,
-} from '../../../actions/boards';
-import { getBoardInfo, requestBoardInformation } from '../../../actions/board';
-
-import colors from '../../../api/colors';
-import { submitNewBoard, triggerPhotoDownload } from '../../../api';
-
-import './CreateBoardForm.scss';
+} from '../../actions/boards';
+import { getBoardInfo, requestBoardInformation } from '../../actions/board';
+import colors from '../../api/colors';
+import { submitNewBoard, triggerPhotoDownload } from '../../api';
+import './styles.scss';
 
 const CreateBoardForm = ({
   history,
   userId,
-  usersBoards,
   newBoardTitle,
   changeBoardFormStatus,
   isCreateBoardFormOpen,
@@ -129,7 +125,7 @@ const CreateBoardForm = ({
             <div className="background">
               <ul className="background__list">
                 {latestSixPhotos
-                  .filter((image, i) => i < 4)
+                  .filter((_, i) => i < 4)
                   .map((image) => {
                     if (!photoId) {
                       changePhotoId(image.id);
@@ -168,7 +164,7 @@ const CreateBoardForm = ({
                     );
                   })}
                 {colors
-                  .filter((c, i) => i < 4)
+                  .filter((_, i) => i < 4)
                   .map((color) => (
                     <li key={color.id} className="background__item">
                       <button
@@ -268,13 +264,6 @@ CreateBoardForm.propTypes = {
     replace: PropTypes.func.isRequired,
   }).isRequired,
   userId: PropTypes.number.isRequired,
-  usersBoards: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      background: PropTypes.string.isRequired,
-    })
-  ).isRequired,
   isCreateBoardFormOpen: PropTypes.bool.isRequired,
   isBackgroundOptionsOpen: PropTypes.bool.isRequired,
   changeBackOptions: PropTypes.func.isRequired,

@@ -2,11 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import BoardsList from './BoardsList/BoardsList';
-
+import { BoardsList } from '..';
 import { clearBoardInformation } from '../../actions/board';
-
-import './Dashboard.scss';
+import './styles.scss';
 
 const Dashboard = ({ history, user, board, clearBoard }) => {
   if (!user.isLoggedIn) {
@@ -41,6 +39,7 @@ Dashboard.propTypes = {
   }),
   board: PropTypes.shape({
     isOpen: PropTypes.bool.isRequired,
+    background: PropTypes.string,
   }).isRequired,
   clearBoard: PropTypes.func.isRequired,
 };

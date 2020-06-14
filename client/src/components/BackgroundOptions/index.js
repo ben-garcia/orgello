@@ -12,16 +12,15 @@ import {
   changeQueryPhotosSearchTerm,
   requestQueryPhotos,
   removeQueryPhotos,
-} from '../../../../actions/boards';
+} from '../../actions/boards';
 import {
   changeActiveBoardBackground,
   requestBoardBackgroundChange,
-} from '../../../../actions/board';
+} from '../../actions/board';
+import colors from '../../api/colors';
+import { triggerPhotoDownload } from '../../api';
 
-import colors from '../../../../api/colors';
-
-import './BackgroundOptions.scss';
-import { triggerPhotoDownload } from '../../../../api';
+import './styles.scss';
 
 const BackgroundOptions = ({
   isBackgroundOptionsOpen,
@@ -339,9 +338,7 @@ const BackgroundOptions = ({
                     ) : null}
                     <a
                       className="list-item__link"
-                      href={`${
-                        image.user.links.html
-                      }?utm_source=orgello&utm_medium=referral&utm_campaign=api-credit`}
+                      href={`${image.user.links.html}?utm_source=orgello&utm_medium=referral&utm_campaign=api-credit`}
                       title={`${image.user.name}`}
                       target="_blank"
                       rel="noopener noreferrer"

@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { requestBoardInformation } from '../../../actions/board';
+import { requestBoardInformation } from '../../actions/board';
 
-import './BoardsDrawer.scss';
+import './styles.scss';
 
 const BoardsDrawer = ({ usersBoards, requestBoardInfo }) => {
   return (

@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { loginUser, requestUsersBoards } from '../../actions/users';
-
-import './LandingPage.scss';
+import './styles.scss';
 
 const LandingPage = ({ history, login, requestAllUsersBoards }) => {
   let user = localStorage.getItem('user');

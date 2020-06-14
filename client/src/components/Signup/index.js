@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import Joi from 'joi-browser';
 
 import { authUrl } from '../../api';
-
-import './Signup.scss';
+import './styles.scss';
 
 const objectSchema = Joi.object().keys({
   email: Joi.string()

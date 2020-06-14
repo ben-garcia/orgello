@@ -5,9 +5,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 
-import { requestUpdateCardTitle } from '../../../../actions/cards';
-
-import './Card.scss';
+import { requestUpdateCardTitle } from '../../actions/cards';
+import './styles.scss';
 
 // implement PureComponent with React.memo by passing it a function
 const Card = React.memo(({ card, cardIndex, requestUpdateNewCardTitle }) => {
