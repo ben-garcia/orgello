@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 
-import { Card } from '..';
-
+import Card from '../Card';
 import { requestUpdateListTitle } from '../../actions/lists';
 import { requestCreateCard } from '../../actions/cards';
 import './styles.scss';
@@ -63,7 +62,10 @@ const List = ({
                     id: list.id,
                     title: listTitleRef.current.value,
                   };
-                  requestUpdateList(newList);
+                  // send the request only if the title has changed
+                  if (listTitle !== list.title) {
+                    requestUpdateList(newList);
+                  }
                   toggleListTitleInput(!isListTitleInputOpen);
                 }}
               />
