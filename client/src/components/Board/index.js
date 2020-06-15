@@ -24,6 +24,7 @@ const Board = ({
   history,
   login,
   usersBoards,
+  username,
   isUserLoggedIn,
   requestAllUsersBoards,
   board,
@@ -66,8 +67,11 @@ const Board = ({
 
   if (localStorage.getItem('board') && !board.background) {
     const currentBoard = JSON.parse(localStorage.getItem('board'));
-
     requestBoardInfo(currentBoard.id);
+  }
+
+  if (username === 'orgelloguest' && !localStorage.getItem('board')) {
+    history.replace('/');
   }
 
   if (showTitleInput) {
@@ -228,6 +232,7 @@ Board.propTypes = {
     replace: PropTypes.func.isRequired,
   }).isRequired,
   login: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
   usersBoards: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
@@ -262,6 +267,7 @@ Board.defaultProps = {
 const mapStateToProps = (state) => ({
   isUserLoggedIn: state.user.isLoggedIn,
   usersBoards: state.user.boards,
+  username: state.user.username,
   board: state.board,
   isBackgroundOptionsOpen: state.createBoard.isBackgroundOptionsOpen,
   isCreateBoardFormOpen: state.createBoard.isFormOpen,

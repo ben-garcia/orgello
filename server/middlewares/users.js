@@ -36,7 +36,8 @@ function verifyToken(req, res, next) {
       res.status(403);
       next({ message: err.message });
     } else if (user.username === 'orgelloguest' && req.method !== 'GET') {
-      // if the user is a test account
+      // if the user is using the test account
+      // stop the request from reaching the endpoint
       res.status(403);
       next({ message: 'Cannot Create/Update resource from a test account' });
     } else {

@@ -285,6 +285,7 @@ Root.propTypes = {
     ownerId: PropTypes.number,
     createdAt: PropTypes.string,
     updatedAt: PropTypes.string,
+    lists: PropTypes.object,
   }).isRequired,
   updateListsOrder: PropTypes.func.isRequired,
   updateCardsOrder: PropTypes.func.isRequired,

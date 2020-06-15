@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { BackgroundOptions } from '..';
+import BackgroundOptions from '../BackgroundOptions';
 import {
   changeCreateBoardFormStatus,
   changeBackgroundOptions,
@@ -22,6 +22,7 @@ import './styles.scss';
 const CreateBoardForm = ({
   history,
   userId,
+  username,
   newBoardTitle,
   changeBoardFormStatus,
   isCreateBoardFormOpen,
@@ -222,22 +223,29 @@ const CreateBoardForm = ({
                 lists: [],
               };
 
-              // the newly created board.
-              const response = await submitNewBoard(newBoard);
-              // add the id given by the server to the newly created board.
-              newBoard.id = response.id;
-
-              // save to local storage
-              localStorage.setItem('board', JSON.stringify(newBoard));
+              if (username !== 'orgelloguest') {
+                // the newly created board.
+                const response = await submitNewBoard(newBoard);
+                // add the id given by the server to the newly created board.
+                newBoard.id = response.id;
+                // save to local storage
+                localStorage.setItem('board', JSON.stringify(newBoard));
+                // update the last info on the board from the server
+                // more specifically the empty lists array
+                // so that there is no error when creating the first list
+                requestBoardInfo(newBoard);
+              } else {
+                newBoard.id = Math.random();
+                // wait to remove the board from local storage
+                // so that when the user is redirected the dashboard page
+                // on page reload after creating a new board
+                setTimeout(() => {
+                  localStorage.removeItem('board');
+                }, 2000);
+              }
               // send the request to the server api
               // add board info to the store
               getBoardInformation(newBoard);
-              // update the last info on the board from the server
-              // more specifically the empty lists array
-              // so that there is no error when creating the first list
-
-              requestBoardInfo(newBoard);
-
               // remove the create new board component
               changeBoardFormStatus(false);
               // remove the background options panel
@@ -264,6 +272,7 @@ CreateBoardForm.propTypes = {
     replace: PropTypes.func.isRequired,
   }).isRequired,
   userId: PropTypes.number.isRequired,
+  username: PropTypes.string.isRequired,
   isCreateBoardFormOpen: PropTypes.bool.isRequired,
   isBackgroundOptionsOpen: PropTypes.bool.isRequired,
   changeBackOptions: PropTypes.func.isRequired,
@@ -280,7 +289,7 @@ CreateBoardForm.propTypes = {
 
 const mapStateToProps = (state) => ({
   userId: state.user.id,
-  usersBoards: state.user.boards,
+  username: state.user.username,
   newBoardTitle: state.createBoard.title,
   isCreateBoardFormOpen: state.createBoard.isFormOpen,
   isBackgroundOptionsOpen: state.createBoard.isBackgroundOptionsOpen,

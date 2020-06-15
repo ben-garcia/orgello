@@ -119,7 +119,7 @@ const BackgroundOptions = ({
     // render the latest photos
     photosToRender = latestPhotos;
   } else {
-    photosToRender = photosToRender.filter((image, i) => i < 6);
+    photosToRender = photosToRender.filter((_, i) => i < 6);
   }
 
   // then query photos array has been populated(user is typing in search input field)
@@ -134,7 +134,7 @@ const BackgroundOptions = ({
     title = 'Colors';
   } else {
     // find the first 6 colors in the colors object array
-    modifiedColors = colors.filter((color, index) => index < 6);
+    modifiedColors = colors.filter((_, index) => index < 6);
   }
 
   // when photos options is open
