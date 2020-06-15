@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { BoardsList } from '..';
+import BoardsList from '../BoardsList';
 import { clearBoardInformation } from '../../actions/board';
 import './styles.scss';
 

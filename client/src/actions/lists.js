@@ -1,10 +1,16 @@
 import {
+  ADD_LIST,
   REQUEST_CREATE_LIST,
   RECEIVED_CREATE_LIST,
   REQUEST_UPDATE_LIST_TITLE,
   RECEIVED_UPDATE_LIST_TITLE,
   REORDER_LISTS,
 } from '../constants';
+
+export const addList = (list) => ({
+  type: ADD_LIST,
+  list,
+});
 
 export const requestCreateList = (list) => ({
   type: REQUEST_CREATE_LIST,

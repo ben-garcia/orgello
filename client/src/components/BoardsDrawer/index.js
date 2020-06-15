@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { requestBoardInformation } from '../../actions/board';
-
 import './styles.scss';
 
 const BoardsDrawer = ({ usersBoards, requestBoardInfo }) => {

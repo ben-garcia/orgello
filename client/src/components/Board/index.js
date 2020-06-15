@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Droppable } from 'react-beautiful-dnd';
 
-import { BackgroundOptions, List } from '..';
+import BackgroundOptions from '../BackgroundOptions';
+import List from '../List';
 import { loginUser, requestUsersBoards } from '../../actions/users';
 import {
   changeBackgroundOptions,
@@ -16,8 +17,7 @@ import {
   requestBoardTitleChange,
   requestBoardInformation,
 } from '../../actions/board';
-import { requestCreateList } from '../../actions/lists';
-
+import { addList, requestCreateList } from '../../actions/lists';
 import './styles.scss';
 
 const Board = ({
@@ -33,6 +33,7 @@ const Board = ({
   requestSixPhotos,
   requestNewBoardTitle,
   requestBoardInfo,
+  addNewList,
   requestCreateNewList,
   isCreateBoardFormOpen,
 }) => {
@@ -196,9 +197,15 @@ const Board = ({
                         order,
                         boardId: board.id,
                       };
-                      // dispatch action to create new list
-                      // and add it to board.lists
-                      requestCreateNewList(list);
+                      if (username !== 'orgelloguest') {
+                        // dispatch action to create new list
+                        // and add it to board.lists
+                        requestCreateNewList(list);
+                      } else {
+                        list.id = Math.random();
+                        list.cards = [];
+                        addNewList(list);
+                      }
                       // reset the list title
                       listTitleRef.current.value = '';
                     }
@@ -248,12 +255,23 @@ Board.propTypes = {
     id: PropTypes.number,
     title: PropTypes.string,
     background: PropTypes.string,
+    lists: PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+      order: PropTypes.number,
+      boardId: PropTypes.number,
+      createdAt: PropTypes.string,
+      updatedAt: PropTypes.string,
+      length: PropTypes.number,
+      sort: PropTypes.func.isRequired,
+    }),
   }),
   isBackgroundOptionsOpen: PropTypes.bool.isRequired,
   changeBackOptions: PropTypes.func.isRequired,
   requestSixPhotos: PropTypes.func.isRequired,
   requestNewBoardTitle: PropTypes.func.isRequired,
   requestBoardInfo: PropTypes.func.isRequired,
+  addNewList: PropTypes.func.isRequired,
   requestCreateNewList: PropTypes.func.isRequired,
   isCreateBoardFormOpen: PropTypes.bool.isRequired,
 };
@@ -281,6 +299,7 @@ const mapDispatchToProps = (dispatch) => ({
   requestSixPhotos: () => dispatch(requestLatestSixPhotos()),
   requestNewBoardTitle: (payload) => dispatch(requestBoardTitleChange(payload)),
   requestBoardInfo: (board) => dispatch(requestBoardInformation(board)),
+  addNewList: (list) => dispatch(addList(list)),
   requestCreateNewList: (list) => dispatch(requestCreateList(list)),
 });
 
