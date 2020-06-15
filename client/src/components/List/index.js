@@ -6,15 +6,17 @@ import PropTypes from 'prop-types';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 import Card from '../Card';
-import { requestUpdateListTitle } from '../../actions/lists';
+import { changeListTitle, requestUpdateListTitle } from '../../actions/lists';
 import { requestCreateCard } from '../../actions/cards';
 import './styles.scss';
 
 const List = ({
+  username,
   list,
   lists,
   listIndex,
   requestUpdateList,
+  changeListNewTitle,
   requestCreateNewCard,
 }) => {
   // the UI wasn't updating with only the list prop
@@ -62,9 +64,14 @@ const List = ({
                     id: list.id,
                     title: listTitleRef.current.value,
                   };
+
                   // send the request only if the title has changed
                   if (listTitle !== list.title) {
-                    requestUpdateList(newList);
+                    if (username !== 'orgelloguest') {
+                      requestUpdateList(newList);
+                    } else {
+                      changeListNewTitle(newList.id, newList.title);
+                    }
                   }
                   toggleListTitleInput(!isListTitleInputOpen);
                 }}
@@ -193,6 +200,7 @@ const List = ({
 };
 
 List.propTypes = {
+  username: PropTypes.string.isRequired,
   list: PropTypes.shape({
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
@@ -211,6 +219,7 @@ List.propTypes = {
   }).isRequired,
   listIndex: PropTypes.number.isRequired,
   requestUpdateList: PropTypes.func.isRequired,
+  changeListNewTitle: PropTypes.func.isRequired,
   requestCreateNewCard: PropTypes.func.isRequired,
   lists: PropTypes.arrayOf(
     PropTypes.shape({
@@ -234,10 +243,13 @@ List.propTypes = {
 
 const mapStateToProps = (state) => ({
   lists: state.board.lists,
+  username: state.user.username,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   requestUpdateList: (list) => dispatch(requestUpdateListTitle(list)),
+  changeListNewTitle: (listId, newTitle) =>
+    dispatch(changeListTitle(listId, newTitle)),
   requestCreateNewCard: (card) => dispatch(requestCreateCard(card)),
 });
 

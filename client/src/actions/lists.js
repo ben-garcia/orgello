@@ -1,5 +1,6 @@
 import {
   ADD_LIST,
+  CHANGE_LIST_TITLE,
   REQUEST_CREATE_LIST,
   RECEIVED_CREATE_LIST,
   REQUEST_UPDATE_LIST_TITLE,
@@ -10,6 +11,12 @@ import {
 export const addList = (list) => ({
   type: ADD_LIST,
   list,
+});
+
+export const changeListTitle = (listId, newTitle) => ({
+  type: CHANGE_LIST_TITLE,
+  listId,
+  newTitle,
 });
 
 export const requestCreateList = (list) => ({

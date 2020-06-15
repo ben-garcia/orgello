@@ -72,8 +72,9 @@ export const CHANGE_QUERY_PHOTOS_SEARCH_TERM =
 export const REMOVE_QUERY_PHOTOS = 'REMOVE_QUERY_PHOTOS';
 
 // lists
-// add new list without saving to the db
+// actions that don't send request to the server
 export const ADD_LIST = 'ADD_LIST';
+export const CHANGE_LIST_TITLE = 'CHANGE_LIST_TITLE';
 // create new list
 export const REQUEST_CREATE_LIST = 'REQUEST_CREATE_LIST';
 export const RECEIVED_CREATE_LIST = 'RECEIVED_CREATE_LIST';
