@@ -4,7 +4,6 @@ const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
-
 const User = require('../db/models').user;
 const { Op } = require('../db/models').Sequelize;
 
@@ -77,7 +76,6 @@ router.post('/signup', (req, res, next) => {
         if (created) {
           // user was not found in the db
           // so a new user was created and added.
-
           res.status(201);
           res.json({ message: 'User Created' });
         } else {
