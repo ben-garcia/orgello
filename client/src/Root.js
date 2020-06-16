@@ -25,6 +25,7 @@ import { updateResource } from './api';
 const Root = ({
   board,
   updateListsOrder,
+  username,
   updateCardsOrder,
   boardDrawerIsOpen,
   usersDrawerIsOpen,
@@ -109,12 +110,15 @@ const Root = ({
       // insert the list into its new position
       newState.splice(destination.index, 0, sourceList);
 
-      // dispatch action to the store
-      updateListsOrder(newState);
-      // update the list in the db
-      updateResource(`${baseUrl}/${sourceList.id}`, {
-        order: sourceList.order,
-      });
+      // send request only if the user isn't using the test account.
+      if (username !== 'orgelloguest') {
+        // dispatch action to the store
+        updateListsOrder(newState);
+        // update the list in the db
+        updateResource(`${baseUrl}/${sourceList.id}`, {
+          order: sourceList.order,
+        });
+      }
     } else if (
       destination &&
       type === 'CARD' &&
@@ -227,10 +231,13 @@ const Root = ({
       newCard.id = sourceCard.id;
       newCard.card = { listId: destinationList.id, order: sourceCard.order };
 
-      // send dispatch to the store
-      updateCardsOrder(newState);
-      // send update card info to update it in the db
-      updateResource(`${baseUrl}/${newCard.id}`, { ...newCard.card });
+      // send request only if the user isn't using the test account
+      if (username !== 'orgelloguest') {
+        // send dispatch to the store
+        updateCardsOrder(newState);
+        // send update card info to update it in the db
+        updateResource(`${baseUrl}/${newCard.id}`, { ...newCard.card });
+      }
     }
   });
 
@@ -279,6 +286,7 @@ const Root = ({
 Root.propTypes = {
   // eslint-disable-next-line
   board: PropTypes.object,
+  username: PropTypes.string.isRequired,
   updateListsOrder: PropTypes.func.isRequired,
   updateCardsOrder: PropTypes.func.isRequired,
   boardDrawerIsOpen: PropTypes.bool.isRequired,
@@ -289,6 +297,7 @@ Root.propTypes = {
 
 const mapStateToProps = (state) => ({
   board: state.board,
+  username: state.user.username,
   boardDrawerIsOpen: state.boardsDrawer.isOpen,
   usersDrawerIsOpen: state.userDrawer.isOpen,
 });
