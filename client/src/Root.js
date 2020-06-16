@@ -277,16 +277,8 @@ const Root = ({
 };
 
 Root.propTypes = {
-  board: PropTypes.shape({
-    isOpen: PropTypes.bool,
-    id: PropTypes.number,
-    title: PropTypes.string,
-    background: PropTypes.string,
-    ownerId: PropTypes.number,
-    createdAt: PropTypes.string,
-    updatedAt: PropTypes.string,
-    lists: PropTypes.object,
-  }).isRequired,
+  // eslint-disable-next-line
+  board: PropTypes.object,
   updateListsOrder: PropTypes.func.isRequired,
   updateCardsOrder: PropTypes.func.isRequired,
   boardDrawerIsOpen: PropTypes.bool.isRequired,

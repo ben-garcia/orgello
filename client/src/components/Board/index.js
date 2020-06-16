@@ -202,8 +202,11 @@ const Board = ({
                         // and add it to board.lists
                         requestCreateNewList(list);
                       } else {
+                        const date = new Date().toString();
                         list.id = Math.random();
                         list.cards = [];
+                        list.createdAt = date;
+                        list.updatedAt = date;
                         addNewList(list);
                       }
                       // reset the list title
@@ -239,7 +242,7 @@ Board.propTypes = {
     replace: PropTypes.func.isRequired,
   }).isRequired,
   login: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
+  username: PropTypes.string,
   usersBoards: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
@@ -251,21 +254,8 @@ Board.propTypes = {
   ),
   isUserLoggedIn: PropTypes.bool,
   requestAllUsersBoards: PropTypes.func.isRequired,
-  board: PropTypes.shape({
-    id: PropTypes.number,
-    title: PropTypes.string,
-    background: PropTypes.string,
-    lists: PropTypes.shape({
-      id: PropTypes.number,
-      title: PropTypes.string,
-      order: PropTypes.number,
-      boardId: PropTypes.number,
-      createdAt: PropTypes.string,
-      updatedAt: PropTypes.string,
-      length: PropTypes.number,
-      sort: PropTypes.func.isRequired,
-    }),
-  }),
+  // eslint-disable-next-line
+  board: PropTypes.object.isRequired,
   isBackgroundOptionsOpen: PropTypes.bool.isRequired,
   changeBackOptions: PropTypes.func.isRequired,
   requestSixPhotos: PropTypes.func.isRequired,
@@ -278,8 +268,8 @@ Board.propTypes = {
 
 Board.defaultProps = {
   isUserLoggedIn: false,
-  board: [],
   usersBoards: [],
+  username: '',
 };
 
 const mapStateToProps = (state) => ({

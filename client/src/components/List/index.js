@@ -7,7 +7,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 import Card from '../Card';
 import { changeListTitle, requestUpdateListTitle } from '../../actions/lists';
-import { requestCreateCard } from '../../actions/cards';
+import { addCard, requestCreateCard } from '../../actions/cards';
 import './styles.scss';
 
 const List = ({
@@ -17,6 +17,7 @@ const List = ({
   listIndex,
   requestUpdateList,
   changeListNewTitle,
+  addNewCard,
   requestCreateNewCard,
 }) => {
   // the UI wasn't updating with only the list prop
@@ -24,8 +25,8 @@ const List = ({
   // find the current list which should contain up to date number of cards
   const currentList = lists.find((l) => l.id === list.id);
   const [isCardFormOpen, toggleCardForm] = useState(false);
-  const [listTitle, changeListTitle] = useState(list.title);
-  const [cardTitle, changeCardTitle] = useState('');
+  const [listTitle, setListTitle] = useState(list.title);
+  const [cardTitle, setCardTitle] = useState('');
   const [isListTitleInputOpen, toggleListTitleInput] = useState(false);
   const listTitleRef = useRef(null);
   const cardTitleAreaRef = useRef(null);
@@ -54,10 +55,10 @@ const List = ({
                 type="text"
                 ref={listTitleRef}
                 value={listTitle}
-                onChange={(e) => changeListTitle(e.target.value)}
+                onChange={(e) => setListTitle(e.target.value)}
                 onBlur={() => {
                   if (!listTitleRef.current.value) {
-                    changeListTitle(list.title);
+                    setListTitle(list.title);
                   }
 
                   const newList = {
@@ -110,7 +111,7 @@ const List = ({
                       placeholder="Enter a title for this card"
                       ref={cardTitleAreaRef}
                       onChange={() =>
-                        changeCardTitle(cardTitleAreaRef.current.value)
+                        setCardTitle(cardTitleAreaRef.current.value)
                       }
                       onKeyDown={(e) => {
                         // when the user presses the enter key and
@@ -134,9 +135,17 @@ const List = ({
                             listId: list.id,
                           };
                           if (newCard.title) {
-                            requestCreateNewCard(newCard);
+                            if (username !== 'orgelloguest') {
+                              requestCreateNewCard(newCard);
+                            } else {
+                              const date = new Date().toString();
+                              newCard.id = Math.random();
+                              newCard.createdAt = date;
+                              newCard.updatedAt = date;
+                              addNewCard(newCard);
+                            }
                           }
-                          changeCardTitle('');
+                          setCardTitle('');
                           cardTitleAreaRef.current.value = '';
                         }
                       }}
@@ -163,7 +172,7 @@ const List = ({
                           if (newCard.title) {
                             requestCreateNewCard(newCard);
                           }
-                          changeCardTitle('');
+                          setCardTitle('');
                           cardTitleAreaRef.current.value = '';
                         }}
                       >
@@ -220,6 +229,7 @@ List.propTypes = {
   listIndex: PropTypes.number.isRequired,
   requestUpdateList: PropTypes.func.isRequired,
   changeListNewTitle: PropTypes.func.isRequired,
+  addNewCard: PropTypes.func.isRequired,
   requestCreateNewCard: PropTypes.func.isRequired,
   lists: PropTypes.arrayOf(
     PropTypes.shape({
@@ -250,6 +260,7 @@ const mapDispatchToProps = (dispatch) => ({
   requestUpdateList: (list) => dispatch(requestUpdateListTitle(list)),
   changeListNewTitle: (listId, newTitle) =>
     dispatch(changeListTitle(listId, newTitle)),
+  addNewCard: (card) => dispatch(addCard(card)),
   requestCreateNewCard: (card) => dispatch(requestCreateCard(card)),
 });
 

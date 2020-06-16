@@ -85,6 +85,9 @@ export const RECEIVED_UPDATE_LIST_TITLE = 'RECEIVED_UPDATE_LIST_TITLE';
 export const REORDER_LISTS = 'REORDER_LISTS';
 
 // cards
+// actions that don't send request to the server
+export const ADD_CARD = 'ADD_CARD';
+export const CHANGE_CARD_TITLE = 'CHANGE_CARD_TITLE';
 // create new card
 export const REQUEST_CREATE_CARD = 'REQUEST_CREATE_CARD';
 export const RECEIVED_CREATE_CARD = 'RECEIVED_CREATE_CARD';
