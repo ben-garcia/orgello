@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { loginUser, requestUsersBoards } from '../../actions/users';
-import { authUrl } from '../../api';
+import { baseUrl } from '../../api';
 
 import '../Signup/styles.scss';
 import './styles.scss';
@@ -117,7 +117,7 @@ class Login extends Component {
       let isOk = true;
 
       // send a request to authenticate the user
-      fetch(`${authUrl}/login`, {
+      fetch(`${baseUrl}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user),
@@ -159,6 +159,7 @@ class Login extends Component {
 
   render() {
     const { emailUsername, password, error } = this.state;
+    const { history } = this.props;
 
     return (
       <section className="login">
@@ -189,6 +190,19 @@ class Login extends Component {
               placeholder="e.g. ************"
             />
           </label>
+          <button
+            className="login__no-account-button"
+            onClick={() => history.push('/signup')}
+            type="button"
+          >
+            <div>Dont have an account yet?</div>
+          </button>
+          <div className="login__test-account">
+            <div>Test Account</div>
+            <div>email: orgelloguest@orgello.com</div>
+            <div>username: orgelloguest</div>
+            <div>password: orgelloguest</div>
+          </div>
           <input
             className="button button--enabled"
             type="submit"

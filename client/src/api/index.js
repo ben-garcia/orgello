@@ -1,18 +1,16 @@
 // server api endpoints
 
 // NOTE: remember to update when server is deployed
-export const authUrl = 'http://localhost:9000/auth';
-const boardUrl = 'http://localhost:9000/boards';
 // production
-// export const authUrl = 'https://orgello.herokuapp.com/auth';
-// const boardUrl = 'https://orgello.herokuapp.com/boards';
+// export const baseUrl = 'https://orgello.herokuapp.com';
+export const baseUrl = 'http://localhost:9000';
 
-export const fetchData = async (baseUrl, query, page, perPage) => {
+export const fetchData = async (url, query, page, perPage) => {
   let photos = null;
-  const url = `${baseUrl}?query=${query}&page=${page}&perPage=${perPage}`;
+  const urlQuery = `${url}?query=${query}&page=${page}&perPage=${perPage}`;
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(urlQuery);
     photos = await response.json();
   } catch (e) {
     // eslint-disable-next-line
@@ -27,7 +25,7 @@ export const submitNewBoard = async ({ title, background, ownerId }) => {
   const { token } = JSON.parse(localStorage.getItem('user'));
 
   try {
-    const response = await fetch(boardUrl, {
+    const response = await fetch(`${baseUrl}/boards`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,6 +39,7 @@ export const submitNewBoard = async ({ title, background, ownerId }) => {
     });
     responseJson = await response.json();
   } catch (e) {
+    // eslint-disable-next-line
     console.log('submitNewBoard() error: ', e.message);
   }
 
@@ -52,7 +51,7 @@ export const getUsersBoards = async (ownerId) => {
   const { token } = JSON.parse(localStorage.getItem('user'));
 
   try {
-    const response = await fetch(`${boardUrl}?ownerId=${ownerId}`, {
+    const response = await fetch(`${baseUrl}/boards?ownerId=${ownerId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -61,6 +60,7 @@ export const getUsersBoards = async (ownerId) => {
     });
     responseJson = await response.json();
   } catch (e) {
+    // eslint-disable-next-line
     console.log('getUsersBoards() error: ', e.message);
   }
 
@@ -82,6 +82,7 @@ export const updateResource = async (url, bodyContent) => {
     });
     responseJson = await response.json();
   } catch (e) {
+    // eslint-disable-next-line
     console.log('updateResource() error: ', e.message);
   }
 
@@ -103,6 +104,7 @@ export const createResource = async (url, bodyContent) => {
     });
     responseJson = await response.json();
   } catch (e) {
+    // eslint-disable-next-line
     console.log('updateResource() error: ', e.message);
   }
 
@@ -123,6 +125,7 @@ export const getBoard = async (url) => {
     });
     responseJson = await response.json();
   } catch (e) {
+    // eslint-disable-next-line
     console.log('getBoard() error: ', e.message);
   }
 
@@ -137,6 +140,7 @@ export const triggerPhotoDownload = async (photoId) => {
     const response = await fetch(url);
     responseJson = await response.json();
   } catch (e) {
+    // eslint-disable-next-line
     console.log('triggerPhotoDownload() error: ', e.message);
   }
 

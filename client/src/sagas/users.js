@@ -14,6 +14,7 @@ function* getAllUsersBoards() {
     // dispatch an action to the store with put effect
     yield put(receivedUsersBoards(boards));
   } catch (e) {
+    // eslint-disable-next-line
     console.error('receivedUsersBoards() error: ', e.message);
   }
 }

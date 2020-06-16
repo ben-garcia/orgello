@@ -1,8 +1,27 @@
+@import '../../partials/variables';
+
 .login {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  &__no-account-button {
+    align-self: flex-start;
+    background: none;
+    color: $header-color;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__test-account {
+    align-self: flex-start;
+    background-color: #edeff0;
+    margin: 0.3rem 0;
+    padding: 0.5rem;
+  }
 }
 
 @media screen and (orientation: landscape) {

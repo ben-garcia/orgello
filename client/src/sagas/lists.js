@@ -1,18 +1,14 @@
 import { call, put } from 'redux-saga/effects';
 
 import { receivedCreateList, receivedUpdateListTitle } from '../actions/lists';
-import { createResource, updateResource } from '../api';
+import { baseUrl, createResource, updateResource } from '../api';
 
 export function* createList({ list }) {
   try {
     // call effect calls the function passed as first arguement.
     // any other arguments passed are the arguements of the function call passed
     // as the first, which is createList in this case
-    const createdList = yield call(
-      createResource,
-      `http://localhost:9000/lists`,
-      list
-    );
+    const createdList = yield call(createResource, `${baseUrl}/lists`, list);
     // dispatch an action to the store with put effect
     yield put(receivedCreateList(createdList));
   } catch (e) {
@@ -26,11 +22,9 @@ export function* updateList({ list }) {
     // call effect calls the function passed as first arguement.
     // any other arguments passed are the arguements of the function call passed
     // as the first, which is updateList in this case
-    const newList = yield call(
-      updateResource,
-      `http://localhost:9000/lists/${list.id}`,
-      { title: list.title }
-    );
+    const newList = yield call(updateResource, `${baseUrl}/lists/${list.id}`, {
+      title: list.title,
+    });
     // list with the updated attributes
     const updatedList = {
       // cast id to a number

@@ -30,8 +30,8 @@ const LandingPage = ({ history, login, requestAllUsersBoards }) => {
         </a>
         that supports Boards, Lists, and Cards.
       </p>
-      <Link className="hero__cta" to="/signup">
-        Sign Up Now
+      <Link className="hero__cta" to="/login">
+        Try it Now
       </Link>
     </section>
   );

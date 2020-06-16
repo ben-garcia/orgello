@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Joi from 'joi-browser';
 
-import { authUrl } from '../../api';
+import { baseUrl } from '../../api';
 import './styles.scss';
 
 const objectSchema = Joi.object().keys({
@@ -160,7 +160,7 @@ class Signup extends Component {
     let isOk = true;
 
     // send the request to the server
-    fetch(`${authUrl}/signup`, {
+    fetch(`${baseUrl}/auth/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user),
@@ -266,6 +266,7 @@ class Signup extends Component {
       disabled,
       serverError,
     } = this.state;
+    const { history } = this.props;
 
     return (
       <section className="signup">
@@ -346,6 +347,13 @@ class Signup extends Component {
               ''
             )}
           </label>
+          <button
+            className="signup__test-account"
+            onClick={() => history.push('/login')}
+            type="button"
+          >
+            Login with the test account!
+          </button>
           <input
             className={disabled ? 'button' : 'button button--enabled'}
             type="submit"

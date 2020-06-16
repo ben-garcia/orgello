@@ -286,7 +286,7 @@ const Root = ({
 Root.propTypes = {
   // eslint-disable-next-line
   board: PropTypes.object,
-  username: PropTypes.string.isRequired,
+  username: PropTypes.string,
   updateListsOrder: PropTypes.func.isRequired,
   updateCardsOrder: PropTypes.func.isRequired,
   boardDrawerIsOpen: PropTypes.bool.isRequired,
@@ -295,6 +295,9 @@ Root.propTypes = {
   closeUsersDrawer: PropTypes.func.isRequired,
 };
 
+Root.defaultProps = {
+  username: '',
+};
 const mapStateToProps = (state) => ({
   board: state.board,
   username: state.user.username,
