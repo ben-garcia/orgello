@@ -21,6 +21,8 @@ const BoardsList = ({
         <h3 className="boards__title">All Boards</h3>
       </div>
       <ul className="boards__list">
+        {/* production */}
+        {/* usersBoards.length && */}
         {usersBoards &&
           usersBoards.map((board) => (
             <li
