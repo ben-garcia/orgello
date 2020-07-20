@@ -133,7 +133,7 @@ export const getBoard = async (url) => {
 };
 
 export const triggerPhotoDownload = async (photoId) => {
-  const url = `http://localhost:9000/photos/download?id=${photoId}`;
+  const url = `${baseUrl}/photos/download?id=${photoId}`;
   let responseJson = null;
 
   try {

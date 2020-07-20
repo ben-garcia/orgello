@@ -20,7 +20,7 @@ import { reorderLists } from './actions/lists';
 import { reorderCards } from './actions/cards';
 import { closeBoardsDrawer } from './actions/boardsDrawer';
 import { closeUserDrawer } from './actions/userDrawer';
-import { updateResource } from './api';
+import { baseUrl as url, updateResource } from './api';
 
 const Root = ({
   board,
@@ -55,10 +55,7 @@ const Root = ({
   const onDragEnd = useCallback((result) => {
     const { source, destination, type } = result;
     // baseUrl is based on what resource type is being updated
-    const baseUrl =
-      type === 'LIST'
-        ? 'http://localhost:9000/lists'
-        : 'http://localhost:9000/cards';
+    const baseUrl = type === 'LIST' ? `${url}}/lists` : `${url}/cards`;
 
     if (destination && type === 'LIST' && source.index !== destination.index) {
       const newState = [...board.lists];
