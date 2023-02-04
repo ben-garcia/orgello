@@ -71,7 +71,7 @@ const Board = ({
     requestBoardInfo(currentBoard.id);
   }
 
-  if (username === 'orgelloguest2' && !localStorage.getItem('board')) {
+  if (username === 'orgelloguest' && !localStorage.getItem('board')) {
     history.replace('/');
   }
 
@@ -197,7 +197,7 @@ const Board = ({
                         order,
                         boardId: board.id,
                       };
-                      if (username !== 'orgelloguest2') {
+                      if (username !== 'orgelloguest') {
                         // dispatch action to create new list
                         // and add it to board.lists
                         requestCreateNewList(list);

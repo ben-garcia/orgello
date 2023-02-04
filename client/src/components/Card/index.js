@@ -54,7 +54,7 @@ const Card = React.memo(
                       listId: card.listId,
                     };
 
-                    if (username !== 'orgelloguest2') {
+                    if (username !== 'orgelloguest') {
                       requestUpdateNewCardTitle(newCard);
                     } else {
                       changeCardTitleAction(

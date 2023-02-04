@@ -68,7 +68,7 @@ const List = ({
 
                   // send the request only if the title has changed
                   if (listTitle !== list.title) {
-                    if (username !== 'orgelloguest2') {
+                    if (username !== 'orgelloguest') {
                       requestUpdateList(newList);
                     } else {
                       changeListNewTitle(newList.id, newList.title);
@@ -135,7 +135,7 @@ const List = ({
                             listId: list.id,
                           };
                           if (newCard.title) {
-                            if (username !== 'orgelloguest2') {
+                            if (username !== 'orgelloguest') {
                               requestCreateNewCard(newCard);
                             } else {
                               const date = new Date().toString();

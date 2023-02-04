@@ -223,7 +223,7 @@ const CreateBoardForm = ({
                 lists: [],
               };
 
-              if (username !== 'orgelloguest2') {
+              if (username !== 'orgelloguest') {
                 // the newly created board.
                 const response = await submitNewBoard(newBoard);
                 // add the id given by the server to the newly created board.

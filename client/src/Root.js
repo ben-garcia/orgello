@@ -108,7 +108,7 @@ const Root = ({
       newState.splice(destination.index, 0, sourceList);
 
       // send request only if the user isn't using the test account.
-      if (username !== 'orgelloguest2') {
+      if (username !== 'orgelloguest') {
         // dispatch action to the store
         updateListsOrder(newState);
         // update the list in the db
@@ -229,7 +229,7 @@ const Root = ({
       newCard.card = { listId: destinationList.id, order: sourceCard.order };
 
       // send request only if the user isn't using the test account
-      if (username !== 'orgelloguest2') {
+      if (username !== 'orgelloguest') {
         // send dispatch to the store
         updateCardsOrder(newState);
         // send update card info to update it in the db
