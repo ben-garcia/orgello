@@ -68,7 +68,7 @@ const List = ({
 
                   // send the request only if the title has changed
                   if (listTitle !== list.title) {
-                    if (username !== 'orgelloguest') {
+                    if (username !== 'orgelloguest2') {
                       requestUpdateList(newList);
                     } else {
                       changeListNewTitle(newList.id, newList.title);
@@ -135,7 +135,7 @@ const List = ({
                             listId: list.id,
                           };
                           if (newCard.title) {
-                            if (username !== 'orgelloguest') {
+                            if (username !== 'orgelloguest2') {
                               requestCreateNewCard(newCard);
                             } else {
                               const date = new Date().toString();
@@ -145,8 +145,13 @@ const List = ({
                               addNewCard(newCard);
                             }
                           }
-                          setCardTitle('');
-                          cardTitleAreaRef.current.value = '';
+                          // fix
+                          // after user hits 'Enter'
+                          // prevent card title to start on the second line
+                          setTimeout(() => {
+                            cardTitleAreaRef.current.value = '';
+                            setCardTitle('');
+                          }, 10);
                         }
                       }}
                     />

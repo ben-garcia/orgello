@@ -1,9 +1,9 @@
 // server api endpoints
 
-// NOTE: remember to update when server is deployed
-// production
-// export const baseUrl = 'https://orgello.herokuapp.com';
-export const baseUrl = 'http://localhost:9000';
+export const baseUrl =
+  process.env.NODE_ENV === 'production'
+    ? 'https://ogello.onrender.com'
+    : 'http://localhost:9000';
 
 export const fetchData = async (url, query, page, perPage) => {
   let photos = null;

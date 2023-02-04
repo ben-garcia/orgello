@@ -5,7 +5,7 @@ import {
   receivedBoardBackgroundChange,
   receivedBoardInformation,
 } from '../actions/board';
-import { updateResource, getBoard } from '../api';
+import { updateResource, getBoard, baseUrl } from '../api';
 
 export function* updateBoardTitle({ payload }) {
   try {
@@ -14,7 +14,7 @@ export function* updateBoardTitle({ payload }) {
     // as the first, which is updatedTitle in this case
     const updatedTitle = yield call(
       updateResource,
-      `http://localhost:9000/boards/${payload.id}`,
+      `${baseUrl}/boards/${payload.id}`,
       { title: payload.title }
     );
     // dispatch an action to the store with put effect
@@ -31,7 +31,7 @@ export function* updateBoardBackground({ payload }) {
     // as the first, which is updatedBackground in this case
     const updatedBackground = yield call(
       updateResource,
-      `http://localhost:9000/boards/${payload.id}`,
+      `${baseUrl}/boards/${payload.id}`,
       { background: payload.background }
     );
     // dispatch an action to the store with put effect
@@ -46,10 +46,7 @@ export function* getBoardInformation({ board }) {
     // call effect calls the function passed as first arguement.
     // any other arguments passed are the arguements of the function call passed
     // as the first, which is getBoard in this case
-    const boardInfo = yield call(
-      getBoard,
-      `http://localhost:9000/boards/${board}`
-    );
+    const boardInfo = yield call(getBoard, `${baseUrl}/boards/${board}`);
     // dispatch an action to the store with put effect
     yield put(receivedBoardInformation(boardInfo));
   } catch (e) {

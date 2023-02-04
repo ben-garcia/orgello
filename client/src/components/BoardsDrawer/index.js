@@ -11,7 +11,7 @@ const BoardsDrawer = ({ usersBoards, requestBoardInfo }) => {
     <div className="boards-drawer">
       <span className="boards-drawer__title">Your Boards</span>
       <ul className="boards-drawer__list">
-        {usersBoards &&
+        {usersBoards.length &&
           usersBoards.map((board) => {
             const style =
               board.background[0] === 'u'

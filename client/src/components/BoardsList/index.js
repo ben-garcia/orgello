@@ -21,9 +21,8 @@ const BoardsList = ({
         <h3 className="boards__title">All Boards</h3>
       </div>
       <ul className="boards__list">
-        {/* production */}
-        {/* usersBoards.length && */}
-        {usersBoards &&
+        {usersBoards.length !== 0 &&
+          usersBoards.length &&
           usersBoards.map((board) => (
             <li
               key={board.id}
@@ -31,10 +30,10 @@ const BoardsList = ({
               style={
                 board.background[0] === 'u'
                   ? {
-                      backgroundImage: board.background,
-                      backgroundSize: 'cover',
-                      backgroundPosition: '50%',
-                    }
+                    backgroundImage: board.background,
+                    backgroundSize: 'cover',
+                    backgroundPosition: '50%',
+                  }
                   : { backgroundColor: board.background }
               }
             >

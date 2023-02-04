@@ -92,9 +92,9 @@ const CreateBoardForm = ({
               style={
                 currentCreateBoardBackground.backgroundImage
                   ? {
-                      backgroundImage:
-                        currentCreateBoardBackground.backgroundImage.thumbnail,
-                    }
+                    backgroundImage:
+                      currentCreateBoardBackground.backgroundImage.thumbnail,
+                  }
                   : currentCreateBoardBackground
               }
             >
@@ -156,9 +156,9 @@ const CreateBoardForm = ({
                           {/* if background matches image then render white
                             checkmark */}
                           {boardBackgroundKey === 'backgroundImage' &&
-                          boardBackgroundValue ===
+                            boardBackgroundValue ===
                             `url(${image.urls.thumb})` ? (
-                              <i className="fas fa-check" />
+                            <i className="fas fa-check" />
                           ) : null}
                         </button>
                       </li>
@@ -184,7 +184,7 @@ const CreateBoardForm = ({
                       >
                         {/* render white checkmark if background matches color value */}
                         {boardBackgroundKey === 'backgroundColor' &&
-                        boardBackgroundValue === `${color.value}` ? (
+                          boardBackgroundValue === `${color.value}` ? (
                           <i className="fas fa-check" />
                         ) : null}
                       </button>
@@ -223,7 +223,7 @@ const CreateBoardForm = ({
                 lists: [],
               };
 
-              if (username !== 'orgelloguest') {
+              if (username !== 'orgelloguest2') {
                 // the newly created board.
                 const response = await submitNewBoard(newBoard);
                 // add the id given by the server to the newly created board.
@@ -236,6 +236,7 @@ const CreateBoardForm = ({
                 requestBoardInfo(newBoard);
               } else {
                 newBoard.id = Math.random();
+
                 // wait to remove the board from local storage
                 // so that when the user is redirected the dashboard page
                 // on page reload after creating a new board
