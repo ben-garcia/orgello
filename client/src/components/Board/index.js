@@ -71,10 +71,6 @@ const Board = ({
     requestBoardInfo(currentBoard.id);
   }
 
-  if (username === 'orgelloguest' && !localStorage.getItem('board')) {
-    history.replace('/');
-  }
-
   if (showTitleInput) {
     // delay enough for the title input to be visible
     setTimeout(() => titleInputRef.current.focus(), 100);

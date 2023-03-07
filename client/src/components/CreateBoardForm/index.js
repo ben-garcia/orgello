@@ -14,7 +14,11 @@ import {
   changeCreateBoardBackground,
   requestLatestSixPhotos,
 } from '../../actions/boards';
-import { getBoardInfo, requestBoardInformation } from '../../actions/board';
+import {
+  getBoardInfo,
+  requestBoardInformation,
+  receivedBoardInformation,
+} from '../../actions/board';
 import colors from '../../api/colors';
 import { submitNewBoard, triggerPhotoDownload } from '../../api';
 import './styles.scss';
@@ -35,6 +39,7 @@ const CreateBoardForm = ({
   latestSixPhotos,
   getBoardInformation,
   requestBoardInfo,
+  receivedBoardInfo,
 }) => {
   const [isDisabled, toggleDisabledButton] = useState(true);
   // will hold a reference to the id of a photo the user
@@ -234,30 +239,35 @@ const CreateBoardForm = ({
                 // more specifically the empty lists array
                 // so that there is no error when creating the first list
                 requestBoardInfo(newBoard);
+                //
+                // send the request to the server api
+                // add board info to the store
+                getBoardInformation(newBoard);
+                // remove the create new board component
+                changeBoardFormStatus(false);
+                // remove the background options panel
+                changeBackOptions(false);
+                // trigger a download
+                triggerPhotoDownload(photoId);
               } else {
                 newBoard.id = Math.random();
-
+                receivedBoardInfo(newBoard);
                 // wait to remove the board from local storage
                 // so that when the user is redirected the dashboard page
                 // on page reload after creating a new board
                 setTimeout(() => {
                   localStorage.removeItem('board');
                 }, 2000);
+                // remove the create new board component
+                changeBoardFormStatus(false);
+                // remove the background options panel
+                changeBackOptions(false);
               }
-              // send the request to the server api
-              // add board info to the store
-              getBoardInformation(newBoard);
-              // remove the create new board component
-              changeBoardFormStatus(false);
-              // remove the background options panel
-              changeBackOptions(false);
-              // trigger a download
-              triggerPhotoDownload(photoId);
               // replace the url
               // with /board/:boardTitle
               // to prevent url having spaces(because of the board title)
               // replace any empty characters with the '-' character
-              history.replace(`/board/${newBoardTitle.replace(' ', '-')}`);
+              history.replace(`/board/${newBoardTitle.replace(/ /g, '-')}`);
             }}
           >
             Create Board
@@ -309,6 +319,7 @@ const mapDispatchToProps = (dispatch) => ({
   requestSixPhotos: () => dispatch(requestLatestSixPhotos()),
   getBoardInformation: (info) => dispatch(getBoardInfo(info)),
   requestBoardInfo: (board) => dispatch(requestBoardInformation(board)),
+  receivedBoardInfo: (board) => dispatch(receivedBoardInformation(board)),
 });
 
 export default connect(

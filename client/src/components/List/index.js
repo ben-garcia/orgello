@@ -175,7 +175,15 @@ const List = ({
                             listId: list.id,
                           };
                           if (newCard.title) {
-                            requestCreateNewCard(newCard);
+                            if (username !== 'orgelloguest') {
+                              requestCreateNewCard(newCard);
+                            } else {
+                              const date = new Date().toString();
+                              newCard.id = Math.random();
+                              newCard.createdAt = date;
+                              newCard.updatedAt = date;
+                              addNewCard(newCard);
+                            }
                           }
                           setCardTitle('');
                           cardTitleAreaRef.current.value = '';
