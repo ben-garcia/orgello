@@ -453,7 +453,7 @@ const mapStateToProps = (state) => ({
   queryPhotos: state.createBoard.queryPhotos.photos,
   isBoardOpen: state.board.isOpen,
   boardId: state.board.id,
-  isCreaterBoardFormOpen: state.createBoard.isFormOpen,
+  isCreateBoardFormOpen: state.createBoard.isFormOpen,
   username: state.user.username,
 });
 
