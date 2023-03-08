@@ -40,6 +40,7 @@ const BackgroundOptions = ({
   requestNewBoardBackground,
   boardId,
   isCreateBoardFormOpen,
+  username,
 }) => {
   // keep track when the user clicks 'See more' button
   // to see more photos options
@@ -314,10 +315,13 @@ const BackgroundOptions = ({
                       // the user is creating a new board.
                       if (isBoardOpen && !isCreateBoardFormOpen) {
                         changeActiveBackground(`url(${image.urls.regular})`);
-                        requestNewBoardBackground({
-                          id: boardId,
-                          background: `url(${image.urls.regular})`,
-                        });
+                        if (username !== 'orgelloguest') {
+                          // dont send request when username is test account.
+                          requestNewBoardBackground({
+                            id: boardId,
+                            background: `url(${image.urls.regular})`,
+                          });
+                        }
                         // trigger a download when the user changes
                         // the board backgroud image
                         triggerPhotoDownload(photoId);
@@ -382,10 +386,13 @@ const BackgroundOptions = ({
                     // Board component
                     if (isBoardOpen && !isCreateBoardFormOpen) {
                       changeActiveBackground(`${color.value}`);
-                      requestNewBoardBackground({
-                        id: boardId,
-                        background: `${color.value}`,
-                      });
+                      if (username !== 'orgelloguest') {
+                        // dont send request when username is test account.
+                        requestNewBoardBackground({
+                          id: boardId,
+                          background: `${color.value}`,
+                        });
+                      }
                     } else {
                       changeBoardBackground({
                         backgroundColor: `${color.value}`,
@@ -429,6 +436,7 @@ BackgroundOptions.propTypes = {
   requestNewBoardBackground: PropTypes.func.isRequired,
   boardId: PropTypes.number,
   isCreateBoardFormOpen: PropTypes.bool.isRequired,
+  username: PropTypes.string.isRequired,
 };
 
 BackgroundOptions.defaultProps = {
@@ -445,7 +453,8 @@ const mapStateToProps = (state) => ({
   queryPhotos: state.createBoard.queryPhotos.photos,
   isBoardOpen: state.board.isOpen,
   boardId: state.board.id,
-  isCreateBoardFormOpen: state.createBoard.isFormOpen,
+  isCreaterBoardFormOpen: state.createBoard.isFormOpen,
+  username: state.user.username,
 });
 
 // object passed as props to component

@@ -16,6 +16,7 @@ import {
   getBoardInfo,
   requestBoardTitleChange,
   requestBoardInformation,
+  receivedBoardTitleChange,
 } from '../../actions/board';
 import { addList, requestCreateList } from '../../actions/lists';
 import './styles.scss';
@@ -36,6 +37,7 @@ const Board = ({
   addNewList,
   requestCreateNewList,
   isCreateBoardFormOpen,
+  receivedTitleChange,
 }) => {
   let savedUser = localStorage.getItem('user');
   const [title, changeTitle] = useState(board.title);
@@ -114,8 +116,12 @@ const Board = ({
               // when the input is empty
               // reset title to the board title.
               changeTitle(board.title);
-            } else {
+            } else if (username !== 'orgelloguest') {
               requestNewBoardTitle({ id: board.id, title });
+            } else if (username === 'orgelloguest') {
+              // there is on need to send a requet to
+              // the server on the test account.
+              receivedTitleChange({ board: { title } });
             }
           }}
         />
@@ -260,6 +266,7 @@ Board.propTypes = {
   addNewList: PropTypes.func.isRequired,
   requestCreateNewList: PropTypes.func.isRequired,
   isCreateBoardFormOpen: PropTypes.bool.isRequired,
+  receivedTitleChange: PropTypes.func.isRequired,
 };
 
 Board.defaultProps = {
@@ -287,6 +294,8 @@ const mapDispatchToProps = (dispatch) => ({
   requestBoardInfo: (board) => dispatch(requestBoardInformation(board)),
   addNewList: (list) => dispatch(addList(list)),
   requestCreateNewList: (list) => dispatch(requestCreateList(list)),
+  receivedTitleChange: (newTitle) =>
+    dispatch(receivedBoardTitleChange(newTitle)),
 });
 
 export default connect(
