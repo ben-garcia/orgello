@@ -43,10 +43,10 @@ const BackgroundOptions = ({
 }) => {
   // keep track when the user clicks 'See more' button
   // to see more photos options
-  const [isColorsOptionsOpen, toggleColorsOptions] = useState(false);
+  const [isPhotosOptionsOpen, togglePhotosOptions] = useState(false);
   // keep track when the user clicks 'See more' button
   // to see more colors options
-  const [isPhotosOptionsOpen, togglePhotosOptions] = useState(false);
+  const [isColorsOptionsOpen, toggleColorsOptions] = useState(false);
 
   // this reference is used to change the position of the scrollbar after
   // a new batch of images have been rendered.
@@ -68,7 +68,7 @@ const BackgroundOptions = ({
     ) {
       requestPhotos();
     }
-  });
+  }, []);
 
   // populate the queryPhotos array with more than 18 if
   // the grid container's height is 502 or greater
@@ -228,7 +228,7 @@ const BackgroundOptions = ({
           if (
             isPhotosOptionsOpen &&
             scrollRef.current.scrollTop + scrollRef.current.offsetHeight >=
-              scrollRef.current.scrollHeight - 200
+            scrollRef.current.scrollHeight - 200
           ) {
             // when the user scrolls down enough then
             // dispatch action to get more photos and render
@@ -333,7 +333,7 @@ const BackgroundOptions = ({
                   >
                     {/* render the checkmark if image and background match */}
                     {boardBackgroundKey === 'backgroundImage' &&
-                    boardBackgroundValue === `url(${image.urls.thumb})` ? (
+                      boardBackgroundValue === `url(${image.urls.thumb})` ? (
                       <i className="fas fa-check" />
                     ) : null}
                     <a
@@ -395,7 +395,7 @@ const BackgroundOptions = ({
                 >
                   {/* render checkmark if color matches background */}
                   {boardBackgroundKey === 'backgroundColor' &&
-                  boardBackgroundValue === `${color.value}` ? (
+                    boardBackgroundValue === `${color.value}` ? (
                     <i className="fas fa-check" />
                   ) : null}
                 </li>
