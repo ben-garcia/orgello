@@ -68,10 +68,22 @@ const boardsReducer = (state = initialState, action) => {
         latestSixPhotos: [...action.data],
       };
     case RECEIVED_LATEST_PHOTOS:
+      // prevent any photos with the same id
+      // fix: React warning about photos having the same key
+      // eslint-disable-next-line
+      const newState = [...state.latestPhotos.photos];
+      // eslint-disable-next-line
+      const ids = state.latestPhotos.photos.map((p) => p.id);
+      action.latestPhotos.forEach((p) => {
+        if (!ids.includes(p.id)) {
+          ids.push(p.id);
+          newState.push(p);
+        }
+      });
       return {
         ...state,
         latestPhotos: {
-          photos: [...state.latestPhotos.photos, ...action.latestPhotos],
+          photos: newState,
           page: state.latestPhotos.page + 1,
         },
       };
