@@ -9,6 +9,7 @@ import Card from '../Card';
 import { changeListTitle, requestUpdateListTitle } from '../../actions/lists';
 import { addCard, requestCreateCard } from '../../actions/cards';
 import './styles.scss';
+import { TEST_ACCOUNT_USERNAME } from '../../constants';
 
 const List = ({
   username,
@@ -68,7 +69,7 @@ const List = ({
 
                   // send the request only if the title has changed
                   if (listTitle !== list.title) {
-                    if (username !== 'orgelloguest') {
+                    if (username !== TEST_ACCOUNT_USERNAME) {
                       requestUpdateList(newList);
                     } else {
                       changeListNewTitle(newList.id, newList.title);
@@ -135,7 +136,7 @@ const List = ({
                             listId: list.id,
                           };
                           if (newCard.title) {
-                            if (username !== 'orgelloguest') {
+                            if (username !== TEST_ACCOUNT_USERNAME) {
                               requestCreateNewCard(newCard);
                             } else {
                               const date = new Date().toString();
@@ -175,7 +176,7 @@ const List = ({
                             listId: list.id,
                           };
                           if (newCard.title) {
-                            if (username !== 'orgelloguest') {
+                            if (username !== TEST_ACCOUNT_USERNAME) {
                               requestCreateNewCard(newCard);
                             } else {
                               const date = new Date().toString();

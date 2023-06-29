@@ -20,6 +20,7 @@ import {
 } from '../../actions/board';
 import { addList, requestCreateList } from '../../actions/lists';
 import './styles.scss';
+import { TEST_ACCOUNT_USERNAME } from '../../constants';
 
 const Board = ({
   history,
@@ -116,9 +117,9 @@ const Board = ({
               // when the input is empty
               // reset title to the board title.
               changeTitle(board.title);
-            } else if (username !== 'orgelloguest') {
+            } else if (username !== TEST_ACCOUNT_USERNAME) {
               requestNewBoardTitle({ id: board.id, title });
-            } else if (username === 'orgelloguest') {
+            } else if (username === TEST_ACCOUNT_USERNAME) {
               // there is on need to send a requet to
               // the server on the test account.
               receivedTitleChange({ board: { title } });
@@ -199,7 +200,7 @@ const Board = ({
                         order,
                         boardId: board.id,
                       };
-                      if (username !== 'orgelloguest') {
+                      if (username !== TEST_ACCOUNT_USERNAME) {
                         // dispatch action to create new list
                         // and add it to board.lists
                         requestCreateNewList(list);

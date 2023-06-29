@@ -2,7 +2,7 @@
 
 export const baseUrl =
   process.env.NODE_ENV === 'production'
-    ? 'https://ogello.onrender.com'
+    ? 'https://orgello.herokuapp.com'
     : 'http://localhost:9000';
 
 export const fetchData = async (url, query, page, perPage) => {

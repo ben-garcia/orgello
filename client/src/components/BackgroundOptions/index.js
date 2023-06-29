@@ -19,6 +19,7 @@ import {
 } from '../../actions/board';
 import colors from '../../api/colors';
 import { triggerPhotoDownload } from '../../api';
+import { TEST_ACCOUNT_USERNAME } from '../../constants';
 
 import './styles.scss';
 
@@ -315,7 +316,7 @@ const BackgroundOptions = ({
                       // the user is creating a new board.
                       if (isBoardOpen && !isCreateBoardFormOpen) {
                         changeActiveBackground(`url(${image.urls.regular})`);
-                        if (username !== 'orgelloguest') {
+                        if (username !== TEST_ACCOUNT_USERNAME) {
                           // dont send request when username is test account.
                           requestNewBoardBackground({
                             id: boardId,
@@ -386,7 +387,7 @@ const BackgroundOptions = ({
                     // Board component
                     if (isBoardOpen && !isCreateBoardFormOpen) {
                       changeActiveBackground(`${color.value}`);
-                      if (username !== 'orgelloguest') {
+                      if (username !== TEST_ACCOUNT_USERNAME) {
                         // dont send request when username is test account.
                         requestNewBoardBackground({
                           id: boardId,

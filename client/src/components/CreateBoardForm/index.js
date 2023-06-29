@@ -22,6 +22,7 @@ import {
 import colors from '../../api/colors';
 import { submitNewBoard, triggerPhotoDownload } from '../../api';
 import './styles.scss';
+import { TEST_ACCOUNT_USERNAME } from '../../constants';
 
 const CreateBoardForm = ({
   history,
@@ -228,7 +229,7 @@ const CreateBoardForm = ({
                 lists: [],
               };
 
-              if (username !== 'orgelloguest') {
+              if (username !== TEST_ACCOUNT_USERNAME) {
                 // the newly created board.
                 const response = await submitNewBoard(newBoard);
                 // add the id given by the server to the newly created board.

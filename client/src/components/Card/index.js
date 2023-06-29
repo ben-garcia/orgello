@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { changeCardTitle, requestUpdateCardTitle } from '../../actions/cards';
+import { TEST_ACCOUNT_USERNAME } from '../../constants';
 import './styles.scss';
 
 // implement PureComponent with React.memo by passing it a function
@@ -54,7 +55,7 @@ const Card = React.memo(
                       listId: card.listId,
                     };
 
-                    if (username !== 'orgelloguest') {
+                    if (username !== TEST_ACCOUNT_USERNAME) {
                       requestUpdateNewCardTitle(newCard);
                     } else {
                       changeCardTitleAction(

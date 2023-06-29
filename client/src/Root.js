@@ -21,6 +21,7 @@ import { reorderCards } from './actions/cards';
 import { closeBoardsDrawer } from './actions/boardsDrawer';
 import { closeUserDrawer } from './actions/userDrawer';
 import { baseUrl as url, updateResource } from './api';
+import { TEST_ACCOUNT_USERNAME } from './constants';
 
 const Root = ({
   board,
@@ -38,12 +39,12 @@ const Root = ({
     styles =
       board.background[0] === 'u'
         ? {
-            backgroundImage: board.background,
-            backgroundSize: 'cover',
-            backgroundPosition: '50%',
-            width: '100vw',
-            height: '100vh',
-          }
+          backgroundImage: board.background,
+          backgroundSize: 'cover',
+          backgroundPosition: '50%',
+          width: '100vw',
+          height: '100vh',
+        }
         : { backgroundColor: board.background };
   }
 
@@ -108,7 +109,7 @@ const Root = ({
       newState.splice(destination.index, 0, sourceList);
 
       // send request only if the user isn't using the test account.
-      if (username !== 'orgelloguest') {
+      if (username !== TEST_ACCOUNT_USERNAME) {
         // dispatch action to the store
         updateListsOrder(newState);
         // update the list in the db
@@ -229,7 +230,7 @@ const Root = ({
       newCard.card = { listId: destinationList.id, order: sourceCard.order };
 
       // send request only if the user isn't using the test account
-      if (username !== 'orgelloguest') {
+      if (username !== TEST_ACCOUNT_USERNAME) {
         // send dispatch to the store
         updateCardsOrder(newState);
         // send update card info to update it in the db
